@@ -6,13 +6,13 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
   rest?: any;
 }
 
-const Styled: (className: string) => FunctionComponent<Props> =
-  (className) =>
-  ({ children, className: _className, ...rest }) =>
-    (
+const Styled: (className: string) => FunctionComponent<Props> = (className) =>
+  function f({ children, className: _className, ...rest }) {
+    return (
       <div className={className + " " + _className} {...rest}>
         {children}
       </div>
     );
+  };
 
 export default Styled;

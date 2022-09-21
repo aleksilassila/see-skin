@@ -5,44 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="66471a99-3364-49e7-af4d-ce43cc8f7afc" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/prettier.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/see-skin.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/ProductSearch/ProductSearch.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/ProductSearchExtended/ProductSearchExtended.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/Styled.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/footer/Footer.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/navigation/LoginButton.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/navigation/Logo.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/navigation/Navigation.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/ui/Button.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/ui/Input.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/ui/SearchInput.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/containers/Full.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/containers/PageWithNavigation.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/firebase/firebase.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/firebase/initAuth.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/next-env.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pages/checker.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pages/products.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pages/skin-solver.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/postcss.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tailwind.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/auth.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/config.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/useLocalStorage.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/_app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/_app.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/Home.module.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/globals.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Styled.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Styled.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
