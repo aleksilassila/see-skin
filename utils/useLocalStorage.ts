@@ -5,7 +5,7 @@ export const useLocalStorage = <T = object>(key: string): T | null => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setValue(JSON.parse(window.localStorage.getItem(key) || ""));
+      setValue(JSON.parse(window.localStorage.getItem(key) || "null"));
     }
   }, []);
 
