@@ -1,8 +1,15 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import type { AppProps } from "next/app";
+import "@fontsource/josefin-slab";
+import "@fontsource/dm-sans";
+import "../styles/globals.css";
+import { AuthProvider } from "../utils/auth";
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+  return (
+    <AuthProvider>
+      <Component {...pageProps} />
+    </AuthProvider>
+  );
 }
 
-export default MyApp
+export default MyApp;

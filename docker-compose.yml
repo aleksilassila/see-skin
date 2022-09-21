@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  next:
+    build: .
+    volumes:
+      - .:/usr/src/app
+#    environment:
+#
+    ports:
+      - 3000:3000
