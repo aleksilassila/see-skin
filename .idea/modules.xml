@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$USER_HOME$/Desktop/format-cvs/.idea/format-cvs.iml" filepath="$USER_HOME$/Desktop/format-cvs/.idea/format-cvs.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/see-skin.iml" filepath="$PROJECT_DIR$/.idea/see-skin.iml" />
     </modules>
   </component>

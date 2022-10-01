@@ -1,14 +1,17 @@
 import React, { HTMLAttributes, MouseEvent } from "react";
 import { useRouter } from "next/router";
 
-interface Props {
+interface ButtonProps extends HTMLAttributes<HTMLDivElement> {
   href?: string;
+  enabled?: boolean;
 }
 
-const Button = (props: Props & HTMLAttributes<HTMLDivElement>) => {
+const Button = ({ enabled = true, ...props }: ButtonProps) => {
   const router = useRouter();
 
   const handleClick = (e: MouseEvent<HTMLDivElement>) => {
+    if (!enabled) return;
+
     if (props.href) {
       router.push(props.href).then();
     } else if (props.onClick) {
@@ -27,7 +30,7 @@ const Button = (props: Props & HTMLAttributes<HTMLDivElement>) => {
   );
 };
 
-export const BlueButton = (props: Props & HTMLAttributes<HTMLDivElement>) => {
+export const BlueButton = (props: ButtonProps) => {
   return (
     <Button
       {...props}
@@ -38,11 +41,15 @@ export const BlueButton = (props: Props & HTMLAttributes<HTMLDivElement>) => {
   );
 };
 
-export const WhiteButton = (props: HTMLAttributes<HTMLDivElement>) => {
+export const WhiteButton = (props: ButtonProps) => {
   return (
     <Button
       {...props}
-      className={`bg-white h-12 px-8 flex justify-center items-center rounded-full text-sm ${props.className}`}
+      className={`${
+        props.enabled ? "bg-white" : "bg-stone-200"
+      } h-12 px-8 flex justify-center items-center rounded-full text-sm ${
+        props.className
+      }`}
     >
       {props.children}
     </Button>

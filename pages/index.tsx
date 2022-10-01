@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import PageWithNavigation from "../containers/PageWithNavigation";
 import { HTMLAttributes } from "react";
 import styled from "../components/Styled";
-import ProductSearch from "../components/ProductSearch/ProductSearch";
+import IrritantSearchForm from "../components/IrritantSearchForm/IrritantSearchForm";
 import { BlueButton } from "../components/ui/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleArrowRight } from "@fortawesome/free-solid-svg-icons";
@@ -25,7 +25,7 @@ const Home: NextPage = () => {
             breakouts or any adverse effect into the box below:
           </Subheading>
           <div className="mt-12 font-extrabold self-stretch">
-            <ProductSearch />
+            <IrritantSearchForm />
           </div>
         </MainSubcontent>
         <MainSubcontent>
