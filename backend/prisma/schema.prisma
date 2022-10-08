@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id String @id @default(cuid())
+  name String
+  description String
+  ingredients ProductIngredient[]
+}
+
+model ProductIngredient {
+  product Product @relation(fields: [productId], references: [id])
+  productId String
+  ingredient Ingredient @relation(fields: [ingredientName], references: [name])
+  ingredientName String
+
+  @@id([productId, ingredientName])
+}
+
+model Ingredient {
+  name String @id
+  function String
+
+  aliasForName String?
+  aliasFor   Ingredient?   @relation("IngredientAliases", fields: [aliasForName], references: [name])
+  aliases  Ingredient[]  @relation("IngredientAliases")
+
+  products ProductIngredient[]
+}
+
+model User {
+  id String @id @default(cuid())
+  googleId String @unique
+  email String @unique
+  name String
+  sessions Session[]
+}
+
+model Session {
+  id String @id @default(cuid())
+  expires DateTime
+  handle String @unique
+  session String
+  user User @relation(fields: [userId], references: [id])
+  userId String
+}
