@@ -20,19 +20,30 @@ model Product {
 model ProductIngredient {
   product Product @relation(fields: [productId], references: [id])
   productId String
-  ingredient Ingredient @relation(fields: [ingredientName], references: [name])
-  ingredientName String
+  ingredient Ingredient @relation(fields: [ingredientId], references: [id])
+  ingredientId String
 
-  @@id([productId, ingredientName])
+  @@id([productId, ingredientId])
+}
+
+model IngredientGroup {
+  id String @id @default(cuid())
+  cosingRef Int @unique
+  function String
+  ingredients Ingredient[]
+  updatedAt DateTime?
 }
 
 model Ingredient {
-  name String @id
-  function String
+  id String @id @default(cuid())
+  name String
 
-  aliasForName String?
-  aliasFor   Ingredient?   @relation("IngredientAliases", fields: [aliasForName], references: [name])
-  aliases  Ingredient[]  @relation("IngredientAliases")
+  groupId String?
+  group IngredientGroup? @relation(fields: [groupId], references: [id])
+
+//  aliasForName String?
+//  aliasFor   Ingredient?   @relation("IngredientAliases", fields: [aliasForName], references: [name])
+//  aliases  Ingredient[]  @relation("IngredientAliases")
 
   products ProductIngredient[]
 }

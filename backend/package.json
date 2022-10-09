@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "start": "prisma generate && nodemon src/server.ts",
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "ts-node prisma/seed.ts",
+    "import-ingredients": "ts-node prisma/scripts/import-ingredients.ts"
   },
   "dependencies": {
     "@prisma/client": "^4.4.0",
