@@ -13,17 +13,18 @@ datasource db {
 model Product {
   id String @id @default(cuid())
   name String
-  description String
-  ingredients ProductIngredient[]
+  description String?
+  imageUrl String?
+  ingredientGroups ProductIngredientGroup[]
 }
 
-model ProductIngredient {
+model ProductIngredientGroup {
   product Product @relation(fields: [productId], references: [id])
   productId String
-  ingredient Ingredient @relation(fields: [ingredientId], references: [id])
-  ingredientId String
+  ingredientGroup IngredientGroup @relation(fields: [ingredientGroupId], references: [id])
+  ingredientGroupId String
 
-  @@id([productId, ingredientId])
+  @@id([productId, ingredientGroupId])
 }
 
 model IngredientGroup {
@@ -32,20 +33,20 @@ model IngredientGroup {
   function String
   ingredients Ingredient[]
   updatedAt DateTime?
+
+  products ProductIngredientGroup[]
 }
 
 model Ingredient {
   id String @id @default(cuid())
   name String
 
-  groupId String?
-  group IngredientGroup? @relation(fields: [groupId], references: [id])
+  groupId String
+  group IngredientGroup @relation(fields: [groupId], references: [id])
 
 //  aliasForName String?
 //  aliasFor   Ingredient?   @relation("IngredientAliases", fields: [aliasForName], references: [name])
 //  aliases  Ingredient[]  @relation("IngredientAliases")
-
-  products ProductIngredient[]
 }
 
 model User {
@@ -53,14 +54,4 @@ model User {
   googleId String @unique
   email String @unique
   name String
-  sessions Session[]
-}
-
-model Session {
-  id String @id @default(cuid())
-  expires DateTime
-  handle String @unique
-  session String
-  user User @relation(fields: [userId], references: [id])
-  userId String
 }
