@@ -5,7 +5,4 @@ export const COOKIE_SECRET = process.env.COOKIE_SECRET || "secret";
 export const JWT_SECRET = process.env.JWT_SECRET || "secret";
 export const SALT_ROUNDS = process.env.SALT_ROUNDS || 10;
 
-export const FRONTEND_ENDPOINT =
-  process.env.FRONTEND_ENDPOINT || "http://localhost:3000";
-export const BACKEND_ENDPOINT =
-  process.env.BACKEND_ENDPOINT || "http://localhost:9000/api";
+export const ENDPOINT = process.env.ENDPOINT || "http://localhost";

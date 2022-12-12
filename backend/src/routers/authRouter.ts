@@ -1,6 +1,5 @@
 import { Router } from "express";
 import passport from "passport";
-import { FRONTEND_ENDPOINT } from "../config";
 import * as authController from "../controllers/authController";
 import { requireAuth } from "../middleware/requireAuth";
 import { body } from "express-validator";
@@ -13,6 +12,12 @@ authRouter.get(
   body("password").exists().trim().notEmpty(),
   authController.login
 );
+
+authRouter.get("/logout", (req, res) => {
+  res.clearCookie("session");
+  req.session.destroy((err) => {});
+  res.redirect("/");
+});
 
 authRouter.get("/verify", requireAuth, function (req, res) {
   res.status(200).send("Authenticated");
@@ -29,7 +34,7 @@ authRouter.get(
     failureRedirect: "/login",
   }),
   (req, res) => {
-    res.redirect(FRONTEND_ENDPOINT + "/");
+    res.redirect("/");
   }
 );
 
