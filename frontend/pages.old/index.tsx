@@ -3,10 +3,10 @@ import PageWithNavigation from "../containers/PageWithNavigation";
 import { HTMLAttributes } from "react";
 import styled from "../components/Styled";
 import IrritantSearchForm from "../components/IrritantSearchForm/IrritantSearchForm";
-import { BlueButton } from "../components/ui/Button";
+import { BlueButton } from "../app/(ui)/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleArrowRight } from "@fortawesome/free-solid-svg-icons";
-import Logo from "../components/navigation/Logo";
+import Logo from "../app/(navigation)/Logo";
 
 const MainContent = styled("m-auto max-w-2xl py-24 px-8 flex flex-col gap-32");
 const MainSubcontent = styled("flex flex-col items-center items-center");

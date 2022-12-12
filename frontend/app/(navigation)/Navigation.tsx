@@ -1,7 +1,7 @@
 import { HTMLAttributes } from "react";
 import Logo from "./Logo";
-import LoginButton from "./LoginButton";
 import Link from "next/link";
+import LoginButton from "./LoginButton";
 
 const NavItem = (props: HTMLAttributes<HTMLDivElement>) => (
   <div className={`hidden sm:block ${props.className}`}>{props.children}</div>
@@ -10,14 +10,13 @@ const NavItem = (props: HTMLAttributes<HTMLDivElement>) => (
 const NavLink = (
   props: { href: string; activeHref: string } & HTMLAttributes<HTMLDivElement>
 ) => (
-  <Link href={props.href}>
-    <a
-      className={`font-bold ${
-        props.href === props.activeHref ? "text-stone-600" : ""
-      }`}
-    >
-      {props.children}
-    </a>
+  <Link
+    href={props.href}
+    className={`font-bold ${
+      props.href === props.activeHref ? "text-stone-600" : ""
+    }`}
+  >
+    {props.children}
   </Link>
 );
 

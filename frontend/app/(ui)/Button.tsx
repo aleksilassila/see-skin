@@ -1,5 +1,6 @@
+"use client";
 import React, { HTMLAttributes, MouseEvent } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 interface ButtonProps extends HTMLAttributes<HTMLDivElement> {
   href?: string;
@@ -13,7 +14,7 @@ const Button = ({ enabled = true, ...props }: ButtonProps) => {
     if (!enabled) return;
 
     if (props.href) {
-      router.push(props.href).then();
+      router.push(props.href);
     } else if (props.onClick) {
       props.onClick(e);
     }

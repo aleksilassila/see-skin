@@ -1,4 +1,4 @@
-import Button, { WhiteButton } from "../ui/Button";
+import Button, { WhiteButton } from "../../app/(ui)/Button";
 import { HTMLAttributes } from "react";
 
 export const ContinueButton = (props: {

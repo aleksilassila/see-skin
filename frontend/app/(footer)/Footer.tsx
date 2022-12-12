@@ -1,5 +1,5 @@
-import styled from "../Styled";
-import Logo from "../navigation/Logo";
+import styled from "../../components/Styled";
+import Logo from "../(navigation)/Logo";
 import { HTMLAttributes } from "react";
 
 const FooterContainer = styled(

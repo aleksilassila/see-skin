@@ -16,3 +16,6 @@ export const FIREBASE_API_PRIVATE_KEY =
 
 export const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "";
 export const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || "";
+
+export const BACKEND_ENDPOINT =
+  process.env.BACKEND_ENDPOINT || "http://localhost:9000/api";

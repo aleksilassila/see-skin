@@ -1,7 +1,7 @@
 import { HTMLAttributes } from "react";
 import PageWithNavigation from "../containers/PageWithNavigation";
 import styled from "../components/Styled";
-import Logo from "../components/navigation/Logo";
+import Logo from "../app/(navigation)/Logo";
 import SearchInput from "../components/ui/SearchInput";
 
 interface Props {}

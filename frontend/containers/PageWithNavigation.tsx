@@ -1,6 +1,6 @@
 import { HTMLAttributes } from "react";
-import Navigation from "../components/navigation/Navigation";
-import Footer from "../components/footer/Footer";
+import Navigation from "../app/(navigation)/Navigation";
+import Footer from "../app/(footer)/Footer";
 
 interface Props {
   href?: string;

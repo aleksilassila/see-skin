@@ -25,8 +25,8 @@ const Products = (props: Props & HTMLAttributes<HTMLDivElement>) => {
           </Subheading>
           <Subheading2>
             Already have a product in mind? Head to the{" "}
-            <Link href="/checker">
-              <a className="underline">Catalogue</a>
+            <Link href="/checker" className="underline">
+              Catalogue
             </Link>{" "}
             tab to check if it fits your skin!
           </Subheading2>

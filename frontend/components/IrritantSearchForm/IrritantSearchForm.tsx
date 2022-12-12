@@ -1,5 +1,5 @@
 import { HTMLAttributes, useState } from "react";
-import Button, { WhiteButton } from "../ui/Button";
+import Button, { WhiteButton } from "../../app/(ui)/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import SkinTypeSelect from "./SkinTypeSelect";
