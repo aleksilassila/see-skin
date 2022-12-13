@@ -1,6 +1,7 @@
 import passport from "passport";
 import passportGoogle from "passport-google-oauth20";
-import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from "./config";
+import LocalStrategy from "passport-local";
+import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, NODE_ENV } from "./config";
 import prisma from "./prisma";
 
 const GoogleStrategy = passportGoogle.Strategy;
@@ -54,6 +55,10 @@ passport.deserializeUser(async (googleId: any, done) => {
     (await prisma.user
       .findUnique({ where: { googleId: googleId } })
       .catch(console.error)) || false;
+  if (user) {
+    console.log(user.accessLevel);
+  }
+
   console.log(googleId, user);
 
   done(null, user);

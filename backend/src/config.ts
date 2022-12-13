@@ -6,3 +6,9 @@ export const JWT_SECRET = process.env.JWT_SECRET || "secret";
 export const SALT_ROUNDS = process.env.SALT_ROUNDS || 10;
 
 export const ENDPOINT = process.env.ENDPOINT || "http://localhost";
+
+export const NODE_ENV: "production" | "development" = process.env.ENDPOINT
+  ? "production"
+  : process.env.NODE_ENV === "production"
+  ? "production"
+  : "development";

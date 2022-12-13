@@ -1,15 +1,16 @@
 "use client";
 import { createContext, useEffect, useState } from "react";
 
-type User = {
-  userId: string;
+interface User {
+  id: string;
   name: string;
-} | null;
+  accessLevel: number;
+}
 
 export type UserContextState = {
-  user: User;
+  user: User | null | false;
   loading: boolean;
-  setUser: (user: User) => void;
+  setUser: (user: User | false) => void;
 };
 
 export const UserContext = createContext<UserContextState>({
@@ -21,37 +22,54 @@ export const UserContext = createContext<UserContextState>({
 async function fetchUser() {
   const storedUser = JSON.parse(localStorage.getItem("user") || "null");
 
+  console.log("LocalStorage user", storedUser);
+
   if (storedUser) {
     return storedUser;
   }
+
+  console.log("Doing user fetch");
   return await fetch("/api/users")
     .then((res) => res.json())
     .catch((e) => null);
 }
 
 export function useUserContextValue(): UserContextState {
-  const [state, setState] = useState<{ user: User; loading: boolean }>({
+  const [state, setState] = useState<{
+    user: User | null | false;
+    initialized: boolean;
+  }>({
     user: null,
-    loading: true,
+    initialized: false,
   });
 
   useEffect(() => {
-    fetchUser().then((user) => {
-      setState({ user, loading: false });
-    });
+    if (state.initialized) return;
 
-    // const user =
-    //   JSON.parse(localStorage.getItem("user") || "null") || fetchUser();
-    //
-    // setState({
-    //   user: user || null,
-    //   loading: false,
-    // });
+    setState({ user: null, initialized: true });
+
+    console.log("Fetching user");
+    fetchUser().then((user) => {
+      if (user) {
+        window.localStorage.setItem("user", JSON.stringify(user));
+        setState({ ...state, user });
+      } else {
+        window.localStorage.removeItem("user");
+        setState({ ...state, user: false });
+      }
+    });
   }, []);
 
   return {
     user: state.user,
-    setUser: (user) => setState({ ...state, user }),
-    loading: state.loading,
+    setUser: (user) => {
+      if (user === null) {
+        window.localStorage.removeItem("user");
+      } else {
+        localStorage.setItem("user", JSON.stringify(user));
+      }
+      setState({ ...state, user });
+    },
+    loading: state.user === null,
   };
 }

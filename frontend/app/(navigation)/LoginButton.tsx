@@ -9,7 +9,7 @@ export default function LoginButton() {
   const user = useContext(UserContext);
 
   function logOut() {
-    user.setUser(null);
+    user.setUser(false);
     router.push("/api/auth/logout");
   }
 

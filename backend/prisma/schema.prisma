@@ -55,5 +55,6 @@ model User {
   email String @unique
   password String?
   name String
+  accessLevel Int @default(0)
   logoutAt DateTime?
 }

@@ -8,6 +8,8 @@ import session from "express-session";
 // Setup passport
 import "./passport";
 import usersRouter from "./routers/userRouter";
+import { requireAuth, requireAuthLevel } from "./middleware/requireAuth";
+import ingredientsRouter from "./routers/ingredientsRouter";
 
 const app = express();
 const router = Router();
@@ -35,6 +37,7 @@ router.use((req, res, next) => {
 router.use("/auth", authRouter);
 router.use("/products", productsRouter);
 router.use("/users", usersRouter);
+router.use("/ingredients", requireAuthLevel(1), ingredientsRouter);
 
 app.use("/api", router);
 
