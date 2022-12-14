@@ -1,7 +1,6 @@
 import passport from "passport";
 import passportGoogle from "passport-google-oauth20";
-import LocalStrategy from "passport-local";
-import {ENDPOINT, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, NODE_ENV} from "./config";
+import { ENDPOINT, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from "./config";
 import prisma from "./prisma";
 
 const GoogleStrategy = passportGoogle.Strategy;
