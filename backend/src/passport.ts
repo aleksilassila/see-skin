@@ -1,7 +1,7 @@
 import passport from "passport";
 import passportGoogle from "passport-google-oauth20";
 import LocalStrategy from "passport-local";
-import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, NODE_ENV } from "./config";
+import {ENDPOINT, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, NODE_ENV} from "./config";
 import prisma from "./prisma";
 
 const GoogleStrategy = passportGoogle.Strategy;
@@ -11,7 +11,7 @@ passport.use(
     {
       clientID: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
-      callbackURL: "/api/auth/google/callback",
+      callbackURL: ENDPOINT + "/api/auth/google/callback",
       scope: ["profile", "email"],
     },
     async function verify(accessToken, refreshToken, profile, cb) {

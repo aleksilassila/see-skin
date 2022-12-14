@@ -37,7 +37,6 @@ services:
       - ./backend/prisma:/usr/src/app/prisma
     environment:
       DATABASE_URL: postgresql://post:post@db:5432/post
-      ENDPOINT: ${ENDPOINT}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
     depends_on:
@@ -49,8 +48,6 @@ services:
     build: frontend
     volumes:
       - ./frontend:/usr/src/app
-    environment:
-      ENDPOINT: ${ENDPOINT}
     networks:
       - see-skin-dev
 
