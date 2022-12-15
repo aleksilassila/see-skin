@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import PageWithNavigation from "../containers/PageWithNavigation";
 import { HTMLAttributes } from "react";
-import styled from "../components/Styled";
+import styled from "../app/Styled";
 import IrritantSearchForm from "../components/IrritantSearchForm/IrritantSearchForm";
 import { BlueButton } from "../app/(ui)/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

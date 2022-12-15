@@ -1,0 +1,9 @@
+**/node_modules
+.next/
+# Don't include the old project files that aren't in use
+(utils)/
+api/
+firebase/
+containers/
+components/
+pages.old/

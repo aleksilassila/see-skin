@@ -10,4 +10,4 @@ RUN yarn install
 # RUN npm install --platform=linuxmusl --arch=arm64
 # npm install --platform=linuxmusl --arch=arm64 sharp on host
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]

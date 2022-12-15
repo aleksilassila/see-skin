@@ -5,7 +5,7 @@ import {
   FIREBASE_MESSAGING_SENDER_ID,
   FIREBASE_PROJECT_ID,
   FIREBASE_STORAGE_BUCKET,
-} from "../app/(utils)/config";
+} from "../app/config";
 import { initializeApp } from "@firebase/app";
 import { getAuth } from "@firebase/auth";
 

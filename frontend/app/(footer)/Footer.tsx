@@ -1,4 +1,4 @@
-import styled from "../../components/Styled";
+import styled from "../Styled";
 import Logo from "../(navigation)/Logo";
 import { HTMLAttributes } from "react";
 

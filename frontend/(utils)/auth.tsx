@@ -13,7 +13,7 @@ import {
   signOut,
   User,
 } from "@firebase/auth";
-import app from "../../firebase/firebase";
+import app from "../firebase/firebase";
 import { useLocalStorage } from "./useLocalStorage";
 
 interface AuthContextType {

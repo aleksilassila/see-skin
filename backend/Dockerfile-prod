@@ -1,0 +1,9 @@
+FROM node:18
+
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+COPY . .
+RUN yarn install
+CMD ["ls", "-la"]
+CMD ["npm", "start"]

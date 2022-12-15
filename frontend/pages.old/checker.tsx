@@ -1,6 +1,6 @@
 import { HTMLAttributes } from "react";
 import PageWithNavigation from "../containers/PageWithNavigation";
-import styled from "../components/Styled";
+import styled from "../app/Styled";
 import Logo from "../app/(navigation)/Logo";
 import SearchInput from "../components/ui/SearchInput";
 
