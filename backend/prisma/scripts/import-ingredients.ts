@@ -37,28 +37,6 @@ async function main() {
         },
       })
       .catch(console.error);
-
-    //   for (const alias of aliases) {
-    //     await prisma.ingredient
-    //       .create({
-    //         data: {
-    //           name: alias,
-    //           function: ingredient.Function,
-    //           ...(mainAlias !== alias && {
-    //             aliasFor: {
-    //               connect: {
-    //                 name: mainAlias,
-    //               },
-    //             },
-    //           }),
-    //         },
-    //       })
-    //       .catch(() =>
-    //         console.error(
-    //           `Failed to add ${alias} part of ${ingredient["INCI name"]}`
-    //         )
-    //       );
-    //   }
   }
 
   console.log(`Seeding finished with ${skipped} ingredients skipped.`);

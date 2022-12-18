@@ -5,5 +5,4 @@ WORKDIR /usr/src/app
 
 COPY . .
 RUN yarn install
-CMD ["ls", "-la"]
 CMD ["npm", "start"]

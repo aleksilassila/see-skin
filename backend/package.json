@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "prisma generate && nodemon src/server.ts",
     "start": "prisma generate && prisma migrate deploy && ts-node src/server.ts",
-    "seed": "ts-node prisma/seed.ts",
+    "seed": "ts-node prisma/scripts/import-ingredients.ts && ts-node prisma/scripts/import-products.ts",
     "import-ingredients": "ts-node prisma/scripts/import-ingredients.ts",
     "import-products": "ts-node prisma/scripts/import-products.ts"
   },

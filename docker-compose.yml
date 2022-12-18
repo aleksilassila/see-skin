@@ -30,7 +30,9 @@ services:
       - see-skin-dev
 
   backend:
-    build: backend
+    build:
+      context: backend
+      dockerfile: Dockerfile.dev
     volumes:
       # - ./backend/uploads:/usr/src/app/uploads
       - ./backend/src:/usr/src/app/src
@@ -45,7 +47,9 @@ services:
       - see-skin-dev
 
   frontend:
-    build: frontend
+    build:
+      context: frontend
+      dockerfile: Dockerfile.dev
     volumes:
       - ./frontend:/usr/src/app
     networks:

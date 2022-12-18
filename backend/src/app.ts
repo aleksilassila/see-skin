@@ -10,6 +10,7 @@ import "./passport";
 import usersRouter from "./routers/userRouter";
 import { requireAuth, requireAuthLevel } from "./middleware/requireAuth";
 import ingredientsRouter from "./routers/ingredientsRouter";
+import manageRouter from "./routers/manageRouter";
 
 const app = express();
 const router = Router();
@@ -38,6 +39,7 @@ router.use("/auth", authRouter);
 router.use("/products", productsRouter);
 router.use("/users", usersRouter);
 router.use("/ingredients", requireAuthLevel(1), ingredientsRouter);
+router.use("/manage", /*requireAuthLevel(1),*/ manageRouter);
 
 app.use("/api", router);
 

@@ -9,7 +9,7 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/default.prod.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       - frontend
       - backend
@@ -30,7 +30,7 @@ services:
   backend:
     build:
       context: backend
-      dockerfile: Dockerfile-prod
+      dockerfile: Dockerfile.prod
 #    volumes:
 #      - ./backend/src:/usr/src/app/src
 #      - ./backend/prisma:/usr/src/app/prisma
@@ -48,7 +48,7 @@ services:
   frontend:
     build:
       context: frontend
-      dockerfile: Dockerfile-prod
+      dockerfile: Dockerfile.prod
     restart: on-failure
 #    volumes:
 #      - ./frontend:/usr/src/app
