@@ -36,9 +36,9 @@ router.use((req, res, next) => {
 });
 
 router.use("/auth", authRouter);
-router.use("/products", productsRouter);
+// router.use("/products", productsRouter);
 router.use("/users", usersRouter);
-router.use("/ingredients", requireAuthLevel(1), ingredientsRouter);
+// router.use("/ingredients", requireAuthLevel(1), ingredientsRouter);
 router.use("/manage", /*requireAuthLevel(1),*/ manageRouter);
 
 app.use("/api", router);

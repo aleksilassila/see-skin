@@ -2,11 +2,13 @@ import { Router } from "express";
 import * as manageController from "../controllers/manageController";
 import { check } from "express-validator";
 import validateRequest from "../middleware/validateRequest";
+import { requireAuthLevel } from "../middleware/requireAuth";
 
 const manageRouter = Router();
 
+manageRouter.use(requireAuthLevel(1));
+
 manageRouter.get("/issues/products", manageController.productIssues);
-export default manageRouter;
 
 manageRouter.get(
   "/issues/ingredients",
@@ -23,3 +25,5 @@ manageRouter.get(
   validateRequest,
   manageController.ingredientIssues
 );
+
+export default manageRouter;
