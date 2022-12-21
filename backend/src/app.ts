@@ -11,6 +11,7 @@ import usersRouter from "./routers/userRouter";
 import { requireAuth, requireAuthLevel } from "./middleware/requireAuth";
 import ingredientsRouter from "./routers/ingredientsRouter";
 import manageRouter from "./routers/manageRouter";
+import skinSolverRouter from "./routers/skinSolverRouter";
 
 const app = express();
 const router = Router();
@@ -36,10 +37,11 @@ router.use((req, res, next) => {
 });
 
 router.use("/auth", authRouter);
-// router.use("/products", productsRouter);
 router.use("/users", usersRouter);
-// router.use("/ingredients", requireAuthLevel(1), ingredientsRouter);
 router.use("/manage", /*requireAuthLevel(1),*/ manageRouter);
+router.use("/products", productsRouter);
+router.use("/ingredients", ingredientsRouter);
+router.use("/solver", skinSolverRouter);
 
 app.use("/api", router);
 

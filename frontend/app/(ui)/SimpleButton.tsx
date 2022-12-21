@@ -81,13 +81,13 @@ export default function Button({ size = "md", ...props }: Props): JSX.Element {
             props.loading == true ? "opacity-100" : "opacity-0"
           } absolute flex items-center px-2 duration-200`}
         >
-          <Image
-            src="/images/loading/loadingblack.gif"
-            height={25}
-            width={42}
-            alt="loading animation"
-            className={`rounded-xl`}
-          ></Image>
+          {/*<Image*/}
+          {/*  src="/images/loading/loadingblack.gif"*/}
+          {/*  height={25}*/}
+          {/*  width={42}*/}
+          {/*  alt="loading animation"*/}
+          {/*  className={`rounded-xl`}*/}
+          {/*></Image>*/}
         </div>
         {props.icon && (
           <FontAwesomeIcon

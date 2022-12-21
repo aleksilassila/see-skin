@@ -1,20 +1,16 @@
+"use client";
 import { Product } from "./product";
-import Api from "../../(api)/api";
-import { Product as ProductType } from "../ManageResponseTypes";
 import IssuesContainer from "../issues-container";
+import { useQuery } from "react-query";
+import { fetchProducts } from "../../(api)/manage/products";
 
-async function fetchIssues(): Promise<ProductType[]> {
-  const data = await Api.fetch("/api/manage/issues/products");
+export default function ProductsPage() {
+  const { data: products, isError } = useQuery(
+    "manage-issues-products",
+    fetchProducts
+  );
 
-  if (!data.ok) {
-    throw new Error("Could not load products.");
-  }
-
-  return data.json();
-}
-
-export default async function ProductsPage() {
-  const products = await fetchIssues();
+  if (!products) return null;
 
   return (
     <IssuesContainer

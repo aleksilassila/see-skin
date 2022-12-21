@@ -1,20 +1,18 @@
+"use client";
 import { Ingredient } from "./ingredient";
 import Api from "../../(api)/api";
 import { Ingredient as IngredientType } from "../ManageResponseTypes";
 import IssuesContainer from "../issues-container";
+import { useQuery } from "react-query";
+import { fetchIngredients } from "../../(api)/manage/ingredients";
 
-async function fetchIssues(): Promise<IngredientType[]> {
-  const data = await Api.fetch("/api/manage/issues/ingredients");
+export default function IngredientsPage() {
+  const { data: ingredients } = useQuery(
+    "manage-issues-ingredients",
+    fetchIngredients
+  );
 
-  if (!data.ok) {
-    throw new Error("Could not load ingredients.");
-  }
-
-  return data.json();
-}
-
-export default async function IngredientsPage() {
-  const ingredients = await fetchIssues();
+  if (!ingredients) return null;
 
   return (
     <IssuesContainer

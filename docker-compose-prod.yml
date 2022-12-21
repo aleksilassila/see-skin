@@ -39,9 +39,10 @@ services:
     restart: on-failure
     environment:
       DATABASE_URL: postgresql://post:post@db:5432/post
-      ENDPOINT: https://see-skin.com
+      ENDPOINT: ${ENDPOINT}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      NODE_ENV: production
     depends_on:
       - db
     networks:
@@ -55,7 +56,8 @@ services:
 #    volumes:
 #      - ./frontend:/usr/src/app
     environment:
-      ENDPOINT: https://see-skin.com
+      ENDPOINT: ${ENDPOINT}
+      NODE_ENV: production
     networks:
       - see-skin-dev
 
