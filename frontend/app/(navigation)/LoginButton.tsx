@@ -1,12 +1,11 @@
 "use client";
 import { useRouter } from "next/navigation";
 import Button from "../(ui)/SimpleButton";
-import { useContext } from "react";
-import { UserContext } from "../user";
+import { useUser } from "../user";
 
 export default function LoginButton() {
   const router = useRouter();
-  const user = useContext(UserContext);
+  const user = useUser();
 
   function logOut() {
     user.setUser(false);

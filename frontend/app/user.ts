@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import Api from "./(api)/api";
 
 interface User {
@@ -44,12 +44,16 @@ async function fetchUser(): Promise<User | false> {
     });
 }
 
+export function useUser() {
+  return useContext(UserContext);
+}
+
 export function useUserContextValue(): UserContextState {
   const [state, setState] = useState<{
     user: User | null | false;
     initialized: boolean;
   }>({
-    user: getCachedUser(),
+    user: null,
     initialized: false,
   });
 
@@ -57,7 +61,7 @@ export function useUserContextValue(): UserContextState {
     if (state.initialized) return;
 
     // Validate user
-    setState({ ...state, initialized: true });
+    setState({ user: getCachedUser(), initialized: true });
     fetchUser().then((user) => setState({ ...state, user }));
   }, []);
 

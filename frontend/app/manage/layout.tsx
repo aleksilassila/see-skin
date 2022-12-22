@@ -1,6 +1,6 @@
 "use client";
-import React, { createContext, PropsWithChildren, useContext } from "react";
-import { UserContext } from "../user";
+import React, { PropsWithChildren } from "react";
+import { useUser } from "../user";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import classNames from "classnames";
@@ -60,7 +60,7 @@ export default function ManageLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const user = useContext(UserContext);
+  const user = useUser();
   const router = useRouter();
 
   if (user.loading) {

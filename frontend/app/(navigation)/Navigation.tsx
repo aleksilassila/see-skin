@@ -1,8 +1,9 @@
+"use client";
 import { HTMLAttributes, useContext } from "react";
 import Logo from "./Logo";
 import Link from "next/link";
 import LoginButton from "./LoginButton";
-import { UserContext } from "../user";
+import { UserContext, useUser } from "../user";
 
 const NavItem = (props: HTMLAttributes<HTMLDivElement>) => (
   <div className={`hidden sm:block ${props.className}`}>{props.children}</div>
@@ -29,7 +30,7 @@ const Navigation = ({
   href = "",
   ...props
 }: Props & HTMLAttributes<HTMLDivElement>) => {
-  const user = useContext(UserContext);
+  const user = useUser();
 
   console.log(user);
 
