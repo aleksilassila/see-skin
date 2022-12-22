@@ -1,8 +1,13 @@
 import Api from "../api";
-import { Ingredient } from "../../manage/ManageResponseTypes";
+
+export interface ManageIngredient {
+  id: string;
+  name: string;
+  groupId: string;
+}
 
 export async function fetchIngredients() {
-  return await Api.fetch<Ingredient[]>("/manage/issues/ingredients").then(
+  return await Api.fetch<ManageIngredient[]>("/manage/issues/ingredients").then(
     (r) => r.data
   );
 }

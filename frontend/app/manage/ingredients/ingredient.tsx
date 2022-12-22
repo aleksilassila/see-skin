@@ -1,9 +1,9 @@
 "use client";
 
-import { Ingredient } from "../ManageResponseTypes";
+import { ManageIngredient } from "../../(api)/manage/ingredients";
 
 interface Props {
-  ingredient: Ingredient;
+  ingredient: ManageIngredient;
 }
 
 export function Ingredient(props: Props) {

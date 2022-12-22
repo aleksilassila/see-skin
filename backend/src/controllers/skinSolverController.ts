@@ -1,14 +1,11 @@
 import { Request, Response } from "express";
 import prisma from "../prisma";
 
-export async function calculateIrritants(req: Request, res: Response) {
-  const {
-    ingredientIds = [],
-    productIds = [],
-  }: {
-    ingredientIds: string[];
-    productIds: string[];
-  } = req.body;
+export async function calculateIrritants(
+  req: Request<{}, {}, {}, { ingredientIds: string[]; productIds: string[] }>,
+  res: Response
+) {
+  const { ingredientIds = [], productIds = [] } = req.query;
 
   const allIngredientGroups = await prisma.product
     .findMany({

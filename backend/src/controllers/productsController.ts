@@ -1,14 +1,12 @@
 import { Request, Response } from "express";
 import prisma from "../prisma";
-import { extractPagination } from "../middleware/requirePagination";
+import { extractPagination } from "../middleware/parsePagination";
 
 export async function find(
-  req: Request<{}, {}, { name: string }>,
+  req: Request<{}, {}, {}, { name: string }>,
   res: Response
 ) {
-  const { name } = req.body;
-
-  console.log(name);
+  const { name } = req.query;
 
   const products = await prisma.product
     .findMany({

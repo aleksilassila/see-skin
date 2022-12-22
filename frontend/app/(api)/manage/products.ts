@@ -1,8 +1,14 @@
 import Api from "../api";
-import { Product } from "../../manage/ManageResponseTypes";
+
+export interface ManageProduct {
+  id: string;
+  name: string;
+  description?: string;
+  imageUrl?: string;
+}
 
 export async function fetchProducts() {
-  return await Api.fetch<Product[]>("/manage/issues/products").then(
+  return await Api.fetch<ManageProduct[]>("/manage/issues/products").then(
     (r) => r.data
   );
 }

@@ -17,7 +17,7 @@ export function extractPagination(req: Request):
   return {};
 }
 
-export default async function requirePagination(
+export default async function parsePagination(
   req: Request,
   res: Response,
   next: NextFunction
@@ -25,8 +25,9 @@ export default async function requirePagination(
   await query("page").isInt({ min: 0 }).optional().run(req);
   await query("take").isInt({ min: 1, max: 100 }).optional().run(req);
 
-  if (!validationResult(req).isEmpty()) {
-    return res.status(400).send("Bad Request");
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    return res.status(400).send({ errors: result.array() });
   }
 
   const { page, take } = req.query;

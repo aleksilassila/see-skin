@@ -1,7 +1,5 @@
 "use client";
 import { Ingredient } from "./ingredient";
-import Api from "../../(api)/api";
-import { Ingredient as IngredientType } from "../ManageResponseTypes";
 import IssuesContainer from "../issues-container";
 import { useQuery } from "react-query";
 import { fetchIngredients } from "../../(api)/manage/ingredients";

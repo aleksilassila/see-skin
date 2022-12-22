@@ -1,9 +1,9 @@
 "use client";
 
-import { Product } from "../ManageResponseTypes";
+import { ManageProduct } from "../../(api)/manage/products";
 
 interface Props {
-  product: Product;
+  product: ManageProduct;
 }
 
 export function Product(props: Props) {
