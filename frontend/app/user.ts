@@ -1,5 +1,6 @@
 "use client";
 import { createContext, useEffect, useState } from "react";
+import Api from "./(api)/api";
 
 interface User {
   id: string;
@@ -19,19 +20,28 @@ export const UserContext = createContext<UserContextState>({
   setUser: () => {},
 });
 
-async function fetchUser() {
-  const storedUser = JSON.parse(localStorage.getItem("user") || "null");
+function getCachedUser(): User | null {
+  return JSON.parse(localStorage.getItem("user") || "null") || null;
+}
 
-  console.log("LocalStorage user", storedUser);
-
-  if (storedUser) {
-    return storedUser;
+function cacheUser(user?: User) {
+  if (!user) {
+    localStorage.removeItem("user");
+  } else {
+    localStorage.setItem("user", JSON.stringify(user));
   }
+}
 
-  console.log("Doing user fetch");
-  return await fetch("/api/users")
-    .then((res) => res.json())
-    .catch((e) => null);
+async function fetchUser(): Promise<User | false> {
+  return await Api.fetch<User>("/user")
+    .then((user) => {
+      cacheUser(user.data);
+      return user.data;
+    })
+    .catch(() => {
+      cacheUser();
+      return false;
+    });
 }
 
 export function useUserContextValue(): UserContextState {
@@ -39,25 +49,16 @@ export function useUserContextValue(): UserContextState {
     user: User | null | false;
     initialized: boolean;
   }>({
-    user: null,
+    user: getCachedUser(),
     initialized: false,
   });
 
   useEffect(() => {
     if (state.initialized) return;
 
-    setState({ user: null, initialized: true });
-
-    console.log("Fetching user");
-    fetchUser().then((user) => {
-      if (user) {
-        window.localStorage.setItem("user", JSON.stringify(user));
-        setState({ ...state, user });
-      } else {
-        window.localStorage.removeItem("user");
-        setState({ ...state, user: false });
-      }
-    });
+    // Validate user
+    setState({ ...state, initialized: true });
+    fetchUser().then((user) => setState({ ...state, user }));
   }, []);
 
   return {

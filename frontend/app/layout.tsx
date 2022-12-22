@@ -5,6 +5,7 @@ import Footer from "./(footer)/Footer";
 import { useUserContextValue, UserContext } from "./user";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import React from "react";
 
 const queryClient = new QueryClient({
   defaultOptions: {

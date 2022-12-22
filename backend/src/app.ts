@@ -7,7 +7,7 @@ import session from "express-session";
 
 // Setup passport
 import "./passport";
-import usersRouter from "./routers/userRouter";
+import userRouter from "./routers/userRouter";
 import { requireAuth, requireAuthLevel } from "./middleware/requireAuth";
 import ingredientsRouter from "./routers/ingredientsRouter";
 import manageRouter from "./routers/manageRouter";
@@ -37,7 +37,7 @@ router.use((req, res, next) => {
 });
 
 router.use("/auth", authRouter);
-router.use("/users", usersRouter);
+router.use("/user", userRouter);
 router.use("/manage", /*requireAuthLevel(1),*/ manageRouter);
 router.use("/products", productsRouter);
 router.use("/ingredients", ingredientsRouter);

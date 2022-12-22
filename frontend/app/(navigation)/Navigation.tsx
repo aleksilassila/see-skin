@@ -1,7 +1,8 @@
-import { HTMLAttributes } from "react";
+import { HTMLAttributes, useContext } from "react";
 import Logo from "./Logo";
 import Link from "next/link";
 import LoginButton from "./LoginButton";
+import { UserContext } from "../user";
 
 const NavItem = (props: HTMLAttributes<HTMLDivElement>) => (
   <div className={`hidden sm:block ${props.className}`}>{props.children}</div>
@@ -28,6 +29,10 @@ const Navigation = ({
   href = "",
   ...props
 }: Props & HTMLAttributes<HTMLDivElement>) => {
+  const user = useContext(UserContext);
+
+  console.log(user);
+
   return (
     <div
       className={`h-20 flex justify-around items-center w-full ${props.className}`}
@@ -51,6 +56,13 @@ const Navigation = ({
           Checker
         </NavLink>
       </NavItem>
+      {user.user && user.user.accessLevel > 0 ? (
+        <NavItem>
+          <NavLink href={"/manage"} activeHref={href}>
+            Manage
+          </NavLink>
+        </NavItem>
+      ) : null}
       <NavItem>
         <LoginButton />
       </NavItem>
