@@ -15,4 +15,8 @@ productsRouter.get(
   productsController.find
 );
 
+productsRouter.get("/feed", parsePagination, productsController.getFeed);
+
+productsRouter.get("/:id", productsController.get);
+
 export default productsRouter;

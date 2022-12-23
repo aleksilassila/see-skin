@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma, IngredientGroup } from "@prisma/client";
+import { PrismaClient, Prisma, Ingredient } from "@prisma/client";
 import products from "../products";
 
 const prisma = new PrismaClient();
@@ -7,54 +7,60 @@ async function main() {
   console.log(`Start seeding...`);
 
   for (const product of products) {
-    const ingredientGroupsToConnect: IngredientGroup[] = [];
-    const _skippedGroups: string[] = [];
-    const ingredientGroups = product["product-ingredients"].split(", ");
+    const ingredientsToConnect: Ingredient[] = [];
+    const _skippedIngredients: string[] = [];
+    const ingredients = product["product-ingredients"].split(", ");
 
-    for (const ingredientGroup of ingredientGroups) {
-      const ingredients = ingredientGroup.split("/");
+    for (const ingredient of ingredients) {
+      const aliases = ingredient.split("/");
 
-      for (const ingredient of ingredients) {
-        const existingIngredientGroups = await prisma.ingredient
+      for (const alias of aliases) {
+        const existingIngredientGroups = await prisma.ingredientAlias
           .findMany({
             where: {
               name: {
-                equals: ingredient,
+                equals: alias,
                 mode: "insensitive",
               },
             },
-            include: { group: true },
+            include: { ingredient: true },
           })
-          .then((ingredients) => ingredients.map((i) => i.group))
-          .catch(console.error);
+          .then((ingredients) => ingredients.map((i) => i.ingredient))
+          .catch((e) => {
+            console.error(e);
+            return [];
+          });
 
         if (existingIngredientGroups?.length === 1) {
-          ingredientGroupsToConnect.push(existingIngredientGroups[0]);
+          ingredientsToConnect.push(existingIngredientGroups[0]);
           break;
         } else {
-          _skippedGroups.push(ingredientGroup);
+          _skippedIngredients.push(alias);
         }
       }
     }
 
-    if (ingredientGroupsToConnect.length > 0) {
+    if (ingredientsToConnect.length > 0) {
       console.log(
-        `Adding product ${product["product-name"]} with ${ingredientGroupsToConnect.length}/${ingredientGroups.length} ingredients`
+        `Adding product ${product["product-name"]} with ${ingredientsToConnect.length}/${ingredients.length} ingredients`
       );
-      console.log("Groups that were skipped:", _skippedGroups.join(", "));
+      console.log(
+        "Ingredients that were skipped:",
+        _skippedIngredients.join(", ")
+      );
 
       await prisma.product.create({
         data: {
           name: product["product-name"],
           imageUrl: product["product-image-src"],
-          ingredientGroups: {
-            create: ingredientGroupsToConnect
+          ingredients: {
+            create: ingredientsToConnect
               .filter(
-                (iGroup, index, all) =>
-                  all.findIndex((i) => i.id === iGroup.id) === index
+                (ingredient, index, all) =>
+                  all.findIndex((i) => i.id === ingredient.id) === index
               )
               .map((ingredientGroup) => ({
-                ingredientGroupId: ingredientGroup.id,
+                ingredientId: ingredientGroup.id,
               })),
           },
         },
@@ -63,7 +69,7 @@ async function main() {
       console.log(
         "No ingredients found for product",
         product["product-name"],
-        `found ${ingredientGroupsToConnect.length} groups to connect.`
+        `found ${ingredientsToConnect.length} ingredients to connect.`
       );
     }
   }

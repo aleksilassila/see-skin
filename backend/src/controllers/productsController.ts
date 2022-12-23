@@ -28,3 +28,35 @@ export async function find(
 
   res.status(200).send(products);
 }
+
+export async function getFeed(req: Request, res: Response) {
+  const products = await prisma.product
+    .findMany({
+      ...extractPagination(req),
+    })
+    .catch(console.error);
+
+  if (!products) {
+    res.status(500).send("Could not fetch products");
+  }
+
+  res.status(200).send(products);
+}
+
+export async function get(req: Request, res: Response) {
+  const { id } = req.params;
+
+  const product = await prisma.product
+    .findUnique({
+      where: {
+        id,
+      },
+    })
+    .catch(console.error);
+
+  if (!product) {
+    res.status(404).send("Not Found");
+  }
+
+  res.status(200).send(product);
+}

@@ -14,22 +14,21 @@ async function main() {
       continue;
     }
 
-    const aliases = ingredientName
-      // .replace(/\([^\)]*\) .+\//, "")
-      .split("/");
+    const aliases = ingredientName.split("/");
 
     console.log(
       `Adding ${ingredientName} with ${aliases.slice(1).length} aliases...`
     );
 
-    const group = await prisma.ingredientGroup
+    const group = await prisma.ingredient
       .create({
         data: {
           cosingRef: ingredient["COSING Ref No"],
           function: ingredient["Function"],
           updatedAt: new Date(ingredient["Update Date"] || Date.now()),
+          name: aliases.length ? aliases[0] : "",
 
-          ingredients: {
+          aliases: {
             create: aliases.map((alias) => ({
               name: alias.trim(),
             })),

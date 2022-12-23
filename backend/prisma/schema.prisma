@@ -15,38 +15,38 @@ model Product {
   name String
   description String?
   imageUrl String?
-  ingredientGroups ProductIngredientGroup[]
+  ingredients ProductIngredient[]
 }
 
-model ProductIngredientGroup {
+model ProductIngredient {
   product Product @relation(fields: [productId], references: [id])
   productId String
-  ingredientGroup IngredientGroup @relation(fields: [ingredientGroupId], references: [id])
-  ingredientGroupId String
+  ingredient Ingredient @relation(fields: [ingredientId], references: [id])
+  ingredientId String
 
-  @@id([productId, ingredientGroupId])
-}
-
-model IngredientGroup {
-  id String @id @default(cuid())
-  cosingRef Int @unique
-  function String
-  ingredients Ingredient[]
-  updatedAt DateTime?
-
-  products ProductIngredientGroup[]
+  @@id([productId, ingredientId])
 }
 
 model Ingredient {
   id String @id @default(cuid())
   name String
+  cosingRef Int @unique
+  function String
+  aliases IngredientAlias[]
+  ingredientClasses IngredientClass[] @default([])
 
-  groupId String
-  group IngredientGroup @relation(fields: [groupId], references: [id])
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
 
-//  aliasForName String?
-//  aliasFor   Ingredient?   @relation("IngredientAliases", fields: [aliasForName], references: [name])
-//  aliases  Ingredient[]  @relation("IngredientAliases")
+  products ProductIngredient[]
+}
+
+model IngredientAlias {
+  id String @id @default(cuid())
+  name String
+
+  ingredientId String
+  ingredient Ingredient @relation(fields: [ingredientId], references: [id])
 }
 
 model User {
@@ -57,4 +57,16 @@ model User {
   name String
   accessLevel Int @default(0)
   logoutAt DateTime?
+}
+
+enum IngredientClass {
+    SAFE
+    PARABEN
+    ALCOHOL
+    SULFATE
+    FUNGAL_ACNE_TRIGGER
+    DRY_IRRITANT
+    OILY_IRRITANT
+    DRY_OILY_IRRITANT
+    SENSITIVE_IRRITANT
 }
