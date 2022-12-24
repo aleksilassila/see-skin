@@ -3,6 +3,7 @@ import prisma from "../prisma";
 import * as bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET, SALT_ROUNDS } from "../config";
+
 async function hashPassword(password: string) {
   return bcrypt.hash(password, SALT_ROUNDS);
 }

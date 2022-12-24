@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
 import prisma from "../prisma";
-import { validationResult } from "express-validator";
-import parsePagination, {
-  extractPagination,
-} from "../middleware/parsePagination";
+import { extractPagination } from "../middleware/parsePagination";
 
 export async function productIssues(req: Request, res: Response) {
-  const products = await prisma.product.findMany({});
+  const products = await prisma.product.findMany({
+    ...extractPagination(req),
+  });
 
   res.status(200).send(products);
 }

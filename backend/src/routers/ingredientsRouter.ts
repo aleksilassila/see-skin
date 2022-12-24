@@ -1,6 +1,4 @@
 import { Router } from "express";
-import * as ingredientsController from "../controllers/ingredientsController";
-import { body } from "express-validator";
 
 const ingredientsRouter = Router();
 

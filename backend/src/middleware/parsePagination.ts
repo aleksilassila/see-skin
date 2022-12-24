@@ -1,20 +1,26 @@
 import { NextFunction, Request, Response } from "express";
 import { query, validationResult } from "express-validator";
 
-export function extractPagination(req: Request):
-  | {}
-  | {
-      skip: number;
-      take: number;
-    } {
+export function extractPagination(
+  req: Request,
+  defaultTake = 10
+): {
+  skip: number;
+  take: number;
+} {
   if (req.pagination) {
+    const take =
+      req.pagination.take === "default" ? defaultTake : req.pagination.take;
     return {
-      skip: req.pagination.page * req.pagination.take,
-      take: req.pagination.take,
+      skip: req.pagination.page * take,
+      take,
+    };
+  } else {
+    return {
+      skip: 0,
+      take: defaultTake,
     };
   }
-
-  return {};
 }
 
 export default async function parsePagination(
@@ -34,7 +40,7 @@ export default async function parsePagination(
 
   req.pagination = {
     page: Number(page) || 0,
-    take: Number(take) || 10,
+    take: Number(take) || "default",
   };
 
   next();

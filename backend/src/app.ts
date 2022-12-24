@@ -8,10 +8,10 @@ import session from "express-session";
 // Setup passport
 import "./passport";
 import userRouter from "./routers/userRouter";
-import { requireAuth, requireAuthLevel } from "./middleware/requireAuth";
 import ingredientsRouter from "./routers/ingredientsRouter";
 import manageRouter from "./routers/manageRouter";
 import skinSolverRouter from "./routers/skinSolverRouter";
+import parsePagination from "./middleware/parsePagination";
 
 const app = express();
 const router = Router();
@@ -35,6 +35,8 @@ router.use((req, res, next) => {
   console.log("Is authenticated?:", req.isAuthenticated());
   next();
 });
+
+router.use(parsePagination);
 
 router.use("/auth", authRouter);
 router.use("/user", userRouter);
