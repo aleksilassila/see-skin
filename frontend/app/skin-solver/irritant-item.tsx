@@ -1,11 +1,11 @@
-import { IngredientGroup } from "../(api)/solver/fetch-irritants";
-import { ManageIngredient } from "../(api)/manage/ingredients";
+import { Ingredient } from "../(api)/solver/fetch-irritants";
+import { IngredientAlias } from "../(api)/manage/ingredients";
 
 interface Props {
-  irritant: IngredientGroup;
+  irritant: Ingredient;
 }
 
-function IngredientItem({ ingredient }: { ingredient: ManageIngredient }) {
+function IngredientItem({ ingredient }: { ingredient: IngredientAlias }) {
   return (
     <div className="flex flex-row gap-2 ml-2">
       <div>
@@ -20,12 +20,14 @@ export default function IrritantItem({ irritant }: Props) {
     <div className="py-1">
       <div className="text-sm font-medium text-stone-700">{irritant.id}</div>
       <div>Function: {irritant.function}</div>
-      <div>
-        <div className="">Ingredients in this group:</div>
-        {irritant.ingredients.map((ingredient, key) => (
-          <IngredientItem key={key} ingredient={ingredient} />
-        ))}
-      </div>
+      {irritant.aliases ? (
+        <div>
+          <div className="">Aliases for this ingredient:</div>
+          {irritant.aliases.map((ingredient, key) => (
+            <IngredientItem key={key} ingredient={ingredient} />
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 }

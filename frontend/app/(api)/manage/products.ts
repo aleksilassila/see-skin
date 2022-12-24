@@ -3,8 +3,9 @@ import Api from "../api";
 export interface ManageProduct {
   id: string;
   name: string;
-  description?: string;
+  description: string;
   imageUrl?: string;
+  shopPageUrl?: string;
 }
 
 export async function fetchProducts() {

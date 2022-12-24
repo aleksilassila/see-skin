@@ -1,23 +1,13 @@
 "use client";
-import Input from "../(ui)/Input";
-import { useState } from "react";
-import { ManageProduct } from "../(api)/manage/products";
 import ProductSelect, {
   useProductSelectState,
 } from "./(product-search)/product-search";
 import Button from "../(ui)/SimpleButton";
-import {
-  fetchIngredients,
-  ManageIngredient,
-} from "../(api)/manage/ingredients";
-import Api from "../(api)/api";
-import fetchIrritants, {
-  IngredientGroup,
-} from "../(api)/solver/fetch-irritants";
+import fetchIrritants, { Ingredient } from "../(api)/solver/fetch-irritants";
 import { useQuery } from "react-query";
 import IrritantItem from "./irritant-item";
 
-function ShowIrritants({ irritants }: { irritants: IngredientGroup[] }) {
+function ShowIrritants({ irritants }: { irritants: Ingredient[] }) {
   if (irritants.length === 0) {
     return <div>No irritants found</div>;
   }
@@ -45,7 +35,7 @@ export default function SkinSolverPage() {
     refetch,
     isRefetching,
     isLoading,
-  } = useQuery<IngredientGroup[]>("irritants", fetch, {
+  } = useQuery<Ingredient[]>("irritants", fetch, {
     // refetchOnReconnect: false,
     // refetchOnMount: false,
     // refetchOnWindowFocus: false,
@@ -54,7 +44,7 @@ export default function SkinSolverPage() {
     enabled: false,
   });
 
-  async function fetch(): Promise<IngredientGroup[]> {
+  async function fetch(): Promise<Ingredient[]> {
     return fetchIrritants(productSelectState.products);
   }
 

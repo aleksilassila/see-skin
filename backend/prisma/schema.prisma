@@ -13,24 +13,19 @@ datasource db {
 model Product {
   id String @id @default(cuid())
   name String
-  description String?
+  description String @default("")
   imageUrl String?
-  ingredients ProductIngredient[]
-}
+  shopPageUrl String?
+  ingredientsString String
 
-model ProductIngredient {
-  product Product @relation(fields: [productId], references: [id])
-  productId String
-  ingredient Ingredient @relation(fields: [ingredientId], references: [id])
-  ingredientId String
-
-  @@id([productId, ingredientId])
+  ingredients Ingredient[]
 }
 
 model Ingredient {
   id String @id @default(cuid())
   name String
   cosingRef Int @unique
+  description String @default("")
   function String
   aliases IngredientAlias[]
   ingredientClasses IngredientClass[] @default([])
@@ -38,7 +33,7 @@ model Ingredient {
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 
-  products ProductIngredient[]
+  products Product[]
 }
 
 model IngredientAlias {

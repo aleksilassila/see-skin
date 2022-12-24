@@ -1,16 +1,17 @@
 "use client";
 
-import { ManageIngredient } from "../../(api)/manage/ingredients";
+import { Ingredient } from "../../(api)/solver/fetch-irritants";
 
 interface Props {
-  ingredient: ManageIngredient;
+  ingredient: Ingredient;
 }
 
 export function Ingredient(props: Props) {
   return (
     <>
       <div className="font-medium">{props.ingredient.name}</div>
-      <div className="">Group: {props.ingredient.groupId}</div>
+      <div className="">Function: {props.ingredient.function}</div>
+      <div className="">Classes: {props.ingredient.ingredientClasses}</div>
     </>
   );
 }

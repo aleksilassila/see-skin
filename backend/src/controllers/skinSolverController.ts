@@ -7,7 +7,7 @@ export async function calculateIrritants(
 ) {
   const { ingredientIds = [], productIds = [] } = req.query;
 
-  const allIngredientGroups = await prisma.product
+  const allIngredients = await prisma.product
     .findMany({
       where: {
         id: {
@@ -15,34 +15,26 @@ export async function calculateIrritants(
         },
       },
       include: {
-        ingredientGroups: {
+        ingredients: {
           include: {
-            ingredientGroup: {
-              include: {
-                ingredients: true,
-              },
-            },
+            aliases: true,
           },
         },
       },
     })
-    .then((products) =>
-      products.flatMap((product) =>
-        product.ingredientGroups.flatMap((group) => group.ingredientGroup)
-      )
-    )
+    .then((products) => products.flatMap((product) => product.ingredients))
     .catch(console.error);
 
-  const duplicateIngredientGroups = [];
-  const checkedIngredientGroupIds: string[] = [];
+  const duplicateIngredients = [];
+  const checkedIngredientIds: string[] = [];
 
-  for (const ingredientGroup of allIngredientGroups || []) {
-    if (checkedIngredientGroupIds.includes(ingredientGroup.id)) {
-      duplicateIngredientGroups.push(ingredientGroup);
+  for (const ingredient of allIngredients || []) {
+    if (checkedIngredientIds.includes(ingredient.id)) {
+      duplicateIngredients.push(ingredient);
     } else {
-      checkedIngredientGroupIds.push(ingredientGroup.id);
+      checkedIngredientIds.push(ingredient.id);
     }
   }
 
-  res.status(200).send(duplicateIngredientGroups);
+  res.status(200).send(duplicateIngredients);
 }

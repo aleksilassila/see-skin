@@ -1,18 +1,35 @@
 import { ManageProduct } from "../manage/products";
 import Api from "../api";
-import { ManageIngredient } from "../manage/ingredients";
+import { IngredientAlias } from "../manage/ingredients";
 
-export interface IngredientGroup {
+export enum IngredientClass {
+  SAFE = "SAFE",
+  PARABEN = "PARABEN",
+  ALCOHOL = "ALCOHOL",
+  SULFATE = "SULFATE",
+  FUNGAL_ACNE_TRIGGER = "FUNGAL_ACNE_TRIGGER",
+  DRY_IRRITANT = "DRY_IRRITANT",
+  OILY_IRRITANT = "OILY_IRRITANT",
+  DRY_OILY_IRRITANT = "DRY_OILY_IRRITANT",
+  SENSITIVE_IRRITANT = "SENSITIVE_IRRITANT",
+}
+
+export interface Ingredient {
   id: string;
+  name: string;
   cosingRef: number;
+  description: string;
   function: string;
-  ingredients: ManageIngredient[];
+  aliases?: IngredientAlias[];
+  ingredientClasses: IngredientClass[];
+  updatedAt: Date;
+  createdAt: Date;
 }
 
 export default async function fetchIrritants(
   products: ManageProduct[]
-): Promise<IngredientGroup[]> {
-  return Api.fetch<IngredientGroup[]>("/solver/calculate-irritants", {
+): Promise<Ingredient[]> {
+  return Api.fetch<Ingredient[]>("/solver/calculate-irritants", {
     params: {
       productIds: products.map((product) => product.id),
     },

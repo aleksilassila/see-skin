@@ -8,9 +8,9 @@ export async function get(req: Request, res: Response) {
     .findMany({
       where: {
         OR: [
-          {
-            groupId,
-          },
+          // {
+          //   groupId,
+          // },
           {
             id,
           },
