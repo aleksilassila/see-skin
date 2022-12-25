@@ -30,6 +30,10 @@ async function main() {
           ingredientsCombined
         );
 
+        console.log(
+          `Adding ${name} with ${ingredientsToConnect.length} ingredients...`
+        );
+
         await createProduct(
           name,
           ingredientsCombined,
@@ -63,7 +67,16 @@ async function getIngredientsToConnect(
           },
         },
       })
-      .then((ingredients) => (ingredients.length === 1 ? ingredients[0] : null))
+      .then((ingredients) => {
+        if (ingredients.length > 1) {
+          console.warn(
+            `Could not connect ingredient ${ingredientString}. Ingredients matching:`,
+            ingredients.length
+          );
+        }
+
+        return ingredients.length === 1 ? ingredients[0] : null;
+      })
       .catch((err) => {
         console.error(err);
         return null;
@@ -84,8 +97,6 @@ async function createProduct(
   imageUrl: string,
   shopPageUrl: string
 ) {
-  console.log(`Adding ${name} with ${ingredientIds.length} ingredients...`);
-
   const id = await prisma.product
     .findFirst({ where: { name } })
     .then((p) => p?.id || "");
