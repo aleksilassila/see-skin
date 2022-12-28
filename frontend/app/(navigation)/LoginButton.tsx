@@ -21,5 +21,9 @@ export default function LoginButton() {
     );
   }
 
-  return <AnchorButton href="/api/auth/google">Login</AnchorButton>;
+  return (
+    <AnchorButton intent="primary" href="/api/auth/google">
+      Login
+    </AnchorButton>
+  );
 }

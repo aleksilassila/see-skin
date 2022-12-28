@@ -23,14 +23,14 @@ function getColoring(
     ...props
   }: Pick<ButtonProps<any>, "size" | "intent" | "className" | "minimal">
 ) {
-  return classNames(props.className, "font-medium rounded-md ring-offset-2", {
+  return classNames(props.className, "font-medium rounded-md", {
     "cursor-pointer": active,
     ...{
       none: {
-        "border bg-white": true,
-        "hover:bg-stone-200": active,
-        "active:bg-stone-300": active,
-        "focus-within:ring ": active,
+        "border bg-white text-black": true,
+        "hover:bg-stone-100": active,
+        "active:bg-stone-200": active,
+        "focus-within:ring": active,
       },
       primary: {
         "bg-blue-400": true,
@@ -39,10 +39,10 @@ function getColoring(
         "focus-within:ring ": active,
       },
       secondary: {
-        "bg-blue-400": true,
-        "hover:bg-blue-500": active,
-        "active:bg-blue-500": active,
-        "focus-within:ring ": active,
+        "border bg-white text-black": true,
+        "hover:bg-stone-100": active,
+        "active:bg-stone-200": active,
+        "focus-within:ring": active,
       },
       warning: {
         "bg-orange-400": true,

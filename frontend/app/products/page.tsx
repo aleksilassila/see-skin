@@ -1,5 +1,6 @@
 import { Button } from "../(ui)/Button";
+import UnderConstruction from "../(pages)/under-construction";
 
 export default function ProductsPage() {
-  return <div className="inline-flex gap-2 m-2"></div>;
+  return <UnderConstruction />;
 }

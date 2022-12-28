@@ -50,7 +50,7 @@ export default function RootLayout({
         <QueryClientProvider client={queryClient}>
           <UserContext.Provider value={userContextValue}>
             <Navigation />
-            <div className="flex-1">{children}</div>
+            <div className="flex-1 flex flex-col">{children}</div>
             <Footer />
           </UserContext.Provider>
           <ReactQueryDevtools initialIsOpen={false} />

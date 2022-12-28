@@ -1,3 +1,5 @@
+import UnderConstruction from "../(pages)/under-construction";
+
 export default function CheckerPage() {
-  return <div>Checker page</div>;
+  return <UnderConstruction />;
 }
