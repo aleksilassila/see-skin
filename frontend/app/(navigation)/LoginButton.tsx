@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
-import Button from "../(ui)/SimpleButton";
 import { useUser } from "../user";
+import { AnchorButton, Button } from "../(ui)/Button";
 
 export default function LoginButton() {
   const router = useRouter();
@@ -16,14 +16,10 @@ export default function LoginButton() {
     return (
       <div>
         <div>Logged in as {user.user?.name}</div>
-        <Button onButtonClick={logOut} text="Logout" />
+        <Button onClick={logOut}>Logout</Button>
       </div>
     );
   }
 
-  return (
-    <a href="/api/auth/google">
-      <Button onButtonClick={() => {}} text={"Login"} />
-    </a>
-  );
+  return <AnchorButton href="/api/auth/google">Login</AnchorButton>;
 }

@@ -1,60 +1,129 @@
 "use client";
 import React, { HTMLAttributes, MouseEvent } from "react";
-import { useRouter } from "next/navigation";
+import classNames from "classnames";
 
-interface ButtonProps extends HTMLAttributes<HTMLDivElement> {
-  href?: string;
-  enabled?: boolean;
+interface ButtonProps<T extends HTMLElement> extends HTMLAttributes<T> {
+  disabled?: boolean;
+  icon?: string;
+  intent?: "none" | "primary" | "secondary" | "warning" | "danger";
+  size?: "sm" | "md" | "lg";
+  minimal?: boolean;
+
+  loading?: boolean;
+  onClick?: (event: MouseEvent<T>) => void;
+
+  href: string;
 }
 
-const Button = ({ enabled = true, ...props }: ButtonProps) => {
-  const router = useRouter();
+function getColoring(
+  active: boolean,
+  {
+    size = "md",
+    intent = "none",
+    ...props
+  }: Pick<ButtonProps<any>, "size" | "intent" | "className" | "minimal">
+) {
+  return classNames(props.className, "font-medium rounded-md ring-offset-2", {
+    "cursor-pointer": active,
+    ...{
+      none: {
+        "border bg-white": true,
+        "hover:bg-stone-200": active,
+        "active:bg-stone-300": active,
+        "focus-within:ring ": active,
+      },
+      primary: {
+        "bg-blue-400": true,
+        "hover:bg-blue-500": active,
+        "active:bg-blue-500": active,
+        "focus-within:ring ": active,
+      },
+      secondary: {
+        "bg-blue-400": true,
+        "hover:bg-blue-500": active,
+        "active:bg-blue-500": active,
+        "focus-within:ring ": active,
+      },
+      warning: {
+        "bg-orange-400": true,
+        "hover:bg-orange-200": active,
+        "active:bg-orange-300": active,
+        "focus-within:ring": active,
+      },
+      danger: {
+        "bg-red-500 border": true,
+        "hover:bg-red-600": active,
+        "active:bg-red-700": active,
+        "focus-within:ring": active,
+      },
+    }[intent],
+    ...{
+      sm: { "text-sm h-8 px-2 md:px-4": true },
+      md: { "h-10 px-2 md:px-4": true },
+      lg: { "h-12 px-2 md:px-8": true },
+    }[size],
+  });
+}
 
-  const handleClick = (e: MouseEvent<HTMLDivElement>) => {
-    if (!enabled) return;
+export function Button({
+  disabled = false,
+  loading = false,
+  intent = "none",
+  size = "md",
+  minimal = false,
+  onClick = () => {},
+  ...props
+}: Omit<ButtonProps<HTMLButtonElement>, "href">) {
+  const active = !disabled && !loading;
+  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (disabled) return;
 
-    if (props.href) {
-      router.push(props.href);
-    } else if (props.onClick) {
-      props.onClick(e);
-    }
+    onClick(e);
   };
 
+  const className = classNames(
+    getColoring(active, {
+      ...props,
+      intent,
+      size,
+      minimal,
+    })
+  );
+
   return (
-    <div
+    <button
       {...props}
-      className={`cursor-pointer ${props.className}`}
+      type="button"
+      disabled={!active}
+      className={className}
       onClick={handleClick}
     >
-      {props.children}
-    </div>
+      {loading ? "Button loading..." : props.children}
+    </button>
   );
-};
+}
 
-export const BlueButton = (props: ButtonProps) => {
+export function AnchorButton({
+  disabled = false,
+  intent = "none",
+  size = "md",
+  minimal = false,
+  ...props
+}: Omit<ButtonProps<HTMLAnchorElement>, "onClick" | "loading">) {
+  const className = classNames(
+    getColoring(!disabled, {
+      ...props,
+      intent,
+      size,
+      minimal,
+    }),
+    "inline-flex items-center"
+  );
+
   return (
-    <Button
-      {...props}
-      className={`bg-sky-300 h-12 px-8 flex justify-center items-center rounded-md text-sm ${props.className}`}
-    >
+    <a {...props} href={props.href} className={className}>
       {props.children}
-    </Button>
+    </a>
   );
-};
-
-export const WhiteButton = (props: ButtonProps) => {
-  return (
-    <Button
-      {...props}
-      className={`${
-        props.enabled ? "bg-white" : "bg-stone-200"
-      } h-12 px-8 flex justify-center items-center rounded-full text-sm ${
-        props.className
-      }`}
-    >
-      {props.children}
-    </Button>
-  );
-};
-
-export default Button;
+}

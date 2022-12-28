@@ -1,8 +1,8 @@
 "use client";
 import Input from "../(ui)/Input";
 import { useState } from "react";
-import Button from "../(ui)/SimpleButton";
 import { useRouter } from "next/navigation";
+import { Button } from "../(ui)/Button";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -17,7 +17,7 @@ export default function LoginPage() {
       <div>Login</div>
       <Input value={email} onValueChange={setEmail} type="email" />
       <Input value={password} onValueChange={setPassword} type="password" />
-      <Button onButtonClick={login} text="Login" />
+      <Button onClick={login}>Login</Button>
       <a href={"/api/auth/google"}>Login with Google</a>
       {/*<Button onButtonClick={loginWithGoogle} text="Login with Google" />*/}
     </div>

@@ -2,10 +2,10 @@
 import ProductSelect, {
   useProductSelectState,
 } from "./(product-search)/product-search";
-import Button from "../(ui)/SimpleButton";
 import fetchIrritants, { Ingredient } from "../(api)/solver/fetch-irritants";
 import { useQuery } from "react-query";
 import IrritantItem from "./irritant-item";
+import { Button } from "../(ui)/Button";
 
 function ShowIrritants({ irritants }: { irritants: Ingredient[] }) {
   if (irritants.length === 0) {
@@ -53,20 +53,12 @@ export default function SkinSolverPage() {
       <div>Skin solver</div>
       <ProductSelect productSelectState={productSelectState} />
       <Button
-        onButtonClick={() => {
-          if (productSelectState.products.length > 0) {
-            refetch();
-          }
-        }}
-        text="Calculate"
-        active={
-          !(
-            isLoading ||
-            isRefetching ||
-            productSelectState.products.length === 0
-          )
-        }
-      />
+        onClick={() => refetch()}
+        loading={isLoading || isRefetching}
+        disabled={productSelectState.products.length < 2}
+      >
+        Calculate
+      </Button>
       {irritants ? <ShowIrritants irritants={irritants} /> : null}
     </div>
   );
