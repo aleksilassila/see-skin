@@ -27,7 +27,9 @@ function getColoring(
     "cursor-pointer": active,
     ...{
       none: {
-        "border bg-white text-black": true,
+        "border bg-white": true,
+        "text-black": active,
+        "text-stone-500": !active,
         "hover:bg-stone-100": active,
         "active:bg-stone-200": active,
         "focus-within:ring": active,
@@ -39,7 +41,9 @@ function getColoring(
         "focus-within:ring ": active,
       },
       secondary: {
-        "border bg-white text-black": true,
+        "border bg-white": true,
+        "text-black": active,
+        "text-stone-500": !active,
         "hover:bg-stone-100": active,
         "active:bg-stone-200": active,
         "focus-within:ring": active,

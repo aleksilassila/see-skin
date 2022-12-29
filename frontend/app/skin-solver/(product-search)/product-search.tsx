@@ -54,7 +54,7 @@ interface Props {
   productSelectState: ProductSelectState;
 }
 
-export default function ProductSearch({ productSelectState: state }: Props) {
+export default function ProductSearch({ ...state }: ProductSelectState) {
   return (
     <div className="bg-stone-100 p-2 flex flex-col gap-2">
       <Input

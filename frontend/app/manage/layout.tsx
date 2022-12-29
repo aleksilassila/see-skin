@@ -45,9 +45,6 @@ function SideBar(props: PropsWithChildren<SideBarProps>) {
         </SideBarLink>
         <SideBarSubHeader>data</SideBarSubHeader>
         <SideBarLink href="/manage/products">Products</SideBarLink>
-        <SideBarLink href="/manage/ingredient-groups">
-          Ingredient Groups
-        </SideBarLink>
         <SideBarLink href="/manage/ingredients">Ingredients</SideBarLink>
       </div>
       <div className="flex-1 pl-2">{props.children}</div>

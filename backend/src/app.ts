@@ -12,6 +12,7 @@ import ingredientsRouter from "./routers/ingredientsRouter";
 import manageRouter from "./routers/manageRouter";
 import skinSolverRouter from "./routers/skinSolverRouter";
 import parsePagination from "./middleware/parsePagination";
+import { requireAuthLevel } from "./middleware/requireAuth";
 
 const app = express();
 const router = Router();

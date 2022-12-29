@@ -51,7 +51,7 @@ export default function SkinSolverPage() {
   return (
     <div>
       <div>Skin solver</div>
-      <ProductSelect productSelectState={productSelectState} />
+      <ProductSelect {...productSelectState} />
       <Button
         onClick={() => refetch()}
         loading={isLoading || isRefetching}
