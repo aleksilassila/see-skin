@@ -12,7 +12,7 @@ import ingredientsRouter from "./routers/ingredientsRouter";
 import manageRouter from "./routers/manageRouter";
 import skinSolverRouter from "./routers/skinSolverRouter";
 import parsePagination from "./middleware/parsePagination";
-import { requireAuthLevel } from "./middleware/requireAuth";
+import { requireAuth, requireAuthLevel } from "./middleware/requireAuth";
 
 const app = express();
 const router = Router();
@@ -40,7 +40,7 @@ router.use((req, res, next) => {
 router.use(parsePagination);
 
 router.use("/auth", authRouter);
-router.use("/user", userRouter);
+router.use("/user", requireAuth, userRouter);
 router.use("/manage", /*requireAuthLevel(1),*/ manageRouter);
 router.use("/products", productsRouter);
 router.use("/ingredients", ingredientsRouter);

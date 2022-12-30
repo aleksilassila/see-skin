@@ -11,57 +11,76 @@ datasource db {
 }
 
 model Product {
-  id String @id @default(cuid())
-  name String
-  description String @default("")
-  imageUrl String?
-  shopPageUrl String?
+  id                String  @id @default(cuid())
+  name              String
+  description       String  @default("")
+  imageUrl          String?
+  shopPageUrl       String?
   ingredientsString String
 
   ingredients Ingredient[]
+
+  addedIrritantToUsers User[]
 }
 
 model Ingredient {
-  id String @id @default(cuid())
-  name String
-  cosingRef Int @unique
-  description String @default("")
-  function String
-  aliases IngredientAlias[]
+  id                String            @id @default(cuid())
+  name              String
+  cosingRef         Int               @unique
+  description       String            @default("")
+  function          String
+  aliases           IngredientAlias[]
   ingredientClasses IngredientClass[] @default([])
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 
   products Product[]
+
+  addedIrritantToUsers User[] @relation("_AddedIrritantToUser")
+  irritantToUsers      User[] @relation("_IrritantToUser")
 }
 
 model IngredientAlias {
-  id String @id @default(cuid())
+  id   String @id @default(cuid())
   name String
 
   ingredientId String
-  ingredient Ingredient @relation(fields: [ingredientId], references: [id])
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
 }
 
 model User {
-  id String @id @default(cuid())
-  googleId String? @unique
-  email String @unique
-  password String?
-  name String
-  accessLevel Int @default(0)
-  logoutAt DateTime?
+  id          String    @id @default(cuid())
+  googleId    String?   @unique
+  email       String    @unique
+  password    String?
+  name        String
+  accessLevel Int       @default(0)
+  logoutAt    DateTime?
+
+  skinType      SkinType @default(NORMAL)
+  sensitiveSkin Boolean  @default(false)
+
+  addedIrritativeIngredients Ingredient[] @relation("_AddedIrritantToUser")
+  addedIrritativeProducts    Product[]
+  irritants                  Ingredient[] @relation("_IrritantToUser")
+}
+
+enum SkinType {
+  NORMAL
+  DRY
+  OILY
+  COMBINATION
 }
 
 enum IngredientClass {
-    SAFE
-    PARABEN
-    ALCOHOL
-    SULFATE
-    FUNGAL_ACNE_TRIGGER
-    DRY_IRRITANT
-    OILY_IRRITANT
-    DRY_OILY_IRRITANT
-    SENSITIVE_IRRITANT
+  SAFE
+  PARABEN
+  ALCOHOL
+  SULFATE
+  FUNGAL_ACNE_TRIGGER
+  DRY_IRRITANT
+  OILY_IRRITANT
+  DRY_OILY_IRRITANT
+  SENSITIVE_IRRITANT
 }

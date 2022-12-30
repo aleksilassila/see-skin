@@ -1,8 +1,7 @@
 import { PrismaClient } from "@prisma/client";
-import * as fs from "fs";
+import * as fs from "node:fs/promises";
 import { parse } from "csv-parse";
-
-const prisma = new PrismaClient();
+import prisma from "../../src/prisma";
 
 const CSV_FILE = "./prisma/csv/ingredients-full.csv";
 const N_OF_COLUMNS = 5;
@@ -15,41 +14,58 @@ produced 2 * 7 * 3 * 6 * 9 * 14 * 5 * 4 * 4 * 2 * 3 * 4 = 60 963 840 aliases :))
 Does not produce correct aliases
  */
 
-async function main() {
+export async function importIngredients() {
   console.log(`Start seeding ...`);
 
   let skipped = 0;
-  fs.createReadStream(CSV_FILE)
-    .pipe(parse({ delimiter: ";", from_line: 3 }))
-    .on("data", async function (row: string[]) {
-      if (row.length !== N_OF_COLUMNS) {
-        throw new Error("Invalid number of columns: " + row);
-      }
+  const stream = await fs.open(CSV_FILE).then((fd) => fd.createReadStream());
 
-      let [cosingRefStr, combinedName, description, fn, updatedAtStr] = row;
-      const cosingRef = parseInt(cosingRefStr);
-      const updatedAt = new Date(updatedAtStr || Date.now());
+  return new Promise((resolve, reject) => {
+    const rows: string[][] = [];
+    stream
+      .pipe(parse({ delimiter: ";", from_line: 3 }))
+      .on("data", async function (row: string[]) {
+        if (row.length !== N_OF_COLUMNS) {
+          throw new Error("Invalid number of columns: " + row);
+        }
 
-      const aliases = getAliases(combinedName);
+        rows.push(row);
+      })
+      .on("error", () => {
+        console.error();
+        reject();
+      })
+      .on("end", async function () {
+        for (const row of rows) {
+          let [cosingRefStr, combinedName, description, fn, updatedAtStr] = row;
+          const cosingRef = parseInt(cosingRefStr);
+          const updatedAt = new Date(updatedAtStr || Date.now());
 
-      if (aliases.length >= 50) {
-        console.warn(
-          `${cosingRef}, ${combinedName} has ${aliases.length} aliases`
-        );
-      } else {
-        // console.log(`Adding ${name} with ${aliases.length} aliases...`);
-      }
+          const aliases = getAliases(combinedName);
 
-      await createIngredient(
-        cosingRef,
-        combinedName,
-        description,
-        fn,
-        updatedAt,
-        aliases
-      );
-    })
-    .on("error", console.error);
+          if (aliases.length >= 50) {
+            console.warn(
+              `${cosingRef}, ${combinedName} has ${aliases.length} aliases`
+            );
+          } else {
+            console.log(
+              `Adding ${cosingRef} with ${aliases.length} aliases...`
+            );
+          }
+
+          await createIngredient(
+            cosingRef,
+            combinedName,
+            description,
+            fn,
+            updatedAt,
+            aliases
+          );
+        }
+
+        resolve(undefined);
+      });
+  });
 }
 
 function getAliases(combinedName: string): string[] {
@@ -166,7 +182,7 @@ function getParenthesesBlocks(string: string): string[] {
   return blocks;
 }
 
-function createIngredient(
+async function createIngredient(
   cosingRef: number,
   name: string,
   description: string,
@@ -174,30 +190,34 @@ function createIngredient(
   updatedAt: Date,
   aliases: string[]
 ) {
-  return prisma.ingredient.create({
-    data: {
-      cosingRef,
-      function: fn,
-      description,
-      updatedAt,
-      name,
+  return prisma.ingredient
+    .create({
+      data: {
+        cosingRef,
+        function: fn,
+        description,
+        updatedAt,
+        name,
 
-      aliases: {
-        create: aliases.map((alias) => ({
-          name: alias.trim(),
-        })),
+        aliases: {
+          create: aliases.map((alias) => ({
+            name: alias.trim(),
+          })),
+        },
       },
-    },
-  });
-  // .catch((err) => console.error(`Could not add ${name}`));
+    })
+    .then(() => console.log(`Added ${cosingRef}`))
+    .catch((err) => {
+      console.error(cosingRef, err);
+    });
 }
 
-main()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async (e) => {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  });
+// importIngredients()
+//   .then(async () => {
+//     await prisma.$disconnect();
+//   })
+//   .catch(async (e) => {
+//     console.error(e);
+//     await prisma.$disconnect();
+//     process.exit(1);
+//   });

@@ -1,5 +1,4 @@
 import { AnchorHTMLAttributes, HTMLAttributes, PropsWithChildren } from "react";
-import { AnchorButton } from "./(ui)/Button";
 import classNames from "classnames";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -65,7 +64,7 @@ export default function Page() {
         </div>
         <div id="solver"></div>
       </div>
-      <div id="cards" className="grid grid-cols-2 gap-4 max-w-xl">
+      <div id="cards" className="grid grid-cols-2 gap-4 max-w-xl mx-2">
         <CardContainer className="bg-[#2B353F] text-white">
           <div className="col-start-2 col-span-1 flex flex-col justify-center">
             <h2 className={cardHeading}>Cleaning your buying experience</h2>

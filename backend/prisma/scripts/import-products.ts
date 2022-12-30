@@ -1,60 +1,68 @@
 import { Ingredient, PrismaClient } from "@prisma/client";
 import * as fs from "fs";
 import { parse } from "csv-parse";
+import prisma from "../../src/prisma";
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
 
 const CSV_FILE = "./prisma/csv/products-full.csv";
 const N_OF_COLUMNS = 4;
 
-async function main() {
+export async function importProducts() {
   console.log(`Start seeding...`);
 
   let skipped = 0;
   const rows: string[][] = [];
-  fs.createReadStream(CSV_FILE)
-    .pipe(parse({ delimiter: ";", from_line: 2 }))
-    .on("data", async function (row: string[]) {
-      if (row.length !== N_OF_COLUMNS) {
-        throw new Error("Invalid number of columns: " + row);
-      }
+  return new Promise((resolve, reject) => {
+    fs.createReadStream(CSV_FILE)
+      .pipe(parse({ delimiter: ";", from_line: 2 }))
+      .on("data", async function (row: string[]) {
+        if (row.length !== N_OF_COLUMNS) {
+          throw new Error("Invalid number of columns: " + row);
+        }
 
-      rows.push(row);
-    })
-    .on("error", console.error)
-    .on("end", async function () {
-      for (const row of rows) {
-        let [name, ingredientsCombined, imageUrl, shopPageUrl] = row;
+        rows.push(row);
+      })
+      .on("error", () => {
+        console.error();
+        reject();
+      })
+      .on("end", async function () {
+        for (const row of rows) {
+          let [name, ingredientsCombined, imageUrl, shopPageUrl] = row;
 
-        const ingredientsToConnect = await getIngredientsToConnect(
-          ingredientsCombined
-        );
+          const ingredientsToConnect = await getIngredientsToConnect(
+            ingredientsCombined
+          );
 
-        console.log(
-          `Adding ${name} with ${ingredientsToConnect.length} ingredients...`
-        );
+          console.log(
+            `Adding ${name} with ${ingredientsToConnect.length} ingredients...`
+          );
 
-        await createProduct(
-          name,
-          ingredientsCombined,
-          ingredientsToConnect.map((i) => i.id),
-          imageUrl,
-          shopPageUrl
-        );
-      }
-    });
+          await createProduct(
+            name,
+            ingredientsCombined,
+            ingredientsToConnect.map((i) => i.id),
+            imageUrl,
+            shopPageUrl
+          );
+        }
+
+        resolve(undefined);
+      });
+  });
 }
 
 async function getIngredientsToConnect(
   ingredientsCombined: string
 ): Promise<Ingredient[]> {
-  const ingredientsToConnect: Promise<Ingredient | null>[] = [];
+  const ingredientsToConnect: Ingredient[] = [];
   const ingredientStrings = ingredientsCombined.split(", ");
 
   for (const ingredientString of ingredientStrings) {
     const aliases = ingredientString.split("/");
 
-    const ingredient = prisma.ingredient
+    const ingredient = await prisma.ingredient
       .findMany({
         where: {
           aliases: {
@@ -85,9 +93,7 @@ async function getIngredientsToConnect(
     if (ingredient) ingredientsToConnect.push(ingredient);
   }
 
-  return Promise.all(ingredientsToConnect).then(
-    (ingredients) => ingredients.filter((i) => i !== null) as Ingredient[]
-  );
+  return ingredientsToConnect;
 }
 
 async function createProduct(
@@ -124,12 +130,12 @@ async function createProduct(
   });
 }
 
-main()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async (e) => {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  });
+// importProducts()
+//   .then(async () => {
+//     await prisma.$disconnect();
+//   })
+//   .catch(async (e) => {
+//     console.error(e);
+//     await prisma.$disconnect();
+//     process.exit(1);
+//   });

@@ -10,6 +10,9 @@
     "import-ingredients": "ts-node prisma/scripts/import-ingredients.ts",
     "import-products": "ts-node prisma/scripts/import-products.ts"
   },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "dependencies": {
     "@prisma/client": "^4.4.0",
     "@types/bcrypt": "^5.0.0",
