@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { IngredientClass, PrismaClient } from "@prisma/client";
 import * as fs from "node:fs/promises";
 import { parse } from "csv-parse";
 import prisma from "../../src/prisma";
@@ -37,9 +37,20 @@ export async function importIngredients() {
       })
       .on("end", async function () {
         for (const row of rows) {
-          let [cosingRefStr, combinedName, description, fn, updatedAtStr] = row;
+          let [
+            cosingRefStr,
+            combinedName,
+            description,
+            fn,
+            ingredientClassesStr,
+            updatedAtStr,
+          ] = row;
           const cosingRef = parseInt(cosingRefStr);
           const updatedAt = new Date(updatedAtStr || Date.now());
+          const ingredientClasses =
+            ingredientClassesStr === ""
+              ? []
+              : (ingredientClassesStr.split(",") as IngredientClass[]);
 
           const aliases = getAliases(combinedName);
 
@@ -59,7 +70,8 @@ export async function importIngredients() {
             description,
             fn,
             updatedAt,
-            aliases
+            aliases,
+            ingredientClasses
           );
         }
 
@@ -188,7 +200,8 @@ async function createIngredient(
   description: string,
   fn: string,
   updatedAt: Date,
-  aliases: string[]
+  aliases: string[],
+  ingredientClasses: IngredientClass[]
 ) {
   return prisma.ingredient
     .create({
@@ -198,6 +211,7 @@ async function createIngredient(
         description,
         updatedAt,
         name,
+        ingredientClasses,
 
         aliases: {
           create: aliases.map((alias) => ({
