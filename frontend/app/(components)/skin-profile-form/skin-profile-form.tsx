@@ -10,7 +10,10 @@ import IrritativeProductSelect, {
 } from "./irritative-product-select";
 import { Button } from "../../(ui)/Button";
 import Results from "./results";
-import fetchIrritants, { Ingredient } from "../../(api)/solver/fetch-irritants";
+import fetchIrritantsCalculation, {
+  Ingredient,
+  IrritantsCalculationResponse,
+} from "../../(api)/solver/fetch-irritants-calculation";
 import { useQuery, UseQueryResult } from "react-query";
 
 function TabItem(
@@ -91,9 +94,14 @@ export default function SkinProfileForm() {
   const skinTypeSelectState = useSkinTypeSelectState();
   const productSearchState = useIrriativeProductSelectState();
 
-  const resultsQueryResult = useQuery<Ingredient[]>(
+  const resultsQueryResult = useQuery<IrritantsCalculationResponse>(
     "irritants",
-    () => fetchIrritants(productSearchState.productSearchState.products),
+    () =>
+      fetchIrritantsCalculation(
+        productSearchState.productSearchState.products,
+        [],
+        skinTypeSelectState.getSkinType()
+      ),
     {
       // refetchOnReconnect: false,
       // refetchOnMount: false,
@@ -103,10 +111,6 @@ export default function SkinProfileForm() {
       enabled: false,
     }
   );
-
-  function nextTab() {
-    setSelectedIndex((prev) => prev + 1);
-  }
 
   const container = classNames(
     "flex flex-col",

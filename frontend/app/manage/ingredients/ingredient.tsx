@@ -1,6 +1,6 @@
 "use client";
 
-import { Ingredient } from "../../(api)/solver/fetch-irritants";
+import { Ingredient } from "../../(api)/solver/fetch-irritants-calculation";
 
 interface Props {
   ingredient: Ingredient;

@@ -8,7 +8,7 @@ import SelectIngredientClasses, {
 } from "./select-ingredient-classes";
 import { useQuery } from "react-query";
 import Api from "../../../(api)/api";
-import { Ingredient } from "../../../(api)/solver/fetch-irritants";
+import { Ingredient } from "../../../(api)/solver/fetch-irritants-calculation";
 
 export default function ManageIngredientsActions() {
   const {

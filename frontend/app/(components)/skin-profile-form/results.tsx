@@ -1,5 +1,8 @@
 "use client";
-import { Ingredient } from "../../(api)/solver/fetch-irritants";
+import {
+  Ingredient,
+  IrritantsCalculationResponse,
+} from "../../(api)/solver/fetch-irritants-calculation";
 import { UseQueryResult } from "react-query";
 import { useIrriativeProductSelectState } from "./irritative-product-select";
 import { TabControlsRendered } from "./skin-profile-form";
@@ -8,15 +11,15 @@ import LoginButton from "../../(navigation)/LoginButton";
 
 interface Props {
   productSelectState: ReturnType<typeof useIrriativeProductSelectState>;
-  useQueryResult: UseQueryResult<Ingredient[]>;
+  useQueryResult: UseQueryResult<IrritantsCalculationResponse>;
   TabControls: TabControlsRendered;
 }
 
 export default function Results(props: Props) {
-  const { data: irritants, isLoading, isError } = props.useQueryResult;
+  const { data, isLoading, isError } = props.useQueryResult;
   const user = useUser();
 
-  if (isError || !irritants) {
+  if (isError || !data) {
     return <div>Could not fetch irritants.</div>;
   }
 
@@ -24,19 +27,52 @@ export default function Results(props: Props) {
     return <div>Loading...</div>;
   }
 
+  const duplicates = (
+    <div>
+      <div>
+        The following ingredients are present in more than one product and may
+        be the cause of irritation:
+      </div>
+      {data.duplicates.map((irritant, key) => (
+        <div key={key}>
+          <div>{irritant.ingredient.name}</div>
+          <div>This product was present in the following products:</div>
+          {irritant.products.map((product, key) => (
+            <div key={key}>{product.name}</div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+
+  const irritants = (
+    <div>
+      <div>
+        The following ingredients were present in some of your products and are
+        known to cause irritation:
+      </div>
+      {data.skinTypeIrritants.map((irritant, key) => (
+        <div key={key}>
+          <div className="font-medium">{irritant.ingredient.name}</div>
+          <div>
+            Ingredient classes:{" "}
+            {irritant.ingredientClasses.map((ingredientClass, key) => (
+              <div key={key}>{ingredientClass}</div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
   const results =
-    irritants.length === 0 ? (
+    data.duplicates.length + data.skinTypeIrritants.length === 0 ? (
       <div>Did not find irritants. Nice</div>
     ) : (
-      <div>
-        <div>
-          The following ingredients are present in more than one product and may
-          be the cause of irritation:
-        </div>
-        {irritants.map((irritant, key) => (
-          <div key={key}>{irritant.name}</div>
-        ))}
-      </div>
+      <>
+        {data.duplicates.length && duplicates}
+        {data.skinTypeIrritants.length && irritants}
+      </>
     );
   return (
     <div>

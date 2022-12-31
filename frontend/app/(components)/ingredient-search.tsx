@@ -4,7 +4,7 @@ import {
   RemoteSelectState,
   useRemoteSelectState,
 } from "../(hooks)/remote-select";
-import { Ingredient } from "../(api)/solver/fetch-irritants";
+import { Ingredient } from "../(api)/solver/fetch-irritants-calculation";
 import Input from "../(ui)/Input";
 import Api from "../(api)/api";
 

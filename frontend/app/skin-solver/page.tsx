@@ -2,7 +2,9 @@
 import ProductSelect, {
   useProductSearchState,
 } from "./(product-search)/product-search";
-import fetchIrritants, { Ingredient } from "../(api)/solver/fetch-irritants";
+import fetchIrritantsCalculation, {
+  Ingredient,
+} from "../(api)/solver/fetch-irritants-calculation";
 import { useQuery } from "react-query";
 import IrritantItem from "./irritant-item";
 import { Button } from "../(ui)/Button";
@@ -45,7 +47,7 @@ export default function SkinSolverPage() {
   });
 
   async function fetch(): Promise<Ingredient[]> {
-    return fetchIrritants(productSelectState.products);
+    return fetchIrritantsCalculation(productSelectState.products);
   }
 
   return (

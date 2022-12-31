@@ -1,4 +1,4 @@
-import { Ingredient } from "../(api)/solver/fetch-irritants";
+import { Ingredient } from "../(api)/solver/fetch-irritants-calculation";
 import { IngredientAlias } from "../(api)/manage/ingredients";
 
 interface Props {

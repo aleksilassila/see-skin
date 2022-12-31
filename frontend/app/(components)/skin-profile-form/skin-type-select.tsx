@@ -6,6 +6,7 @@ import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { TabControlsRendered } from "./skin-profile-form";
+import { SkinType } from "../../(api)/solver/fetch-irritants-calculation";
 
 const skinTypes = [
   { id: 1, name: "Dry" },
@@ -18,7 +19,41 @@ export function useSkinTypeSelectState() {
   const [selectedSkinType, setSelectedSkinType] = useState(skinTypes[1]);
   const [isSensitive, setIsSensitive] = useState(false);
 
-  return { selectedSkinType, setSelectedSkinType, isSensitive, setIsSensitive };
+  function getSkinType(): SkinType {
+    if (!isSensitive) {
+      switch (selectedSkinType.name) {
+        case "Dry":
+          return SkinType.DRY;
+        case "Normal":
+          return SkinType.NORMAL;
+        case "Oily":
+          return SkinType.OILY;
+        case "Combination":
+          return SkinType.COMBINATION;
+      }
+    } else {
+      switch (selectedSkinType.name) {
+        case "Dry":
+          return SkinType.DRY_SENSITIVE;
+        case "Normal":
+          return SkinType.NORMAL_SENSITIVE;
+        case "Oily":
+          return SkinType.OILY_SENSITIVE;
+        case "Combination":
+          return SkinType.COMBINATION_SENSITIVE;
+      }
+    }
+
+    return SkinType.NORMAL;
+  }
+
+  return {
+    selectedSkinType,
+    setSelectedSkinType,
+    isSensitive,
+    setIsSensitive,
+    getSkinType,
+  };
 }
 
 export default function SkinTypeSelect({

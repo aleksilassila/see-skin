@@ -10,7 +10,6 @@ import "./passport";
 import userRouter from "./routers/userRouter";
 import ingredientsRouter from "./routers/ingredientsRouter";
 import manageRouter from "./routers/manageRouter";
-import skinSolverRouter from "./routers/skinSolverRouter";
 import parsePagination from "./middleware/parsePagination";
 import { requireAuth } from "./middleware/requireAuth";
 
@@ -44,7 +43,6 @@ router.use("/user", requireAuth, userRouter);
 router.use("/manage", /*requireAuthLevel(1),*/ manageRouter);
 router.use("/products", productsRouter);
 router.use("/ingredients", ingredientsRouter);
-router.use("/solver", skinSolverRouter);
 
 app.use("/api", router);
 

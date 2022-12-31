@@ -1,4 +1,4 @@
-import { IngredientClass } from "../../../(api)/solver/fetch-irritants";
+import { IngredientClass } from "../../../(api)/solver/fetch-irritants-calculation";
 import { useState } from "react";
 import { Listbox } from "@headlessui/react";
 import { Button } from "../../../(ui)/Button";

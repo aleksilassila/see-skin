@@ -1,5 +1,5 @@
 import Api from "../api";
-import { Ingredient } from "../solver/fetch-irritants";
+import { Ingredient } from "../solver/fetch-irritants-calculation";
 
 export interface IngredientAlias {
   id: string;
