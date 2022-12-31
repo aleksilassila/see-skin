@@ -12,7 +12,7 @@ import ingredientsRouter from "./routers/ingredientsRouter";
 import manageRouter from "./routers/manageRouter";
 import skinSolverRouter from "./routers/skinSolverRouter";
 import parsePagination from "./middleware/parsePagination";
-import { requireAuth, requireAuthLevel } from "./middleware/requireAuth";
+import { requireAuth } from "./middleware/requireAuth";
 
 const app = express();
 const router = Router();

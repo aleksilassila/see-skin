@@ -1,9 +1,9 @@
 "use client";
-import { HTMLAttributes, useContext } from "react";
+import { HTMLAttributes } from "react";
 import Logo from "./Logo";
 import Link from "next/link";
 import LoginButton from "./LoginButton";
-import { UserContext, useUser } from "../user";
+import { useUser } from "../user";
 
 const NavItem = (props: HTMLAttributes<HTMLDivElement>) => (
   <div className={`hidden sm:block ${props.className}`}>{props.children}</div>
@@ -32,11 +32,9 @@ const Navigation = ({
 }: Props & HTMLAttributes<HTMLDivElement>) => {
   const user = useUser();
 
-  console.log(user);
-
   return (
     <div
-      className={`h-20 flex justify-around items-center w-full ${props.className}`}
+      className={`h-20 flex justify-around items-center w-full z-10 shadow ${props.className}`}
       {...props}
     >
       <NavLink activeHref={href} href="/">

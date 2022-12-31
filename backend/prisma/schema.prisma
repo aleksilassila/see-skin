@@ -52,14 +52,15 @@ model IngredientAlias {
 model User {
   id          String    @id @default(cuid())
   googleId    String?   @unique
-  email       String    @unique
+  email       String
   password    String?
   name        String
   accessLevel Int       @default(0)
   logoutAt    DateTime?
 
-  skinType      SkinType @default(NORMAL)
-  sensitiveSkin Boolean  @default(false)
+  didSetupProfile Boolean  @default(false)
+  skinType        SkinType @default(NORMAL)
+  sensitiveSkin   Boolean  @default(false)
 
   addedIrritativeIngredients Ingredient[] @relation("_AddedIrritantToUser")
   addedIrritativeProducts    Product[]

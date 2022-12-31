@@ -6,12 +6,12 @@ import { body } from "express-validator";
 
 const authRouter = Router();
 
-authRouter.get(
-  "/login",
-  body("email").exists().trim().notEmpty(),
-  body("password").exists().trim().notEmpty(),
-  authController.login
-);
+// authRouter.get(
+//   "/login",
+//   body("email").exists().trim().notEmpty(),
+//   body("password").exists().trim().notEmpty(),
+//   authController.login
+// );
 
 authRouter.get("/logout", (req, res) => {
   res.clearCookie("session");

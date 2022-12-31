@@ -4,6 +4,7 @@ import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
+import SkinProfileForm from "./(components)/skin-profile-form/skin-profile-form";
 
 interface CardContainerProps extends HTMLAttributes<HTMLDivElement> {
   size?: "sm" | "lg";
@@ -56,11 +57,12 @@ export default function Page() {
           <h1 id="header" className="text-3xl font-bold mb-2">
             Find all your skincare products in one place.
           </h1>
-          <p id="description" className="font-medium">
+          <p id="description" className="font-medium mb-8">
             Insert products into the box below that you suspect cause you
             irritation, breakouts, or any adverse effect, or those that you
             didn&apos;t have any benefit from.
           </p>
+          <SkinProfileForm />
         </div>
         <div id="solver"></div>
       </div>

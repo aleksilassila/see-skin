@@ -15,7 +15,7 @@ interface ProductSelectState {
   setProducts: Dispatch<SetStateAction<ManageProduct[]>>;
 }
 
-export function useProductSelectState(): ProductSelectState {
+export function useProductSearchState(): ProductSelectState {
   const [searchResults, setSearchResults] = useState<ManageProduct[]>([]);
   const [products, setProducts] = useState<ManageProduct[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -54,7 +54,9 @@ interface Props {
   productSelectState: ProductSelectState;
 }
 
-export default function ProductSearch({ ...state }: ProductSelectState) {
+export default function ProductSearch(
+  state: ReturnType<typeof useProductSearchState>
+) {
   return (
     <div className="bg-stone-100 p-2 flex flex-col gap-2">
       <Input

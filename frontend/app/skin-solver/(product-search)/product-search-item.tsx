@@ -1,5 +1,4 @@
 import { ManageProduct } from "../../(api)/manage/products";
-import { PropsWithChildren } from "react";
 
 interface Props {
   product: ManageProduct;

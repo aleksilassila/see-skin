@@ -1,3 +1,4 @@
+import { User as PrismaUser } from "@prisma/client";
 import * as express from "express"; // This is required for the overwrite to work apparently
 
 declare global {
@@ -8,5 +9,7 @@ declare global {
         take: number | "default";
       };
     }
+
+    interface User extends PrismaUser {}
   }
 }

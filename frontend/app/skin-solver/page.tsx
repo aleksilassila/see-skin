@@ -1,6 +1,6 @@
 "use client";
 import ProductSelect, {
-  useProductSelectState,
+  useProductSearchState,
 } from "./(product-search)/product-search";
 import fetchIrritants, { Ingredient } from "../(api)/solver/fetch-irritants";
 import { useQuery } from "react-query";
@@ -28,7 +28,7 @@ function ShowIrritants({ irritants }: { irritants: Ingredient[] }) {
 }
 
 export default function SkinSolverPage() {
-  const productSelectState = useProductSelectState();
+  const productSelectState = useProductSearchState();
 
   const {
     data: irritants,

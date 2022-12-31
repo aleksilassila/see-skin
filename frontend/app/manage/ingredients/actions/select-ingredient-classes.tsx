@@ -1,5 +1,5 @@
 import { IngredientClass } from "../../../(api)/solver/fetch-irritants";
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import { Listbox } from "@headlessui/react";
 import { Button } from "../../../(ui)/Button";
 import classNames from "classnames";

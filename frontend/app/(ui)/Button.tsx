@@ -15,13 +15,22 @@ interface ButtonProps<T extends HTMLElement> extends HTMLAttributes<T> {
   href: string;
 }
 
-function getColoring(
+export function getButtonSizing(size: ButtonProps<any>["size"] = "md") {
+  return classNames({
+    ...{
+      sm: { "text-sm h-8 px-2 md:px-4": true },
+      md: { "h-10 px-2 md:px-4": true },
+      lg: { "h-12 px-2 md:px-8": true },
+    }[size],
+  });
+}
+
+export function getButtonColoring(
   active: boolean,
   {
-    size = "md",
     intent = "none",
     ...props
-  }: Pick<ButtonProps<any>, "size" | "intent" | "className" | "minimal">
+  }: Pick<ButtonProps<any>, "intent" | "className" | "minimal">
 ) {
   return classNames(props.className, "font-medium rounded-md", {
     "cursor-pointer": active,
@@ -61,11 +70,6 @@ function getColoring(
         "focus-within:ring": active,
       },
     }[intent],
-    ...{
-      sm: { "text-sm h-8 px-2 md:px-4": true },
-      md: { "h-10 px-2 md:px-4": true },
-      lg: { "h-12 px-2 md:px-8": true },
-    }[size],
   });
 }
 
@@ -87,10 +91,10 @@ export function Button({
   };
 
   const className = classNames(
-    getColoring(active, {
+    getButtonSizing(size),
+    getButtonColoring(active, {
       ...props,
       intent,
-      size,
       minimal,
     })
   );
@@ -116,10 +120,10 @@ export function AnchorButton({
   ...props
 }: Omit<ButtonProps<HTMLAnchorElement>, "onClick" | "loading">) {
   const className = classNames(
-    getColoring(!disabled, {
+    getButtonSizing(size),
+    getButtonColoring(!disabled, {
       ...props,
       intent,
-      size,
       minimal,
     }),
     "inline-flex items-center"

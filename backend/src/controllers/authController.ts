@@ -12,31 +12,31 @@ async function comparePassword(password: string) {
   return bcrypt.compare(password, password);
 }
 
-export async function login(req: Request, res: Response) {
-  const { email, password } = req.body;
-
-  try {
-    const user = await prisma.user.findUnique({
-      where: {
-        email: email,
-      },
-    });
-
-    if (!user || !user.password) {
-      throw new Error("User not found");
-    }
-
-    const hash = user.password;
-
-    if (!(await bcrypt.compare(hash, password))) {
-      throw new Error("Password incorrect");
-    }
-
-    const token = jwt.sign({ userId: user.id }, JWT_SECRET);
-
-    res.cookie("token", token);
-    res.status(200).send({ token });
-  } catch {
-    res.status(500).send("Incorrect credentials.");
-  }
-}
+// export async function login(req: Request, res: Response) {
+//   const { email, password } = req.body;
+//
+//   try {
+//     const user = await prisma.user.findUnique({
+//       where: {
+//         email,
+//       },
+//     });
+//
+//     if (!user || !user.password) {
+//       throw new Error("User not found");
+//     }
+//
+//     const hash = user.password;
+//
+//     if (!(await bcrypt.compare(hash, password))) {
+//       throw new Error("Password incorrect");
+//     }
+//
+//     const token = jwt.sign({ userId: user.id }, JWT_SECRET);
+//
+//     res.cookie("token", token);
+//     res.status(200).send({ token });
+//   } catch {
+//     res.status(500).send("Incorrect credentials.");
+//   }
+// }
