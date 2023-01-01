@@ -3,11 +3,12 @@ import ProductSelect, {
   useProductSearchState,
 } from "./(product-search)/product-search";
 import fetchIrritantsCalculation, {
-  Ingredient,
+  IrritantsCalculationResponse,
 } from "../(api)/solver/fetch-irritants-calculation";
 import { useQuery } from "react-query";
 import IrritantItem from "./irritant-item";
 import { Button } from "../(ui)/Button";
+import { Ingredient, SkinType } from "../(api)/types";
 
 function ShowIrritants({ irritants }: { irritants: Ingredient[] }) {
   if (irritants.length === 0) {
@@ -32,22 +33,22 @@ function ShowIrritants({ irritants }: { irritants: Ingredient[] }) {
 export default function SkinSolverPage() {
   const productSelectState = useProductSearchState();
 
-  const {
-    data: irritants,
-    refetch,
-    isRefetching,
-    isLoading,
-  } = useQuery<Ingredient[]>("irritants", fetch, {
-    // refetchOnReconnect: false,
-    // refetchOnMount: false,
-    // refetchOnWindowFocus: false,
-    // refetchInterval: false,
-    // refetchIntervalInBackground: false,
-    enabled: false,
-  });
+  const { data, refetch, isRefetching, isLoading } =
+    useQuery<IrritantsCalculationResponse>("irritants", fetch, {
+      // refetchOnReconnect: false,
+      // refetchOnMount: false,
+      // refetchOnWindowFocus: false,
+      // refetchInterval: false,
+      // refetchIntervalInBackground: false,
+      enabled: false,
+    });
 
-  async function fetch(): Promise<Ingredient[]> {
-    return fetchIrritantsCalculation(productSelectState.products);
+  async function fetch(): Promise<IrritantsCalculationResponse> {
+    return fetchIrritantsCalculation(
+      productSelectState.products,
+      [],
+      SkinType.NORMAL
+    );
   }
 
   return (
@@ -61,7 +62,9 @@ export default function SkinSolverPage() {
       >
         Calculate
       </Button>
-      {irritants ? <ShowIrritants irritants={irritants} /> : null}
+      {data ? (
+        <ShowIrritants irritants={data.duplicates.map((d) => d.ingredient)} />
+      ) : null}
     </div>
   );
 }

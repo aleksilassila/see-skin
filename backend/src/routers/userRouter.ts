@@ -2,7 +2,7 @@ import { Request, Router } from "express";
 import { requireAuth } from "../middleware/requireAuth";
 import prisma from "../prisma";
 import { body } from "express-validator";
-import { SkinType } from "@prisma/client";
+import { IngredientClass, SkinType } from "@prisma/client";
 
 const userRouter = Router();
 
@@ -17,8 +17,11 @@ userRouter.put(
   body("irritativeIngredientIds.*").isString().isLength({ max: 50, min: 1 }),
   body("irritativeProductIds").isArray().optional(),
   body("irritativeProductIds.*").isString().isLength({ max: 50, min: 1 }),
-  body("skinType").isIn(Object.keys(SkinType)).optional(),
-  body("sensitiveSkin").isBoolean().optional(),
+  body("irritativeClasses").isArray().optional(),
+  body("irritativeClasses.*").isString().isIn(Object.values(IngredientClass)),
+  body("irritantIds").isArray().optional(),
+  body("irritantIds.*").isString().isLength({ max: 50, min: 1 }),
+  body("skinType").isString().isIn(Object.keys(SkinType)).optional(),
   body("email").isEmail().optional(),
   body("name").isString().isLength({ min: 5, max: 30 }).optional(),
   async function (
@@ -28,8 +31,9 @@ userRouter.put(
       Partial<{
         irritativeIngredientIds: string[];
         irritativeProductIds: string[];
+        irritantIds: string[];
+        irritativeClasses: IngredientClass[];
         skinType: SkinType;
-        sensitiveSkin: boolean;
         email: string;
         name: string;
       }>
@@ -39,8 +43,9 @@ userRouter.put(
     const {
       irritativeIngredientIds,
       irritativeProductIds,
+      irritantIds,
+      irritativeClasses,
       skinType,
-      sensitiveSkin,
       email,
       name,
     } = req.body;
@@ -61,12 +66,20 @@ userRouter.put(
               set: irritativeProductIds.map((id) => ({ id })),
             },
           }),
+          ...(irritantIds && {
+            irritants: {
+              set: irritantIds.map((id) => ({ id })),
+            },
+          }),
+          ...(irritativeClasses && {
+            irritativeClasses: {
+              set: irritativeClasses,
+            },
+          }),
           ...(skinType && { skinType }),
-          ...(sensitiveSkin && { sensitiveSkin }),
           ...(email && { email }),
           ...(name && { name }),
-          ...(skinType &&
-            sensitiveSkin !== undefined && { didSetupProfile: true }),
+          ...(skinType && { didSetupProfile: true }),
         },
       })
       .catch(console.error);

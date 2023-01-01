@@ -1,7 +1,7 @@
 import ProductSearch, {
   useProductSearchState,
 } from "../../skin-solver/(product-search)/product-search";
-import { TabControlsRendered } from "./skin-profile-form";
+import { TabControlsRendered } from "./tab-controls";
 
 export function useIrriativeProductSelectState() {
   const productSearchState = useProductSearchState();

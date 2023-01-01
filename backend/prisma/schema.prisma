@@ -60,11 +60,11 @@ model User {
 
   didSetupProfile Boolean  @default(false)
   skinType        SkinType @default(NORMAL)
-  sensitiveSkin   Boolean  @default(false)
 
   addedIrritativeIngredients Ingredient[] @relation("_AddedIrritantToUser")
   addedIrritativeProducts    Product[]
   irritants                  Ingredient[] @relation("_IrritantToUser")
+  irritativeClasses          IngredientClass[] @default([])
 }
 
 enum SkinType {

@@ -5,8 +5,8 @@ import { getButtonColoring, getButtonSizing } from "../../(ui)/Button";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
-import { TabControlsRendered } from "./skin-profile-form";
-import { SkinType } from "../../(api)/solver/fetch-irritants-calculation";
+import { SkinType } from "../../(api)/types";
+import { TabControlsRendered } from "./tab-controls";
 
 const skinTypes = [
   { id: 1, name: "Dry" },

@@ -1,13 +1,11 @@
 "use client";
-import {
-  Ingredient,
-  IrritantsCalculationResponse,
-} from "../../(api)/solver/fetch-irritants-calculation";
+import { IrritantsCalculationResponse } from "../../(api)/solver/fetch-irritants-calculation";
 import { UseQueryResult } from "react-query";
 import { useIrriativeProductSelectState } from "./irritative-product-select";
-import { TabControlsRendered } from "./skin-profile-form";
 import { useUser } from "../../user";
 import LoginButton from "../../(navigation)/LoginButton";
+import { Ingredient } from "../../(api)/types";
+import { TabControlsRendered } from "./tab-controls";
 
 interface Props {
   productSelectState: ReturnType<typeof useIrriativeProductSelectState>;

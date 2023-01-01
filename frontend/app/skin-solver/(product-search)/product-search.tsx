@@ -2,27 +2,27 @@
 
 import Input from "../../(ui)/Input";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { ManageProduct } from "../../(api)/manage/products";
 import Api from "../../(api)/api";
 import ProductSearchItem from "./product-search-item";
+import { Product } from "../../(api)/types";
 
 interface ProductSelectState {
-  searchResults: ManageProduct[];
-  setSearchResults: Dispatch<SetStateAction<ManageProduct[]>>;
+  searchResults: Product[];
+  setSearchResults: Dispatch<SetStateAction<Product[]>>;
   searchTerm: string;
   setSearchTerm: (searchTerm: string) => void;
-  products: ManageProduct[];
-  setProducts: Dispatch<SetStateAction<ManageProduct[]>>;
+  products: Product[];
+  setProducts: Dispatch<SetStateAction<Product[]>>;
 }
 
 export function useProductSearchState(): ProductSelectState {
-  const [searchResults, setSearchResults] = useState<ManageProduct[]>([]);
-  const [products, setProducts] = useState<ManageProduct[]>([]);
+  const [searchResults, setSearchResults] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     if (searchTerm.length > 2) {
-      Api.fetch<ManageProduct[]>("/products/find", {
+      Api.fetch<Product[]>("/products/find", {
         params: {
           name: searchTerm,
         },

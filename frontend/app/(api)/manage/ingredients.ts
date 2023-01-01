@@ -1,11 +1,5 @@
 import Api from "../api";
-import { Ingredient } from "../solver/fetch-irritants-calculation";
-
-export interface IngredientAlias {
-  id: string;
-  name: string;
-  ingredientId: string;
-}
+import { Ingredient } from "../types";
 
 export async function fetchIngredients() {
   return await Api.fetch<Ingredient[]>("/manage/issues/ingredients").then(

@@ -5,6 +5,16 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "media.ulta.com",
+        port: "",
+        pathname: "/i/ulta/**",
+      },
+    ],
+  },
 };
 
 module.exports = nextConfig;

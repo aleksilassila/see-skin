@@ -1,8 +1,8 @@
-import { IngredientClass } from "../../../(api)/solver/fetch-irritants-calculation";
 import { useState } from "react";
 import { Listbox } from "@headlessui/react";
 import { Button } from "../../../(ui)/Button";
 import classNames from "classnames";
+import { IngredientClass } from "../../../(api)/types";
 
 export type SelectIngredientClassState = ReturnType<
   typeof useSelectIngredientClassState

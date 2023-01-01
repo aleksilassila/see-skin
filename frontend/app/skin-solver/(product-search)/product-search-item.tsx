@@ -1,7 +1,7 @@
-import { ManageProduct } from "../../(api)/manage/products";
+import { Product } from "../../(api)/types";
 
 interface Props {
-  product: ManageProduct;
+  product: Product;
   onClick: () => void;
 }
 

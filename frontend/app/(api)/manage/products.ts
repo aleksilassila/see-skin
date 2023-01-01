@@ -1,15 +1,8 @@
 import Api from "../api";
-
-export interface ManageProduct {
-  id: string;
-  name: string;
-  description: string;
-  imageUrl?: string;
-  shopPageUrl?: string;
-}
+import { Product } from "../types";
 
 export async function fetchProducts() {
-  return await Api.fetch<ManageProduct[]>("/manage/issues/products").then(
+  return await Api.fetch<Product[]>("/manage/issues/products").then(
     (r) => r.data
   );
 }

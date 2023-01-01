@@ -106,5 +106,16 @@ export async function calculateIrritants(
     return;
   }
 
+  if (req.user) {
+    await prisma.user.update({
+      where: {
+        id: req.user.id,
+      },
+      data: {
+        didSetupProfile: true,
+      },
+    });
+  }
+
   res.status(200).send(response);
 }

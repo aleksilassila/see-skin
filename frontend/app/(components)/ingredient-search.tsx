@@ -4,9 +4,9 @@ import {
   RemoteSelectState,
   useRemoteSelectState,
 } from "../(hooks)/remote-select";
-import { Ingredient } from "../(api)/solver/fetch-irritants-calculation";
 import Input from "../(ui)/Input";
 import Api from "../(api)/api";
+import { Ingredient } from "../(api)/types";
 
 export function useIngredientSearchState() {
   return useRemoteSelectState<Ingredient>((searchTerm, selected) =>
