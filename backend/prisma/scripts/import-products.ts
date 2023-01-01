@@ -1,12 +1,14 @@
-import { Ingredient, PrismaClient } from "@prisma/client";
+import { Ingredient, Prisma, PrismaClient } from "@prisma/client";
 import * as fs from "fs";
 import { parse } from "csv-parse";
 import prisma from "../../src/prisma";
+import cuid = require("cuid");
 
 // const prisma = new PrismaClient();
 
 const CSV_FILE = "./prisma/csv/products-full.csv";
 const N_OF_COLUMNS = 4;
+const BATCH_SIZE = 100;
 
 export async function importProducts() {
   console.log(`Start seeding...`);
@@ -28,7 +30,9 @@ export async function importProducts() {
         reject();
       })
       .on("end", async function () {
-        for (const row of rows) {
+        let batchCreateData: ReturnType<typeof createProduct>[] = [];
+        for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+          const row = rows[rowIndex];
           let [name, ingredientsCombined, imageUrl, shopPageUrl] = row;
 
           const ingredientsToConnect = await getIngredientsToConnect(
@@ -39,13 +43,37 @@ export async function importProducts() {
             `Adding ${name} with ${ingredientsToConnect.length} ingredients...`
           );
 
-          await createProduct(
-            name,
-            ingredientsCombined,
-            ingredientsToConnect.map((i) => i.id),
-            imageUrl,
-            shopPageUrl
+          batchCreateData.push(
+            createProduct(
+              name,
+              ingredientsCombined,
+              ingredientsToConnect.map((i) => i.id),
+              imageUrl,
+              shopPageUrl
+            )
           );
+
+          if (
+            batchCreateData.length >= BATCH_SIZE ||
+            rowIndex === rows.length - 1
+          ) {
+            await prisma.product.createMany({
+              data: batchCreateData.map((d) => d.data),
+            });
+
+            for (const { data, ingredientIds } of batchCreateData) {
+              await prisma.product.update({
+                where: { id: data.id },
+                data: {
+                  ingredients: {
+                    connect: ingredientIds.map((id) => ({ id })),
+                  },
+                },
+              });
+            }
+
+            batchCreateData = [];
+          }
         }
 
         resolve(undefined);
@@ -96,38 +124,52 @@ async function getIngredientsToConnect(
   return ingredientsToConnect;
 }
 
-async function createProduct(
+function createProduct(
   name: string,
   ingredientsString: string,
   ingredientIds: string[],
   imageUrl: string,
   shopPageUrl: string
-) {
-  const id = await prisma.product
-    .findFirst({ where: { name } })
-    .then((p) => p?.id || "");
+): {
+  data: Prisma.ProductCreateInput;
+  ingredientIds: string[];
+} {
+  return {
+    data: {
+      id: cuid(),
+      name,
+      ingredientsString,
+      imageUrl,
+      shopPageUrl,
+    },
+    ingredientIds,
+  };
 
-  return prisma.product.upsert({
-    where: { id },
-    create: {
-      name,
-      ingredientsString,
-      ingredients: {
-        connect: ingredientIds.map((id) => ({ id })),
-      },
-      imageUrl: imageUrl,
-      shopPageUrl,
-    },
-    update: {
-      name,
-      ingredientsString,
-      ingredients: {
-        set: ingredientIds.map((id) => ({ id })),
-      },
-      imageUrl: imageUrl,
-      shopPageUrl,
-    },
-  });
+  // const id = await prisma.product
+  //   .findFirst({ where: { name } })
+  //   .then((p) => p?.id || "");
+  //
+  // return prisma.product.upsert({
+  //   where: { id },
+  //   create: {
+  //     name,
+  //     ingredientsString,
+  //     ingredients: {
+  //       connect: ingredientIds.map((id) => ({ id })),
+  //     },
+  //     imageUrl: imageUrl,
+  //     shopPageUrl,
+  //   },
+  //   update: {
+  //     name,
+  //     ingredientsString,
+  //     ingredients: {
+  //       set: ingredientIds.map((id) => ({ id })),
+  //     },
+  //     imageUrl: imageUrl,
+  //     shopPageUrl,
+  //   },
+  // });
 }
 
 // importProducts()

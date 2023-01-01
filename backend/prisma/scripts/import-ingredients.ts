@@ -1,10 +1,12 @@
-import { IngredientClass, PrismaClient } from "@prisma/client";
+import { IngredientClass, Prisma } from "@prisma/client";
 import * as fs from "node:fs/promises";
 import { parse } from "csv-parse";
 import prisma from "../../src/prisma";
+import cuid = require("cuid");
 
 const CSV_FILE = "./prisma/csv/ingredients-full.csv";
-const N_OF_COLUMNS = 5;
+const N_OF_COLUMNS = 6;
+const BATCH_SIZE = 100;
 
 /*
 HYDROLYZED (SOLANUM LYCOPERSICUM/TUBEROSUM FRUIT) (DAUCUS AUREUS/BROTERI/ CAROTA/DURIEUA/GADECEAU/GLOCHIDIATUS/MURICATUS ROOT) (MUSA ACUMINATA/BALBISIANA/PARADISIACA FRUIT) (PYRUS COMMUNIS/COSSONII/KOEHNEI/SALICIFOLIA/PYRIFOLIA/BRETSCHNEIDERI FRUIT) (FRAGARIA DALTONIANA/HAYATAE/IINUMAE/VESCA/VIRIDIS/BRINGHURSTII/MOSCHATA/CHILOENSIS/OVALIS FRUIT) (CITRUS RETICULATE/AURANTIUM/CLEMENTINA/AURANTIIFOLIA/UNSHIU/SINENSIS/LATIFOLIA/LIMON/BERGAMIA/MAXIMA/HYSTRIX/PARADISI/JAPONICA/FORTUNELLA FRUIT) (MALUS PUMILA/DOMESTICA/FLORIBUNDA/BACCATA/SYLVESTRIS FRUIT) (CITRULLUS COLOCYNTHIS/ECIRRHOSUS/LANATUS/NAUDINIANUS FRUIT) (CUCUMIS FICIFOLIUS/MELO/SATIVUS/METULIFER FRUIT) (AVENA SATIVA/STRIGOSA GRAIN) (TRITICUM TURGIDUM/AESTIVUM/MONOCOCCUM GRAIN) (HORDEUM VULGARE/SECALINUM/MURINUM/JUBATUM GRAIN)
@@ -36,7 +38,9 @@ export async function importIngredients() {
         reject();
       })
       .on("end", async function () {
-        for (const row of rows) {
+        let batchCreateData: Parameters<typeof createIngredientBatch>[0] = [];
+        for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+          const row = rows[rowIndex];
           let [
             cosingRefStr,
             combinedName,
@@ -64,19 +68,60 @@ export async function importIngredients() {
             );
           }
 
-          await createIngredient(
-            cosingRef,
-            combinedName,
-            description,
-            fn,
-            updatedAt,
+          batchCreateData.push({
+            data: {
+              id: cuid(),
+              cosingRef,
+              function: fn,
+              description,
+              updatedAt,
+              name: combinedName,
+              ingredientClasses,
+            },
             aliases,
-            ingredientClasses
-          );
+          });
+
+          // await createIngredient(
+          //   cosingRef,
+          //   combinedName,
+          //   description,
+          //   fn,
+          //   updatedAt,
+          //   aliases,
+          //   ingredientClasses
+          // );
+
+          if (
+            batchCreateData.length >= BATCH_SIZE ||
+            rowIndex === rows.length - 1
+          ) {
+            await createIngredientBatch(batchCreateData);
+            batchCreateData = [];
+          }
         }
 
         resolve(undefined);
       });
+  });
+}
+
+async function createIngredientBatch(
+  batchCreateData: {
+    data: Prisma.IngredientCreateInput;
+    aliases: string[];
+  }[]
+) {
+  await prisma.ingredient.createMany({
+    data: batchCreateData.map((data) => data.data),
+  });
+
+  await prisma.ingredientAlias.createMany({
+    data: batchCreateData.flatMap((data) =>
+      data.aliases.map((name) => ({
+        ingredientId: data.data.id as string,
+        name,
+      }))
+    ),
   });
 }
 
