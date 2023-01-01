@@ -1,5 +1,15 @@
+"use client";
+import Input from "../../(ui)/Input";
+import classNames from "classnames";
+import { useState } from "react";
+
 export function useProductSearchState() {
-  return {};
+  const [searchStr, setSearchStr] = useState("");
+  return {
+    searchStr,
+    setSearchStr,
+    getSearchStr: () => (searchStr.length >= 3 ? searchStr : undefined),
+  };
 }
 
 interface Props {}
@@ -7,5 +17,15 @@ interface Props {}
 export default function ProductSearch({
   ...state
 }: ReturnType<typeof useProductSearchState> & Props) {
-  return <div className="border-b">Search</div>;
+  const className = classNames("border-b", "flex justify-between", "p-2");
+
+  return (
+    <div className={className}>
+      <Input
+        value={state.searchStr}
+        onValueChange={state.setSearchStr}
+        placeholder="Search for products..."
+      />
+    </div>
+  );
 }

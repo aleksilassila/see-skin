@@ -29,9 +29,22 @@ export async function find(
   res.status(200).send(products);
 }
 
-export async function getFeed(req: Request, res: Response) {
+export async function getFeed(
+  req: Request<{}, {}, {}, { name?: string }>,
+  res: Response
+) {
+  const { name } = req.query;
+
   const products = await prisma.product
     .findMany({
+      ...(name && {
+        where: {
+          name: {
+            contains: name,
+            mode: "insensitive",
+          },
+        },
+      }),
       ...extractPagination(req),
     })
     .catch(console.error);

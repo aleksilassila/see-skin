@@ -12,7 +12,11 @@ productsRouter.get(
   productsController.find
 );
 
-productsRouter.get("/feed", productsController.getFeed);
+productsRouter.get(
+  "/feed",
+  query("name").isString().optional(),
+  productsController.getFeed
+);
 
 productsRouter.get("/:id", productsController.get);
 

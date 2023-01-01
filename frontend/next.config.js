@@ -13,6 +13,12 @@ const nextConfig = {
         port: "",
         pathname: "/i/ulta/**",
       },
+      {
+        protocol: "https",
+        hostname: "foodinnetwork.websites.co.in",
+        port: "",
+        pathname: "/touche/img/**",
+      },
     ],
   },
 };

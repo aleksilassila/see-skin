@@ -6,6 +6,7 @@ import ProductItem from "./product-item";
 import { useProductFiltersState } from "../(product-filters)/product-filters";
 import { useProductSearchState } from "../(product-search)/product-search";
 import classNames from "classnames";
+import ProductFeedLoader, { useProductFeedLoader } from "./product-feed-loader";
 
 interface Props {
   filterState: ReturnType<typeof useProductFiltersState>;
@@ -14,19 +15,17 @@ interface Props {
 
 export default function ProductFeed({ filterState, searchState }: Props) {
   const { data, fetchNextPage, isFetching } = useInfiniteQuery(
-    ["products"],
-    async ({ pageParam = 0 }) => fetchProductsFeed(pageParam),
+    ["products", { searchStr: searchState.searchStr }],
+    async ({ pageParam = 0, queryKey }) =>
+      fetchProductsFeed(pageParam, searchState.getSearchStr()),
     {
       getNextPageParam: (lastPage, allPages) => {
         return allPages.length;
       },
     }
   );
-  const { ref, inView } = useInView();
 
-  useEffect(() => {
-    if (!isFetching) fetchNextPage();
-  }, [inView]);
+  const feedLoader = useProductFeedLoader(fetchNextPage);
 
   const gridClassName = classNames(
     "grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6",
@@ -42,7 +41,7 @@ export default function ProductFeed({ filterState, searchState }: Props) {
           ))}
         </Fragment>
       ))}
-      <div ref={ref} />
+      <ProductFeedLoader loaderRef={feedLoader.ref} isLoading={isFetching} />
     </div>
   );
 }
