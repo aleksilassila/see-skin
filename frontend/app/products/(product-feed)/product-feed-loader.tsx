@@ -1,5 +1,4 @@
 "use client";
-
 import { Ref, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 

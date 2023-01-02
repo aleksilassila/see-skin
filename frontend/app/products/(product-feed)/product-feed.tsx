@@ -1,5 +1,4 @@
-import { useInView } from "react-intersection-observer";
-import { Fragment, useEffect } from "react";
+"use client";
 import { useInfiniteQuery } from "react-query";
 import fetchProductsFeed from "../../(api)/products/fetch-products-feed";
 import ProductItem from "./product-item";
@@ -7,14 +6,25 @@ import { useProductFiltersState } from "../(product-filters)/product-filters";
 import { useProductSearchState } from "../(product-search)/product-search";
 import classNames from "classnames";
 import ProductFeedLoader, { useProductFeedLoader } from "./product-feed-loader";
+import { Product } from "../../(api)/types";
+import { useEffect, useState } from "react";
 
 interface Props {
   filterState: ReturnType<typeof useProductFiltersState>;
   searchState: ReturnType<typeof useProductSearchState>;
 }
 
+function useDirtyInfiniteQueryServerFix() {
+  const [enabled, setEnabled] = useState(false);
+
+  useEffect(() => setEnabled(true), []);
+
+  return enabled;
+}
+
 export default function ProductFeed({ filterState, searchState }: Props) {
-  const { data, fetchNextPage, isFetching } = useInfiniteQuery(
+  const infiniteQueryServerFix = useDirtyInfiniteQueryServerFix(); // FIXME remove this when react-query is fixed
+  const { data, fetchNextPage, isFetching } = useInfiniteQuery<Product[]>(
     ["products", { searchStr: searchState.searchStr }],
     async ({ pageParam = 0, queryKey }) =>
       fetchProductsFeed(pageParam, searchState.getSearchStr()),
@@ -22,6 +32,7 @@ export default function ProductFeed({ filterState, searchState }: Props) {
       getNextPageParam: (lastPage, allPages) => {
         return allPages.length;
       },
+      enabled: infiniteQueryServerFix,
     }
   );
 
@@ -34,12 +45,8 @@ export default function ProductFeed({ filterState, searchState }: Props) {
 
   return (
     <div className={gridClassName}>
-      {data?.pages.map((page, key) => (
-        <Fragment key={key}>
-          {page.data.map((product, key) => (
-            <ProductItem product={product} key={key} />
-          ))}
-        </Fragment>
+      {data?.pages.flat().map((product, key) => (
+        <ProductItem product={product} key={key} />
       ))}
       <ProductFeedLoader loaderRef={feedLoader.ref} isLoading={isFetching} />
     </div>
