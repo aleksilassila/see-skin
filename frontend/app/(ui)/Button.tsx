@@ -106,9 +106,9 @@ export function getButtonColoring({
   round = false,
   intent = "none",
 }: {
-  active: boolean;
-  round: ButtonProps<any>["round"];
-  intent: ButtonProps<any>["intent"];
+  active?: boolean;
+  round?: ButtonProps<any>["round"];
+  intent?: ButtonProps<any>["intent"];
 }) {
   return classNames("font-medium rounded-md text-center drop-shadow-sm", {
     "cursor-pointer": active,

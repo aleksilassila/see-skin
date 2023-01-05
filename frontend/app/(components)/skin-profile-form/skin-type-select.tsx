@@ -65,7 +65,7 @@ export default function SkinTypeSelect({
   const buttonClasses = classNames(
     "flex items-center gap-2 justify-between",
     "w-40",
-    getButtonColoring(true, {}),
+    getButtonColoring({}),
     getButtonSizing("md")
   );
 
