@@ -49,9 +49,7 @@ export default function RootLayout({
       <body className="min-h-screen flex flex-col">
         <QueryClientProvider client={queryClient}>
           <UserContext.Provider value={userContextValue}>
-            <Navigation />
-            <div className="flex-1 flex flex-col">{children}</div>
-            <Footer />
+            {children}
           </UserContext.Provider>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>

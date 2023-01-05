@@ -1,10 +1,5 @@
-import styled from "../Styled";
 import Logo from "../(navigation)/Logo";
 import { HTMLAttributes } from "react";
-
-const FooterContainer = styled(
-  "bg-black text-white p-16 gap-8 grid md:grid-flow-col"
-);
 
 const FooterLogo = () => {
   return (
@@ -26,7 +21,7 @@ const FooterSection = (
 };
 
 const Footer = () => (
-  <FooterContainer>
+  <div className="bg-black text-white p-16 gap-8 grid md:grid-flow-col">
     <FooterLogo />
     <FooterSection title="disclaimer">
       The information provided on see-skin is not medical advice and purely for
@@ -39,7 +34,7 @@ const Footer = () => (
       Send us feedback, feature suggestions or any questions you might have
       about the site:
     </FooterSection>
-  </FooterContainer>
+  </div>
 );
 
 export default Footer;

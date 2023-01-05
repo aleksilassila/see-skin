@@ -54,7 +54,9 @@ export async function importIngredients() {
           const ingredientClasses =
             ingredientClassesStr === ""
               ? []
-              : (ingredientClassesStr.split(",") as IngredientClass[]);
+              : (ingredientClassesStr
+                  .slice(1, -1)
+                  .split(",") as IngredientClass[]);
 
           const aliases = getAliases(combinedName);
 

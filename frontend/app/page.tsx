@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import SkinProfileForm from "./(components)/skin-profile-form/skin-profile-form";
+import WithNav from "./with-nav";
 
 interface CardContainerProps extends HTMLAttributes<HTMLDivElement> {
   size?: "sm" | "lg";
@@ -48,7 +49,7 @@ export default function Page() {
   const imageIgnorePadding = classNames("col-span-4");
 
   return (
-    <div className="flex flex-col items-center gap-8 mb-8">
+    <WithNav className="flex flex-col items-center gap-8 mb-8">
       <div
         id="landing"
         className="w-screen h-96 flex items-center justify-center bg-red-50"
@@ -156,6 +157,6 @@ export default function Page() {
           />
         </CardContainer>
       </div>
-    </div>
+    </WithNav>
   );
 }

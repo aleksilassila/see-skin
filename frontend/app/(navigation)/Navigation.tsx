@@ -34,7 +34,7 @@ const Navigation = ({
 
   return (
     <div
-      className={`h-20 flex justify-around items-center w-full z-10 shadow ${props.className}`}
+      className={`h-20 flex-shrink-0 flex justify-around items-center w-full z-20 shadow ${props.className}`}
       {...props}
     >
       <NavLink activeHref={href} href="/">

@@ -1,18 +1,94 @@
 "use client";
 import React, { HTMLAttributes, MouseEvent } from "react";
 import classNames from "classnames";
+import {
+  FontAwesomeIcon,
+  FontAwesomeIconProps,
+} from "@fortawesome/react-fontawesome";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 interface ButtonProps<T extends HTMLElement> extends HTMLAttributes<T> {
   disabled?: boolean;
   icon?: string;
   intent?: "none" | "primary" | "secondary" | "warning" | "danger";
   size?: "sm" | "md" | "lg";
-  minimal?: boolean;
+  leadingIcon?: IconProp;
+  trailingIcon?: IconProp;
+  round?: boolean;
+}
 
+export function Button({
+  disabled = false,
+  loading = false,
+  intent = "none",
+  size = "md",
+  leadingIcon,
+  trailingIcon,
+  round,
+  onClick = () => {},
+  ...props
+}: ButtonProps<HTMLButtonElement> & {
   loading?: boolean;
-  onClick?: (event: MouseEvent<T>) => void;
+  onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
+}) {
+  const active = !disabled && !loading;
+  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (disabled) return;
 
-  href: string;
+    onClick(e);
+  };
+
+  const style = classNames(
+    getButtonSizing(size),
+    getButtonColoring({ active, intent, round })
+  );
+
+  return (
+    <button
+      {...props}
+      type="button"
+      disabled={!active}
+      className={props.className || style}
+      onClick={handleClick}
+    >
+      {leadingIcon && <FontAwesomeIcon icon={leadingIcon} />}
+      {loading ? "Button loading..." : props.children}
+      {trailingIcon && <FontAwesomeIcon icon={trailingIcon} />}
+    </button>
+  );
+}
+
+export function AnchorButton({
+  disabled = false,
+  intent = "none",
+  size = "md",
+  round = false,
+  leadingIcon,
+  trailingIcon,
+  newTab = false,
+  ...props
+}: ButtonProps<HTMLAnchorElement> & { href: string; newTab?: boolean }) {
+  const style = classNames(
+    getButtonSizing(size),
+    getButtonColoring({
+      active: !disabled,
+      intent,
+      round,
+    }),
+    "inline-flex items-center justify-center"
+  );
+
+  return (
+    <a
+      {...props}
+      {...(newTab && { target: "_blank", rel: "noreferrer" })}
+      href={props.href}
+      className={props.className || style}
+    >
+      {props.children}
+    </a>
+  );
 }
 
 export function getButtonSizing(size: ButtonProps<any>["size"] = "md") {
@@ -25,14 +101,16 @@ export function getButtonSizing(size: ButtonProps<any>["size"] = "md") {
   });
 }
 
-export function getButtonColoring(
-  active: boolean,
-  {
-    intent = "none",
-    ...props
-  }: Pick<ButtonProps<any>, "intent" | "className" | "minimal">
-) {
-  return classNames(props.className, "font-medium rounded-md", {
+export function getButtonColoring({
+  active = true,
+  round = false,
+  intent = "none",
+}: {
+  active: boolean;
+  round: ButtonProps<any>["round"];
+  intent: ButtonProps<any>["intent"];
+}) {
+  return classNames("font-medium rounded-md text-center drop-shadow-sm", {
     "cursor-pointer": active,
     ...{
       none: {
@@ -44,8 +122,8 @@ export function getButtonColoring(
         "focus-within:ring": active,
       },
       primary: {
-        "bg-blue-400": true,
-        "hover:bg-blue-500": active,
+        "bg-blue-500 text-white drop-shadow": true,
+        "hover:bg-blue-400": active,
         "active:bg-blue-500": active,
         "focus-within:ring ": active,
       },
@@ -71,67 +149,4 @@ export function getButtonColoring(
       },
     }[intent],
   });
-}
-
-export function Button({
-  disabled = false,
-  loading = false,
-  intent = "none",
-  size = "md",
-  minimal = false,
-  onClick = () => {},
-  ...props
-}: Omit<ButtonProps<HTMLButtonElement>, "href">) {
-  const active = !disabled && !loading;
-  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    if (disabled) return;
-
-    onClick(e);
-  };
-
-  const className = classNames(
-    getButtonSizing(size),
-    getButtonColoring(active, {
-      ...props,
-      intent,
-      minimal,
-    })
-  );
-
-  return (
-    <button
-      {...props}
-      type="button"
-      disabled={!active}
-      className={className}
-      onClick={handleClick}
-    >
-      {loading ? "Button loading..." : props.children}
-    </button>
-  );
-}
-
-export function AnchorButton({
-  disabled = false,
-  intent = "none",
-  size = "md",
-  minimal = false,
-  ...props
-}: Omit<ButtonProps<HTMLAnchorElement>, "onClick" | "loading">) {
-  const className = classNames(
-    getButtonSizing(size),
-    getButtonColoring(!disabled, {
-      ...props,
-      intent,
-      minimal,
-    }),
-    "inline-flex items-center"
-  );
-
-  return (
-    <a {...props} href={props.href} className={className}>
-      {props.children}
-    </a>
-  );
 }

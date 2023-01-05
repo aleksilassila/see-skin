@@ -1,4 +1,4 @@
-import { Ingredient, Prisma, PrismaClient } from "@prisma/client";
+import { Ingredient, Prisma } from "@prisma/client";
 import * as fs from "fs";
 import { parse } from "csv-parse";
 import prisma from "../../src/prisma";

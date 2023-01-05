@@ -18,3 +18,5 @@
 // export const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || "";
 
 export const ENDPOINT = process.env.ENDPOINT || "http://localhost";
+export const PRODUCT_PLACEHOLDER_URL =
+  "https://foodinnetwork.websites.co.in/touche/img/product-placeholder.png";

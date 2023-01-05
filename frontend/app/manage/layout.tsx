@@ -4,6 +4,7 @@ import { useUser } from "../user";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import classNames from "classnames";
+import WithNav from "../with-nav";
 
 function SideBarSubHeader(props: PropsWithChildren) {
   return (
@@ -38,7 +39,7 @@ interface SideBarProps {}
 
 function SideBar(props: PropsWithChildren<SideBarProps>) {
   return (
-    <div className="flex flex-row h-full">
+    <WithNav className="flex-1 flex flex-row h-full">
       <div className="flex flex-col bg-stone-100 border-r border-stone-500 p-2">
         <SideBarLink href="/manage" exact>
           Overview
@@ -48,7 +49,7 @@ function SideBar(props: PropsWithChildren<SideBarProps>) {
         <SideBarLink href="/manage/ingredients">Ingredients</SideBarLink>
       </div>
       <div className="flex-1 pl-2">{props.children}</div>
-    </div>
+    </WithNav>
   );
 }
 

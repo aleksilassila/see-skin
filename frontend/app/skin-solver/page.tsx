@@ -9,6 +9,7 @@ import { useQuery } from "react-query";
 import IrritantItem from "./irritant-item";
 import { Button } from "../(ui)/Button";
 import { Ingredient, SkinType } from "../(api)/types";
+import WithNav from "../with-nav";
 
 function ShowIrritants({ irritants }: { irritants: Ingredient[] }) {
   if (irritants.length === 0) {
@@ -52,7 +53,7 @@ export default function SkinSolverPage() {
   }
 
   return (
-    <div>
+    <WithNav>
       <div>Skin solver</div>
       <ProductSelect {...productSelectState} />
       <Button
@@ -65,6 +66,6 @@ export default function SkinSolverPage() {
       {data ? (
         <ShowIrritants irritants={data.duplicates.map((d) => d.ingredient)} />
       ) : null}
-    </div>
+    </WithNav>
   );
 }

@@ -70,6 +70,8 @@ model User {
   accessLevel Int       @default(0)
   logoutAt    DateTime?
 
+  preferredProviders ProductProvider[] @default([])
+
   didSetupProfile Boolean  @default(false)
   skinType        SkinType @default(NORMAL)
 
