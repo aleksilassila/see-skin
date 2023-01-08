@@ -52,20 +52,19 @@ export default function Page() {
     <WithNav className="flex flex-col items-center gap-8 mb-8">
       <div
         id="landing"
-        className="w-screen h-96 flex items-center justify-center bg-red-50"
+        className="w-screen py-32 flex items-center justify-center bg-red-50"
       >
         <div id="welcome" className="max-w-2xl mx-8 sm:mx-16 xl:mx-24">
-          <h1 id="header" className="text-3xl font-bold mb-2">
-            Find all your skincare products in one place.
+          <h1 id="header" className="text-3xl font-bold mb-2 text-center">
+            Find your personal irritants & skincare all in one place
           </h1>
-          <p id="description" className="font-medium mb-8">
+          <p id="description" className="font-medium mb-8 text-center">
             Insert products into the box below that you suspect cause you
             irritation, breakouts, or any adverse effect, or those that you
             didn&apos;t have any benefit from.
           </p>
           <SkinProfileForm />
         </div>
-        <div id="solver"></div>
       </div>
       <div id="cards" className="grid grid-cols-2 gap-4 max-w-xl mx-2">
         <CardContainer className="bg-[#2B353F] text-white">

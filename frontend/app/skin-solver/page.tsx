@@ -7,7 +7,7 @@ import fetchIrritantsCalculation, {
 } from "../(api)/solver/fetch-irritants-calculation";
 import { useQuery } from "react-query";
 import IrritantItem from "./irritant-item";
-import { Button } from "../(ui)/Button";
+import { Button } from "../(ui)/button";
 import { Ingredient, SkinType } from "../(api)/types";
 import WithNav from "../with-nav";
 

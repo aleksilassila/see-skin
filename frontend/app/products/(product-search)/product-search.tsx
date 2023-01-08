@@ -1,9 +1,9 @@
 "use client";
-import Input from "../../(ui)/Input";
+import Input from "../../(ui)/input";
 import classNames from "classnames";
 import { useState } from "react";
 import { DrawerState } from "../../(ui)/drawer";
-import { Button } from "../../(ui)/Button";
+import { Button } from "../../(ui)/button";
 
 export type ProductSearchState = ReturnType<typeof useProductSearchState>;
 

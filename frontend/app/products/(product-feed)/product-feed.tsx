@@ -47,8 +47,7 @@ export default function ProductFeed({
   const gridClassName = classNames(
     "flex flex-wrap justify-center",
     "max-w-screen-2xl mx-auto",
-    "gap-2 p-2",
-    "overflow-y-scroll"
+    "gap-2 p-2"
   );
 
   return (

@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useUser } from "../user";
-import { AnchorButton, Button } from "../(ui)/Button";
+import { AnchorButton, Button } from "../(ui)/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faUser } from "@fortawesome/free-solid-svg-icons";
 import { Popover } from "@headlessui/react";
@@ -42,8 +42,6 @@ export default function LoginButton() {
           </div>
         </Popover.Panel>
       </Popover>
-
-      {/*<Button onClick={logOut}>Logout</Button>*/}
     </div>
   );
 }

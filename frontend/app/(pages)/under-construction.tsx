@@ -1,4 +1,4 @@
-import { AnchorButton } from "../(ui)/Button";
+import { AnchorButton } from "../(ui)/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 

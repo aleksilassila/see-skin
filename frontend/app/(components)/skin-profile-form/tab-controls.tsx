@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { UseQueryResult } from "react-query";
-import { Button } from "../../(ui)/Button";
+import { Button } from "../../(ui)/button";
 
 export function tabControls({
   selectedIndex,

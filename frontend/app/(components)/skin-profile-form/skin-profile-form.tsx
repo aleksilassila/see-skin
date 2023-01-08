@@ -16,6 +16,7 @@ import { useQuery } from "react-query";
 import updateUser from "../../(api)/user/update-user";
 import { useUser } from "../../user";
 import { tabControls } from "./tab-controls";
+import IrritativeIngredientSelect from "./irritative-ingredient-select";
 
 export default function SkinProfileForm() {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -98,6 +99,9 @@ export default function SkinProfileForm() {
               Select irritative products
             </TabItem>
             <TabItem selectedIndex={selectedIndex} tabIndex={2}>
+              Select irritative ingredients
+            </TabItem>
+            <TabItem selectedIndex={selectedIndex} tabIndex={3}>
               Results
             </TabItem>
           </Tab.List>
@@ -111,6 +115,12 @@ export default function SkinProfileForm() {
           </Tab.Panel>
           <Tab.Panel>
             <IrritativeProductSelect
+              {...productSearchState}
+              TabControls={TabControlsRendered}
+            />
+          </Tab.Panel>
+          <Tab.Panel>
+            <IrritativeIngredientSelect
               {...productSearchState}
               TabControls={TabControlsRendered}
             />

@@ -1,12 +1,13 @@
 "use client";
 import { Listbox } from "@headlessui/react";
 import { PropsWithChildren, useState } from "react";
-import { getButtonColoring, getButtonSizing } from "../../(ui)/Button";
+import { getButtonColoring, getButtonSizing } from "../../(ui)/button";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { SkinType } from "../../(api)/types";
 import { TabControlsRendered } from "./tab-controls";
+import Toggle, { ToggleData, useToggleState } from "../../(ui)/toggle";
 
 const skinTypes = [
   { id: 1, name: "Dry" },
@@ -15,31 +16,51 @@ const skinTypes = [
   { id: 4, name: "Combination" },
 ];
 
+const sensitive = {
+  sensitive: false,
+} satisfies ToggleData;
+
+const skinTypeToggleData = {
+  dry: false,
+  normal: false,
+  oily: false,
+  combination: false,
+} satisfies ToggleData;
+
+const skinTypeToggleLabels = {
+  dry: "Dry",
+  normal: "Normal",
+  oily: "Oily",
+  combination: "Combination",
+};
+
 export function useSkinTypeSelectState() {
+  const skinTypeToggles = useToggleState(skinTypeToggleData, false);
+  const sensitiveToggle = useToggleState(sensitive, false);
   const [selectedSkinType, setSelectedSkinType] = useState(skinTypes[1]);
   const [isSensitive, setIsSensitive] = useState(false);
 
   function getSkinType(): SkinType {
-    if (!isSensitive) {
-      switch (selectedSkinType.name) {
-        case "Dry":
+    if (!sensitiveToggle.values.sensitive) {
+      switch (skinTypeToggles.getFirstActive()) {
+        case "dry":
           return SkinType.DRY;
-        case "Normal":
+        case "normal":
           return SkinType.NORMAL;
-        case "Oily":
+        case "oily":
           return SkinType.OILY;
-        case "Combination":
+        case "combination":
           return SkinType.COMBINATION;
       }
     } else {
-      switch (selectedSkinType.name) {
-        case "Dry":
+      switch (skinTypeToggles.getFirstActive()) {
+        case "dry":
           return SkinType.DRY_SENSITIVE;
-        case "Normal":
+        case "normal":
           return SkinType.NORMAL_SENSITIVE;
-        case "Oily":
+        case "oily":
           return SkinType.OILY_SENSITIVE;
-        case "Combination":
+        case "combination":
           return SkinType.COMBINATION_SENSITIVE;
       }
     }
@@ -48,10 +69,8 @@ export function useSkinTypeSelectState() {
   }
 
   return {
-    selectedSkinType,
-    setSelectedSkinType,
-    isSensitive,
-    setIsSensitive,
+    skinTypeToggles,
+    sensitiveToggle,
     getSkinType,
   };
 }
@@ -82,44 +101,49 @@ export default function SkinTypeSelect({
   );
 
   return (
-    <div className="flex gap-2">
-      <Listbox
-        value={state.selectedSkinType}
-        onChange={state.setSelectedSkinType}
-      >
-        {({ open }) => (
-          <div className="">
-            <Label>Select your skin type</Label>
-            <Listbox.Button className={buttonClasses}>
-              {state.selectedSkinType.name}
-              <FontAwesomeIcon
-                icon={open ? faChevronUp : faChevronDown}
-                className="h-3"
-              />
-            </Listbox.Button>
-            <Listbox.Options className={floaterClasses}>
-              {skinTypes.map((skinType) => (
-                <Listbox.Option
-                  key={skinType.id}
-                  value={skinType}
-                  className={floaterItemClasses}
-                >
-                  {skinType.name}
-                </Listbox.Option>
-              ))}
-            </Listbox.Options>
-          </div>
-        )}
-      </Listbox>
-      <div>
-        <Label>Do you have sensitive skin?</Label>
-        <input
-          type="checkbox"
-          checked={state.isSensitive}
-          onChange={() => state.setIsSensitive(!state.isSensitive)}
-        />
+    <div className="flex flex-col gap-4 items-center">
+      <h2 className="text-center text-lg font-medium mt-4 text-zinc-800">
+        What is your skin type?
+      </h2>
+      <div className="grid grid-cols-2 gap-4 w-64">
+        <Toggle
+          value={state.skinTypeToggles.values.dry}
+          toggle={state.skinTypeToggles.toggle("dry")}
+        >
+          Dry
+        </Toggle>
+        <Toggle
+          value={state.skinTypeToggles.values.normal}
+          toggle={state.skinTypeToggles.toggle("normal")}
+        >
+          Normal
+        </Toggle>
+        <Toggle
+          value={state.skinTypeToggles.values.oily}
+          toggle={state.skinTypeToggles.toggle("oily")}
+        >
+          Oily
+        </Toggle>
+        <Toggle
+          value={state.skinTypeToggles.values.combination}
+          toggle={state.skinTypeToggles.toggle("combination")}
+        >
+          Combination
+        </Toggle>
       </div>
-      <TabControls canAdvance={true} />
+      <div className="mb-2 flex flex-col items-center">
+        <h2 className="text-sm text-zinc-800 mb-2">
+          Do you have a sensitive skin?
+        </h2>
+        <Toggle
+          value={state.sensitiveToggle.values.sensitive}
+          toggle={state.sensitiveToggle.toggle("sensitive")}
+          className="w-32"
+        >
+          Sensitive
+        </Toggle>
+      </div>
+      <TabControls canAdvance={!!state.skinTypeToggles.getFirstActive()} />
     </div>
   );
 }

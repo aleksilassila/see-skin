@@ -5,7 +5,7 @@ import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCross, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { PRODUCT_PLACEHOLDER_URL } from "../../config";
-import { AnchorButton, Button } from "../../(ui)/Button";
+import { AnchorButton, Button } from "../../(ui)/button";
 
 export type ProductDetailsState = ReturnType<typeof useProductDetailsState>;
 
