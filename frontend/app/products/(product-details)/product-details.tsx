@@ -3,9 +3,10 @@ import Image from "next/image";
 import { Product } from "../../(api)/types";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCross, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { PRODUCT_PLACEHOLDER_URL } from "../../config";
-import { AnchorButton, Button } from "../../(ui)/button";
+import { AnchorButton } from "../../(ui)/button";
+import { faAmazon } from "@fortawesome/free-brands-svg-icons";
 
 export type ProductDetailsState = ReturnType<typeof useProductDetailsState>;
 
@@ -57,19 +58,35 @@ export default function ProductDetails({
         </div>
         <div>
           <div className="uppercase font-medium text-xs text-zinc-400">
-            cleanser
+            {product.category}
           </div>
-          <div className="text-lg font-medium text-zinc-900">
-            {product.name}
+
+          <div className="flex space-between">
+            <div className="text-lg font-medium text-zinc-900 flex-1">
+              {product.name}
+            </div>
+            {product.price && (
+              <div className="text-zinc-600">${product.price}</div>
+            )}
           </div>
         </div>
         {product.description && (
           <div className="text-zinc-900">{product.description}</div>
         )}
+        {!!product.effects.length && (
+          <div className="flex w-full">
+            <span className="text-zinc-400 font-medium">Effects</span>
+            <div className="flex-1 text-right text-sm">
+              {product.effects.join(", ")}
+            </div>
+          </div>
+        )}
         <AnchorButton
           intent="primary"
           disabled={!product.shopPageUrl}
           href={product.shopPageUrl || ""}
+          leadingIcon={faAmazon}
+          iconStyle={"h-4 mr-2"}
           newTab
         >
           {product.shopPageUrl ? "View store page" : "No store page available"}

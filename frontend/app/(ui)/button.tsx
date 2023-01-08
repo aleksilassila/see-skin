@@ -1,5 +1,5 @@
 "use client";
-import React, { HTMLAttributes, MouseEvent } from "react";
+import React, { HTMLAttributes, MouseEvent, PropsWithChildren } from "react";
 import classNames from "classnames";
 import {
   FontAwesomeIcon,
@@ -10,11 +10,13 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 interface ButtonProps<T extends HTMLElement> extends HTMLAttributes<T> {
   disabled?: boolean;
   icon?: string;
+  iconStyle?: string;
   intent?: "none" | "primary" | "secondary" | "warning" | "danger";
   size?: "sm" | "md" | "lg";
   leadingIcon?: IconProp;
   trailingIcon?: IconProp;
   round?: boolean;
+  overwriteStyles?: boolean;
 }
 
 export function Button({
@@ -40,6 +42,7 @@ export function Button({
   };
 
   const style = classNames(
+    props.className,
     getButtonSizing(size),
     getButtonColoring({ active, intent, round })
   );
@@ -49,12 +52,17 @@ export function Button({
       {...props}
       type="button"
       disabled={!active}
-      className={props.className || style}
+      className={(props.overwriteStyles && props.className) || style}
       onClick={handleClick}
     >
-      {leadingIcon && <FontAwesomeIcon icon={leadingIcon} />}
-      {loading ? "Button loading..." : props.children}
-      {trailingIcon && <FontAwesomeIcon icon={trailingIcon} />}
+      <IconWrapper
+        leadingIcon={leadingIcon}
+        trailingIcon={trailingIcon}
+        size={size}
+        iconStyle={props.iconStyle}
+      >
+        {loading ? "Button loading..." : props.children}
+      </IconWrapper>
     </button>
   );
 }
@@ -70,6 +78,7 @@ export function AnchorButton({
   ...props
 }: ButtonProps<HTMLAnchorElement> & { href: string; newTab?: boolean }) {
   const style = classNames(
+    props.className,
     getButtonSizing(size),
     getButtonColoring({
       active: !disabled,
@@ -84,10 +93,53 @@ export function AnchorButton({
       {...props}
       {...(newTab && { target: "_blank", rel: "noreferrer" })}
       href={props.href}
-      className={props.className || style}
+      className={(props.overwriteStyles && props.className) || style}
     >
-      {props.children}
+      <IconWrapper
+        leadingIcon={leadingIcon}
+        trailingIcon={trailingIcon}
+        size={size}
+        iconStyle={props.iconStyle}
+      >
+        {props.children}
+      </IconWrapper>
     </a>
+  );
+}
+
+function IconWrapper({
+  leadingIcon,
+  trailingIcon,
+  size = "md",
+  iconStyle,
+  children,
+}: PropsWithChildren<{
+  leadingIcon: ButtonProps<any>["leadingIcon"];
+  trailingIcon: ButtonProps<any>["trailingIcon"];
+  size: ButtonProps<any>["size"];
+  iconStyle: ButtonProps<any>["iconStyle"];
+}>) {
+  const style = classNames(
+    {
+      sm: "h-2",
+      md: "h-3",
+      lg: "h-4",
+    }[size],
+    {
+      "mr-2": !!leadingIcon,
+      "ml-2": !!trailingIcon,
+    }
+  );
+  return (
+    <>
+      {leadingIcon && (
+        <FontAwesomeIcon icon={leadingIcon} className={iconStyle || style} />
+      )}
+      {children}
+      {trailingIcon && (
+        <FontAwesomeIcon icon={trailingIcon} className={iconStyle || style} />
+      )}
+    </>
   );
 }
 

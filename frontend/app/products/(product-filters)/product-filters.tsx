@@ -91,7 +91,7 @@ function FiltersContainer({
 }: PropsWithChildren<DrawerState>) {
   return (
     <Fragment>
-      <div className="hidden sm:block border-r p-2 bg-zinc-50">{children}</div>
+      <div className="hidden sm:block border-r p-2 bg-zinc-100">{children}</div>
       <Drawer
         bgStyle="block sm:hidden"
         {...state}

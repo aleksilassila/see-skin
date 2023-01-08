@@ -1,4 +1,10 @@
-import { Ingredient, Prisma } from "@prisma/client";
+import {
+  Ingredient,
+  Prisma,
+  ProductProvider,
+  ProductEffect,
+  ProductCategory,
+} from "@prisma/client";
 import * as fs from "fs";
 import { parse } from "csv-parse";
 import prisma from "../../src/prisma";
@@ -6,8 +12,8 @@ import cuid = require("cuid");
 
 // const prisma = new PrismaClient();
 
-const CSV_FILE = "./prisma/csv/products-full.csv";
-const N_OF_COLUMNS = 4;
+const CSV_FILE = "./prisma/csv/amazon-products.csv";
+const N_OF_COLUMNS = 8;
 const BATCH_SIZE = 100;
 
 export async function importProducts() {
@@ -33,7 +39,7 @@ export async function importProducts() {
         let productsCreateBatch: ReturnType<typeof createProduct>[] = [];
         for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
           const row = rows[rowIndex];
-          let [name, ingredientsCombined, imageUrl, shopPageUrl] = row;
+          const product = parseAmazonProduct(row);
 
           // const ingredientsToConnect = await getIngredientsToConnect(
           //   ingredientsCombined
@@ -43,9 +49,7 @@ export async function importProducts() {
           //   `Adding ${name} with ${ingredientsToConnect.length} ingredients...`
           // );
 
-          productsCreateBatch.push(
-            createProduct(name, ingredientsCombined, imageUrl, shopPageUrl)
-          );
+          productsCreateBatch.push(createProduct(parseAmazonProduct(row)));
 
           if (
             productsCreateBatch.length >= BATCH_SIZE ||
@@ -161,19 +165,16 @@ async function getIngredientsToConnect(
   };
 }
 
-async function createProduct(
-  name: string,
-  ingredientsString: string,
-  imageUrl: string,
-  shopPageUrl: string
-): Promise<{
+async function createProduct(product: ParsedProduct): Promise<{
   data: Prisma.ProductCreateInput;
   ingredientIds: string[];
 }> {
-  const ingredientsToConnect = await getIngredientsToConnect(ingredientsString);
+  const ingredientsToConnect = await getIngredientsToConnect(
+    product.ingredientsCombined
+  );
   console.log(
     "Creating product",
-    name,
+    product.name,
     "with ratio",
     ingredientsToConnect.ratio
   );
@@ -181,11 +182,14 @@ async function createProduct(
   return {
     data: {
       id: cuid(),
-      name,
-      ingredientsString,
-      imageUrl,
-      shopPageUrl,
-      price: 0,
+      name: product.name,
+      ingredientsString: product.ingredientsCombined,
+      imageUrl: product.imageUrl,
+      shopPageUrl: product.shopPageUrl,
+      price: product.price,
+      category: product.category,
+      effects: product.effects,
+      brand: product.brand,
       knownToUnknownRatio: ingredientsToConnect.ratio * 100,
       unknownIngredients: ingredientsToConnect.unknown,
     },
@@ -218,6 +222,55 @@ function seePackaging(ingredientsStr: string): boolean {
   }
 
   return false;
+}
+
+interface ParsedProduct {
+  name: string;
+  ingredientsCombined: string;
+  brand: string;
+  price: number;
+  imageUrl: string;
+  shopPageUrl: string;
+  provider?: ProductProvider;
+  effects?: ProductEffect[];
+  category?: ProductCategory;
+}
+
+function parseUltaRow(row: string[]): ParsedProduct {
+  const [name, ingredientsCombined, imageUrl, shopPageUrl] = row;
+  return {
+    name,
+    ingredientsCombined,
+    imageUrl,
+    shopPageUrl,
+    price: 0,
+    brand: "",
+  };
+}
+
+function parseAmazonProduct(row: string[]): ParsedProduct {
+  // product-image-src;product-name;product-brand;product-price;product-link-href;product-ingredients;product-effect;product-category
+  const [
+    imageUrl,
+    name,
+    brand,
+    price,
+    shopPageUrl,
+    ingredientsCombined,
+    effect,
+    category,
+  ] = row;
+
+  return {
+    imageUrl,
+    name,
+    brand,
+    price: Number(price.replace("$", "")) || 0,
+    shopPageUrl,
+    ingredientsCombined,
+    effects: !!effect ? (effect.split(",") as ProductEffect[]) : undefined,
+    category: (category as ProductCategory) || undefined,
+  };
 }
 
 // importProducts()

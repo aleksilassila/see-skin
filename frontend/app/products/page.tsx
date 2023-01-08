@@ -23,7 +23,7 @@ export default function ProductsPage() {
       <Navigation />
       <div className="flex-1 flex min-h-0 relative">
         <ProductFilters drawerState={drawerState} {...productFilterState} />
-        <div className="flex-1 min-h-0 overflow-y-scroll">
+        <div className="flex-1 min-h-0 overflow-y-scroll bg-stone-50">
           <ProductSearch drawerState={drawerState} {...productSearchState} />
           <ProductFeed
             filterState={productFilterState}

@@ -1,7 +1,7 @@
 "use client";
 import { useInfiniteQuery } from "react-query";
 import fetchProductsFeed from "../../(api)/products/fetch-products-feed";
-import ProductItem from "./product-item";
+import ProductFeedCard from "./product-feed-card";
 import { ProductFiltersState } from "../(product-filters)/product-filters";
 import { ProductSearchState } from "../(product-search)/product-search";
 import classNames from "classnames";
@@ -47,13 +47,13 @@ export default function ProductFeed({
   const gridClassName = classNames(
     "flex flex-wrap justify-center",
     "max-w-screen-2xl mx-auto",
-    "gap-2 p-2"
+    "gap-6 p-6"
   );
 
   return (
     <div className={gridClassName}>
       {data?.pages.flat().map((product, key) => (
-        <ProductItem
+        <ProductFeedCard
           setProductDetails={productDetailsState.setProduct}
           product={product}
           key={key}

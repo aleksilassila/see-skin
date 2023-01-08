@@ -8,8 +8,29 @@ export interface Product {
   id: string;
   name: string;
   description: string;
+  brand: string;
+  price: number;
+  priceBeforeDiscount?: number;
+  priceCurrency: Currency;
+  rating?: number;
+  ratingCount?: number;
+  effects: ProductEffect[];
+  category?: ProductCategory;
+
   imageUrl?: string;
   shopPageUrl?: string;
+}
+
+export interface Ingredient {
+  id: string;
+  name: string;
+  cosingRef: number;
+  description: string;
+  function: string;
+  aliases?: IngredientAlias[];
+  ingredientClasses: IngredientClass[];
+  updatedAt: Date;
+  createdAt: Date;
 }
 
 export enum IngredientClass {
@@ -35,14 +56,37 @@ export enum SkinType {
   COMBINATION_SENSITIVE = "COMBINATION_SENSITIVE",
 }
 
-export interface Ingredient {
-  id: string;
-  name: string;
-  cosingRef: number;
-  description: string;
-  function: string;
-  aliases?: IngredientAlias[];
-  ingredientClasses: IngredientClass[];
-  updatedAt: Date;
-  createdAt: Date;
+export enum Currency {
+  USD = "USD",
+  EUR = "EUR",
+}
+
+export enum ProductProvider {
+  ULTA = "ULTA",
+  AMAZON = "AMAZON",
+}
+
+export enum ProductCategory {
+  MOISTURIZERS = "MOISTURIZERS",
+  SUNSCREENS = "SUNSCREENS",
+  TREATMENTS = "TREATMENTS",
+  CLEANSERS = "CLEANSERS",
+  EYE_CREAMS = "EYE_CREAMS",
+  FACE_WASHES = "FACE_WASHES",
+  EXFOLIATORS = "EXFOLIATORS",
+  TONERS = "TONERS",
+  FACE_MISTS = "FACE_MISTS",
+  FACE_OILS = "FACE_OILS",
+  SERUMS = "SERUMS",
+  FACE_MASKS = "FACE_MASKS",
+  MAKEUP_REMOVERS = "MAKEUP_REMOVERS",
+  LIP_CARES = "LIP_CARES",
+}
+
+export enum ProductEffect {
+  UV_PROTECTING = "UV_PROTECTING",
+  ANTI_AGING = "ANTI_AGING",
+  BRIGHTENING = "BRIGHTENING",
+  ACNE_FIGHTING = "ACNE_FIGHTING",
+  HEALING = "HEALING",
 }

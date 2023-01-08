@@ -5,7 +5,8 @@ import { AnchorButton, Button } from "../(ui)/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faUser } from "@fortawesome/free-solid-svg-icons";
 import { Popover } from "@headlessui/react";
-
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { faFacebook } from "@fortawesome/free-brands-svg-icons";
 export default function LoginButton() {
   const router = useRouter();
   const user = useUser();
@@ -17,7 +18,11 @@ export default function LoginButton() {
 
   if (!user?.user) {
     return (
-      <AnchorButton intent="secondary" href="/api/auth/google">
+      <AnchorButton
+        intent="secondary"
+        href="/api/auth/google"
+        leadingIcon={faGoogle}
+      >
         Login
       </AnchorButton>
     );

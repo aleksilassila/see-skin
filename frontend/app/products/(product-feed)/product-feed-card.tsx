@@ -3,25 +3,25 @@ import classNames from "classnames";
 import { Product } from "../../(api)/types";
 import { ProductDetailsState } from "../(product-details)/product-details";
 import { PRODUCT_PLACEHOLDER_URL } from "../../config";
+import { Button } from "../../(ui)/button";
 
 interface Props {
   product: Product;
   setProductDetails: ProductDetailsState["setProduct"];
 }
 
-export default function ProductItem({ product, setProductDetails }: Props) {
+export default function ProductFeedCard({ product, setProductDetails }: Props) {
   const className = classNames(
-    "w-52 h-72",
-    "flex flex-col",
-    "w-full h-full",
-    "border rounded-md p-2"
+    "w-64 h-96",
+    "flex flex-col gap-4 space-between",
+    "shadow rounded-md p-2 bg-white"
   );
   return (
     <div className={className}>
       <div className="flex-shrink grow min-h-0 flex justify-center">
         <Image
-          width={200}
-          height={200}
+          width={300}
+          height={300}
           quality={50}
           src={product.imageUrl || PRODUCT_PLACEHOLDER_URL}
           alt={product.name}
@@ -29,10 +29,18 @@ export default function ProductItem({ product, setProductDetails }: Props) {
         />
       </div>
       <div className="flex-initial">
-        <div className="font-medium text-sm mb-2">{product.name}</div>
-        {product.description && (
-          <div className="text-sm mb-2">{product.description}</div>
-        )}
+        <div className="mb-2">
+          <div className="font-medium text-sm">
+            {product.name.substring(0, 24).trimEnd()}
+            {product.name.length >= 24 && "..."}
+          </div>
+          {product.description && (
+            <div className="text-sm mb-2">{product.description}</div>
+          )}
+          {product.price && (
+            <div className="text-zinc-600 text-sm">${product.price}</div>
+          )}
+        </div>
         <InfoButton onClick={() => setProductDetails(product)} />
       </div>
     </div>
@@ -46,8 +54,13 @@ function InfoButton({ onClick }: { onClick: () => void }) {
     "p-1 w-full block text-center cursor-pointer"
   );
   return (
-    <div onClick={onClick} className={className}>
+    <Button
+      onClick={onClick}
+      intent="secondary"
+      size="sm"
+      className="w-full text-zinc-800"
+    >
       SHOW DETAILS
-    </div>
+    </Button>
   );
 }

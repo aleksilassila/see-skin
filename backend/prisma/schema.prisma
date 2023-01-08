@@ -11,15 +11,17 @@ datasource db {
 }
 
 model Product {
-  id                  String   @id @default(cuid())
+  id                  String           @id @default(cuid())
   name                String
-  description         String   @default("")
-  brand               String   @default("")
+  description         String           @default("")
+  brand               String           @default("")
   price               Float
   priceBeforeDiscount Float?
-  priceCurrency       Currency @default(USD)
+  priceCurrency       Currency         @default(USD)
   rating              Float?
   ratingCount         Int?
+  effects             ProductEffect[]  @default([])
+  category            ProductCategory?
 
   imageUrl            String?
   shopPageUrl         String?
@@ -112,4 +114,29 @@ enum Currency {
 enum ProductProvider {
   ULTA
   AMAZON
+}
+
+enum ProductCategory {
+  MOISTURIZERS
+  SUNSCREENS
+  TREATMENTS
+  CLEANSERS
+  EYE_CREAMS
+  FACE_WASHES
+  EXFOLIATORS
+  TONERS
+  FACE_MISTS
+  FACE_OILS
+  SERUMS
+  FACE_MASKS
+  MAKEUP_REMOVERS
+  LIP_CARES
+}
+
+enum ProductEffect {
+  UV_PROTECTING
+  ANTI_AGING
+  BRIGHTENING
+  ACNE_FIGHTING
+  HEALING
 }
