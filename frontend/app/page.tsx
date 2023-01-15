@@ -4,8 +4,8 @@ import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
-import SkinProfileForm from "./(components)/skin-profile-form/skin-profile-form";
 import WithNav from "./with-nav";
+import SkinProfileForm from "./components/skin-profile-form/skin-profile-form";
 
 interface CardContainerProps extends HTMLAttributes<HTMLDivElement> {
   size?: "sm" | "lg";

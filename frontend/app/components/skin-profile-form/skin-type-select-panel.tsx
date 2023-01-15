@@ -1,13 +1,10 @@
 "use client";
-import { Listbox } from "@headlessui/react";
 import { PropsWithChildren, useState } from "react";
 import { getButtonColoring, getButtonSizing } from "../../(ui)/button";
 import classNames from "classnames";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { SkinType } from "../../(api)/types";
-import { TabControlsRendered } from "./tab-controls";
 import Toggle, { ToggleData, useToggleState } from "../../(ui)/toggle";
+import { Tab } from "@headlessui/react";
 
 const skinTypes = [
   { id: 1, name: "Dry" },
@@ -34,7 +31,11 @@ const skinTypeToggleLabels = {
   combination: "Combination",
 };
 
-export function useSkinTypeSelectState() {
+export type SkinTypeSelectPanelState = ReturnType<
+  typeof useSkinTypeSelectPanelState
+>;
+
+export function useSkinTypeSelectPanelState() {
   const skinTypeToggles = useToggleState(skinTypeToggleData, false);
   const sensitiveToggle = useToggleState(sensitive, false);
   const [selectedSkinType, setSelectedSkinType] = useState(skinTypes[1]);
@@ -75,12 +76,9 @@ export function useSkinTypeSelectState() {
   };
 }
 
-export default function SkinTypeSelect({
-  TabControls,
-  ...state
-}: ReturnType<typeof useSkinTypeSelectState> & {
-  TabControls: TabControlsRendered;
-}) {
+export default function SkinTypeSelectPanel(
+  state: ReturnType<typeof useSkinTypeSelectPanelState>
+) {
   const buttonClasses = classNames(
     "flex items-center gap-2 justify-between",
     "w-40",
@@ -101,7 +99,7 @@ export default function SkinTypeSelect({
   );
 
   return (
-    <div className="flex flex-col gap-4 items-center">
+    <Tab.Panel className="flex flex-col gap-4 items-center">
       <h2 className="text-center text-lg font-medium mt-4 text-zinc-800">
         What is your skin type?
       </h2>
@@ -143,8 +141,7 @@ export default function SkinTypeSelect({
           Sensitive
         </Toggle>
       </div>
-      <TabControls canAdvance={!!state.skinTypeToggles.getFirstActive()} />
-    </div>
+    </Tab.Panel>
   );
 }
 

@@ -1,14 +1,14 @@
 "use client";
 import { Button } from "../../../(ui)/button";
-import IngredientSearch, {
-  useIngredientSearchState,
-} from "../../../(components)/ingredient-search";
 import SelectIngredientClasses, {
   useSelectIngredientClassState,
 } from "./select-ingredient-classes";
 import { useQuery } from "react-query";
 import Api from "../../../(api)/api";
 import { Ingredient } from "../../../(api)/types";
+import IngredientSearch, {
+  useIngredientSearchState,
+} from "../../../components/ingredient-search";
 
 export default function ManageIngredientsActions() {
   const {

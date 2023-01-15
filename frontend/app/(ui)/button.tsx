@@ -85,7 +85,7 @@ export function AnchorButton({
       intent,
       round,
     }),
-    "inline-flex items-center justify-center"
+    "inline-flex"
   );
 
   return (
@@ -121,17 +121,13 @@ function IconWrapper({
 }>) {
   const style = classNames(
     {
-      sm: "h-2",
+      sm: "h-3",
       md: "h-3",
       lg: "h-4",
-    }[size],
-    {
-      "mr-2": !!leadingIcon,
-      "ml-2": !!trailingIcon,
-    }
+    }[size]
   );
   return (
-    <>
+    <div className="inline-flex items-center justify-center gap-2">
       {leadingIcon && (
         <FontAwesomeIcon icon={leadingIcon} className={iconStyle || style} />
       )}
@@ -139,7 +135,7 @@ function IconWrapper({
       {trailingIcon && (
         <FontAwesomeIcon icon={trailingIcon} className={iconStyle || style} />
       )}
-    </>
+    </div>
   );
 }
 
@@ -147,7 +143,7 @@ export function getButtonSizing(size: ButtonProps<any>["size"] = "md") {
   return classNames({
     ...{
       sm: { "text-sm h-8 px-2 md:px-4": true },
-      md: { "h-10 px-2 md:px-4": true },
+      md: { "h-10 px-3 md:px-4": true },
       lg: { "h-12 px-2 md:px-8": true },
     }[size],
   });

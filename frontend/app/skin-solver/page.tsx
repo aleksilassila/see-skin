@@ -1,7 +1,4 @@
 "use client";
-import ProductSelect, {
-  useProductSearchState,
-} from "./(product-search)/product-search";
 import fetchIrritantsCalculation, {
   IrritantsCalculationResponse,
 } from "../(api)/solver/fetch-irritants-calculation";
@@ -10,6 +7,9 @@ import IrritantItem from "./irritant-item";
 import { Button } from "../(ui)/button";
 import { Ingredient, SkinType } from "../(api)/types";
 import WithNav from "../with-nav";
+import ProductSearch, {
+  useProductSearchState,
+} from "../components/product-search";
 
 function ShowIrritants({ irritants }: { irritants: Ingredient[] }) {
   if (irritants.length === 0) {
@@ -46,20 +46,20 @@ export default function SkinSolverPage() {
 
   async function fetch(): Promise<IrritantsCalculationResponse> {
     return fetchIrritantsCalculation(
-      productSelectState.products,
-      [],
-      SkinType.NORMAL
+      SkinType.NORMAL,
+      productSelectState.selected,
+      []
     );
   }
 
   return (
     <WithNav>
       <div>Skin solver</div>
-      <ProductSelect {...productSelectState} />
+      <ProductSearch {...productSelectState} />
       <Button
         onClick={() => refetch()}
         loading={isLoading || isRefetching}
-        disabled={productSelectState.products.length < 2}
+        disabled={productSelectState.selected.length < 2}
       >
         Calculate
       </Button>

@@ -9,7 +9,6 @@ const ingredientsRouter = Router();
 
 ingredientsRouter.get(
   "/find",
-  requireAuthLevel(1),
   query("name").isString(),
   validateRequest,
   ingredientsController.find

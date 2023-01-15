@@ -23,7 +23,7 @@ export default function LoginButton() {
         href="/api/auth/google"
         leadingIcon={faGoogle}
       >
-        Login
+        Sign in
       </AnchorButton>
     );
   }

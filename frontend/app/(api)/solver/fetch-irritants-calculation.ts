@@ -19,9 +19,9 @@ export interface IrritantsCalculationResponse {
 }
 
 export default async function fetchIrritantsCalculation(
+  skinType: SkinType,
   products: Product[],
-  ingredients: Ingredient[],
-  skinType: SkinType
+  ingredients: Ingredient[]
 ): Promise<IrritantsCalculationResponse> {
   return Api.fetch<IrritantsCalculationResponse>(
     "/ingredients/calculate-irritants",
