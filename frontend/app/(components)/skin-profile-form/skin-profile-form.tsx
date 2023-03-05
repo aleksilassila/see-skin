@@ -62,18 +62,18 @@ export default function SkinProfileForm() {
           }
         }}
       >
-        <div className="border-b flex justify-between divide-x font-medium text-sm px-2">
-          <Tab.List className="flex divide-x">
+        <div className=" flex font-medium text-sm ">
+          <Tab.List className="border-b flex-1 px-4 grid grid-cols-3 divide-x">
             <TabLabel selectedIndex={currentTab} tabIndex={0}>
-              Select skin type
+              Skin Type
             </TabLabel>
             <TabLabel selectedIndex={currentTab} tabIndex={1}>
-              Select irritative products
+              Irritative Products
             </TabLabel>
-            <TabLabel selectedIndex={currentTab} tabIndex={2}>
-              Select irritative ingredients
-            </TabLabel>
-            <TabLabel hidden selectedIndex={currentTab} tabIndex={3}>
+            {/*<TabLabel selectedIndex={currentTab} tabIndex={2}>*/}
+            {/*  Select irritative ingredients*/}
+            {/*</TabLabel>*/}
+            <TabLabel selectedIndex={currentTab} tabIndex={3}>
               Results
             </TabLabel>
           </Tab.List>
@@ -84,15 +84,15 @@ export default function SkinProfileForm() {
           <IngredientSelectPanel {...ingredientsState} />
           <IrritantResultsPanel {...resultsState} />
         </Tab.Panels>
-        <div className="flex gap-2 p-2 justify-center">
+        <div className="flex gap-2 p-6 justify-center">
           <PreviousTab
             isHidden={currentTab === 0}
-            currentTab={currentTab}
+            // currentTab={currentTab}
             onClick={() => setCurrentTab((p) => p - 1)}
           />
           <NextTab
             isHidden={currentTab === 3}
-            currentTab={0}
+            // currentTab={0}
             isDisabled={!canAdvance}
             isLoading={resultsState.resultsQuery.isFetching ?? false}
             onClick={advance}
@@ -111,7 +111,7 @@ function TabLabel({
   tabIndex: number;
   hidden?: boolean;
 }>) {
-  const className = classNames("p-2 flex gap-1 items-center", {
+  const className = classNames("p-2 flex gap-2 items-center", {
     hidden: hidden,
     "text-blue-500": props.selectedIndex === props.tabIndex,
     "text-zinc-500": props.selectedIndex !== props.tabIndex,
@@ -126,7 +126,7 @@ function TabLabel({
       </div>
       {props.children}
       {props.selectedIndex >= props.tabIndex && (
-        <FontAwesomeIcon icon={faChevronRight} className="h-3" />
+        <FontAwesomeIcon icon={faChevronRight} className="h-2.5" />
       )}
     </Tab>
   );

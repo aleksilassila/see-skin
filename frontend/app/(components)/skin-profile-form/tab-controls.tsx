@@ -5,7 +5,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 interface TabControlProps {
-  currentTab: number;
+  // currentTab: number;
   onClick: () => void;
   isHidden?: boolean;
   isDisabled?: boolean;
@@ -21,13 +21,13 @@ export function NextTab({
   if (isHidden) return null;
   return (
     <Button
-      size="sm"
+      intent="primary"
       disabled={isDisabled}
       loading={isLoading}
       onClick={() => props.onClick()}
       trailingIcon={faChevronRight}
     >
-      Next
+      Continue
     </Button>
   );
 }
@@ -41,13 +41,12 @@ export function PreviousTab({
   if (isHidden) return null;
   return (
     <Button
-      size="sm"
       disabled={isDisabled}
       loading={isLoading}
       onClick={() => props.onClick()}
       leadingIcon={faChevronLeft}
     >
-      Back
+      Previous
     </Button>
   );
 }

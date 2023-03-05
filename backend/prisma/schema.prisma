@@ -33,8 +33,10 @@ model Product {
   ingredients          Ingredient[]
   addedIrritantToUsers User[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  SkinProfile   SkinProfile? @relation(fields: [skinProfileId], references: [id])
+  skinProfileId String?
 }
 
 model Ingredient {
@@ -51,8 +53,8 @@ model Ingredient {
 
   products Product[]
 
-  addedIrritantToUsers User[] @relation("_AddedIrritantToUser")
-  irritantToUsers      User[] @relation("_IrritantToUser")
+  excplicitIrritantsToUsers SkinProfile[] @relation("_ExplicitIrritantsToSkinProfile")
+  irritantsToUsers          SkinProfile[] @relation("_IrritantsToSkinProfile")
 }
 
 model IngredientAlias {
@@ -74,13 +76,29 @@ model User {
 
   preferredProviders ProductProvider[] @default([])
 
-  didSetupProfile Boolean  @default(false)
-  skinType        SkinType @default(NORMAL)
+  skinProfile SkinProfile?
+  //  didSetupProfile Boolean  @default(false)
+  //  skinType        SkinType @default(NORMAL)
+  //
+  //  addedIrritativeIngredients Ingredient[]      @relation("_AddedIrritantToUser")
+  //  addedIrritativeProducts    Product[]
+  //  irritants                  Ingredient[]      @relation("_IrritantToUser")
+  //  irritativeClasses          IngredientClass[] @default([])
+  Product     Product?     @relation(fields: [productId], references: [id])
+  productId   String?
+}
 
-  addedIrritativeIngredients Ingredient[]      @relation("_AddedIrritantToUser")
-  addedIrritativeProducts    Product[]
-  irritants                  Ingredient[]      @relation("_IrritantToUser")
-  irritativeClasses          IngredientClass[] @default([])
+model SkinProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+
+  skinType SkinType @default(NORMAL)
+
+  excplicitIrritants      Ingredient[]      @relation("_ExplicitIrritantsToSkinProfile")
+  addedIrritativeProducts Product[]
+  irritants               Ingredient[]      @relation("_IrritantsToSkinProfile")
+  irritativeClasses       IngredientClass[] @default([])
 }
 
 enum SkinType {
