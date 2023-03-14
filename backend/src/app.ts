@@ -1,7 +1,7 @@
 import express, { Router } from "express";
 import passport from "passport";
 import productsRouter from "./routers/productsRouter";
-import { COOKIE_SECRET } from "./config";
+import { COOKIE_SECRET, NODE_ENV } from "./config";
 import authRouter from "./routers/authRouter";
 import session from "express-session";
 
@@ -21,6 +21,9 @@ app.use(
     secret: COOKIE_SECRET,
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      secure: NODE_ENV === "production", // Not working for some reason
+    },
   })
 );
 

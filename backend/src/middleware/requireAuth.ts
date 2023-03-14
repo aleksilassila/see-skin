@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
+  console.log(req.cookies);
   if (req.isAuthenticated()) {
     return next();
   } else {

@@ -1,9 +1,34 @@
 import passport from "passport";
 import passportGoogle from "passport-google-oauth20";
-import { ENDPOINT, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from "./config";
+import passportLocal from "passport-local";
+import {
+  ENDPOINT,
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
+  NODE_ENV,
+} from "./config";
 import prisma from "./prisma";
 
 const GoogleStrategy = passportGoogle.Strategy;
+const LocalStrategy = passportLocal.Strategy;
+
+if (NODE_ENV !== "production") {
+  passport.use(
+    new LocalStrategy(async function (username, password, done) {
+      const user = await prisma.user
+        .findFirst({
+          where: {
+            id: username,
+            password,
+          },
+        })
+        .catch(console.error);
+      if (user) {
+        return done(null, user);
+      }
+    })
+  );
+}
 
 passport.use(
   new GoogleStrategy(
@@ -42,23 +67,23 @@ passport.use(
 passport.serializeUser(async (googleUser: any, done) => {
   console.log("Serializing user");
   console.log(googleUser);
-  done(null, googleUser?.googleId);
+  done(null, googleUser?.id);
 });
 
-passport.deserializeUser(async (googleId: any, done) => {
-  // const user = await prisma.user.findUnique({where: {
-  //   googleId: user,
-  //   }});
+passport.deserializeUser(async (id: any, done) => {
   console.log("Deserializing");
   const user =
     (await prisma.user
-      .findUnique({ where: { googleId: googleId } })
+      .findUnique({
+        where: { id },
+        include: { skinProfile: true },
+      })
       .catch(console.error)) || false;
   if (user) {
     console.log(user.accessLevel);
   }
 
-  console.log(googleId, user);
+  console.log(id, user);
 
   done(null, user);
 });

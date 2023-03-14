@@ -9,6 +9,7 @@ import ProductFeedLoader, { useProductFeedLoader } from "./product-feed-loader";
 import { Product } from "../../(api)/types";
 import { useEffect, useState } from "react";
 import { ProductDetailsState } from "../(product-details)/product-details";
+import { useUser } from "../../user";
 
 interface Props {
   filterState: ProductFiltersState;
@@ -29,6 +30,7 @@ export default function ProductFeed({
   searchState,
   productDetailsState,
 }: Props) {
+  const user = useUser();
   const infiniteQueryServerFix = useDirtyInfiniteQueryServerFix(); // FIXME remove this when react-query is fixed
   const { data, fetchNextPage, isFetching } = useInfiniteQuery<Product[]>(
     ["products", { searchStr: searchState.searchStr }],

@@ -28,6 +28,10 @@ authRouter.get(
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
+authRouter.post("/local", passport.authenticate("local"), (req, res) => {
+  res.status(200).send(req.user);
+});
+
 authRouter.get(
   "/google/callback",
   passport.authenticate("google", {
