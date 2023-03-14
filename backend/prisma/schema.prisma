@@ -33,10 +33,10 @@ model Product {
   ingredients          Ingredient[]
   addedIrritantToUsers User[]
 
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-  SkinProfile   SkinProfile? @relation(fields: [skinProfileId], references: [id])
-  skinProfileId String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  SkinProfiles SkinProfile[]
 }
 
 model Ingredient {
@@ -53,8 +53,10 @@ model Ingredient {
 
   products Product[]
 
-  excplicitIrritantsToUsers SkinProfile[] @relation("_ExplicitIrritantsToSkinProfile")
-  irritantsToUsers          SkinProfile[] @relation("_IrritantsToSkinProfile")
+  explicitlyAddedSkinProfiles SkinProfile[] @relation("_ExplicitlyAddedIrritantsToSkinProfile")
+  duplicateSkinProfiles       SkinProfile[] @relation("_DuplicateIrritantsToSkinProfile")
+  skinTypeClassSkinProfiles   SkinProfile[] @relation("_SkinTypeClassIrritantsToSkinProfile")
+  commonClassSkinProfiles     SkinProfile[] @relation("_CommonClassIrritantsToSkinProfile")
 }
 
 model IngredientAlias {
@@ -95,10 +97,14 @@ model SkinProfile {
 
   skinType SkinType @default(NORMAL)
 
-  excplicitIrritants      Ingredient[]      @relation("_ExplicitIrritantsToSkinProfile")
-  addedIrritativeProducts Product[]
-  irritants               Ingredient[]      @relation("_IrritantsToSkinProfile")
-  irritativeClasses       IngredientClass[] @default([])
+  explicitlyAddedProductIrritants Product[]
+
+  explicitlyAddedIrritants Ingredient[] @relation("_ExplicitlyAddedIrritantsToSkinProfile")
+
+  duplicateIrritants Ingredient[] @relation("_DuplicateIrritantsToSkinProfile")
+
+  skinTypeClassIrritants Ingredient[] @relation("_SkinTypeClassIrritantsToSkinProfile")
+  commonClassIrritants   Ingredient[] @relation("_CommonClassIrritantsToSkinProfile")
 }
 
 enum SkinType {

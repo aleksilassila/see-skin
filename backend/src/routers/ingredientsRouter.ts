@@ -22,15 +22,4 @@ ingredientsRouter.put(
   ingredientsController.update
 );
 
-ingredientsRouter.get(
-  "/calculate-irritants",
-  query("ingredientIds").isArray({ min: 0, max: 50 }).optional(),
-  query("ingredientIds.*").isString().optional(),
-  query("productIds").isArray({ min: 0, max: 30 }).optional(),
-  query("productIds.*").isString().optional(),
-  query("skinType").isIn(Object.keys(SkinType)).optional(),
-  validateRequest,
-  ingredientsController.calculateIrritants
-);
-
 export default ingredientsRouter;

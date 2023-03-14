@@ -73,7 +73,7 @@ export default function SkinProfileForm() {
             {/*<TabLabel selectedIndex={currentTab} tabIndex={2}>*/}
             {/*  Select irritative ingredients*/}
             {/*</TabLabel>*/}
-            <TabLabel selectedIndex={currentTab} tabIndex={3}>
+            <TabLabel selectedIndex={currentTab} tabIndex={2}>
               Results
             </TabLabel>
           </Tab.List>
@@ -81,7 +81,7 @@ export default function SkinProfileForm() {
         <Tab.Panels className="p-2">
           <SkinTypeSelectPanel {...skinTypeState} />
           <ProductSelectPanel {...productsState} />
-          <IngredientSelectPanel {...ingredientsState} />
+          {/*<IngredientSelectPanel {...ingredientsState} />*/}
           <IrritantResultsPanel {...resultsState} />
         </Tab.Panels>
         <div className="flex gap-2 p-6 justify-center">

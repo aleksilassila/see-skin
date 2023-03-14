@@ -34,14 +34,16 @@ export default function ProductSearch(state: RemoteSelectState<Product>) {
 
   return (
     <div>
-      <div className="p-1 bg-stone-200 flex flex-col">
+      <div className="p-1 flex flex-col border rounded-md relative">
         <Input
           value={state.searchTerm}
           onValueChange={state.setSearchTerm}
           placeholder="Search for products"
+          onClick={() => console.log("click")}
+          className="outline-0"
         />
         {state.searchResults.length > 0 && (
-          <div>
+          <div className="absolute w-full">
             <div className="absolute bg-white shadow-md p-2 rounded-xl mt-2 divide-y">
               {state.searchResults.map((product, key) => (
                 <div
