@@ -47,6 +47,7 @@ interface Irritant {
   ingredient: Ingredient;
   irritationReasons: IrritationReason[];
 }
+
 const commonIrritatingClasses: IngredientClass[] = [
   IngredientClass.ALCOHOL,
   IngredientClass.FUNGAL_ACNE_TRIGGER,

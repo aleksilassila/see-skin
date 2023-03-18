@@ -2,7 +2,7 @@ import { Request, Router } from "express";
 import { requireAuth } from "../middleware/requireAuth";
 import prisma from "../prisma";
 import { body, query } from "express-validator";
-import { IngredientClass, SkinType } from "@prisma/client";
+import { SkinType } from "@prisma/client";
 import validateRequest from "../middleware/validateRequest";
 import * as userController from "../controllers/userController";
 

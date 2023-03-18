@@ -1,8 +1,6 @@
-import { Request, Response, Router } from "express";
+import { Router } from "express";
 import * as manageController from "../controllers/manageController";
 import { requireAuthLevel } from "../middleware/requireAuth";
-import { query } from "express-validator";
-import validateRequest from "../middleware/validateRequest";
 
 const manageRouter = Router();
 

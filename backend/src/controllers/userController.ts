@@ -58,34 +58,6 @@ export async function calculateIrritants(
         ).length > 0
     );
 
-    const payload = {
-      skinType,
-      explicitlyAddedProductIrritants: {
-        connect: productIds.map((id) => ({ id })),
-      },
-
-      explicitlyAddedIrritants: {
-        connect: explicitIrritants.map((i) => ({
-          id: i.ingredient.id,
-        })),
-      },
-      duplicateIrritants: {
-        connect: duplicateIrritants.map((i) => ({
-          id: i.ingredient.id,
-        })),
-      },
-      skinTypeClassIrritants: {
-        connect: skinTypeClassIrritants.map((i) => ({
-          id: i.ingredient.id,
-        })),
-      },
-      commonClassIrritants: {
-        connect: commonClassIrritants.map((i) => ({
-          id: i.ingredient.id,
-        })),
-      },
-    };
-
     await prisma.user.update({
       where: {
         id: req.user.id,
@@ -93,8 +65,60 @@ export async function calculateIrritants(
       data: {
         skinProfile: {
           upsert: {
-            create: payload,
-            update: payload,
+            create: {
+              skinType,
+              explicitlyAddedProductIrritants: {
+                connect: productIds.map((id) => ({ id })),
+              },
+
+              explicitlyAddedIrritants: {
+                connect: explicitIrritants.map((i) => ({
+                  id: i.ingredient.id,
+                })),
+              },
+              duplicateIrritants: {
+                connect: duplicateIrritants.map((i) => ({
+                  id: i.ingredient.id,
+                })),
+              },
+              skinTypeClassIrritants: {
+                connect: skinTypeClassIrritants.map((i) => ({
+                  id: i.ingredient.id,
+                })),
+              },
+              commonClassIrritants: {
+                connect: commonClassIrritants.map((i) => ({
+                  id: i.ingredient.id,
+                })),
+              },
+            },
+            update: {
+              skinType,
+              explicitlyAddedProductIrritants: {
+                set: productIds.map((id) => ({ id })),
+              },
+
+              explicitlyAddedIrritants: {
+                set: explicitIrritants.map((i) => ({
+                  id: i.ingredient.id,
+                })),
+              },
+              duplicateIrritants: {
+                set: duplicateIrritants.map((i) => ({
+                  id: i.ingredient.id,
+                })),
+              },
+              skinTypeClassIrritants: {
+                set: skinTypeClassIrritants.map((i) => ({
+                  id: i.ingredient.id,
+                })),
+              },
+              commonClassIrritants: {
+                set: commonClassIrritants.map((i) => ({
+                  id: i.ingredient.id,
+                })),
+              },
+            },
           },
         },
       },

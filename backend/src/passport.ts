@@ -25,6 +25,8 @@ if (NODE_ENV !== "production") {
         .catch(console.error);
       if (user) {
         return done(null, user);
+      } else {
+        return done(null, false);
       }
     })
   );

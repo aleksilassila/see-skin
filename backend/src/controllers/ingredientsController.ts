@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 import prisma from "../prisma";
-import { IngredientClass, SkinType } from "@prisma/client";
+import { IngredientClass } from "@prisma/client";
 import { extractPagination } from "../middleware/parsePagination";
-import { calculateIrritantsResponse } from "../services/irritantCalculator.service";
 
 export async function get(req: Request, res: Response) {
   const { groupId, id } = req.body;
