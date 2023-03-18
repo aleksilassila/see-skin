@@ -12,7 +12,7 @@ authRouter.get("/logout", (req, res) => {
 });
 
 authRouter.get("/verify", requireAuth, function (req, res) {
-  res.status(200).send("Authenticated");
+  res.status(200).send(req.user);
 });
 
 authRouter.get(

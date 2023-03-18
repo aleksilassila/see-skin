@@ -102,19 +102,12 @@ export async function calculateIrritantsResponse(
     (await prisma.ingredient
       .findMany({
         where: {
-          id: {
-            in: explicitlyAddedIngredientIds,
-          },
+          id: { in: explicitlyAddedIngredientIds },
         },
         include: {
           aliases: true,
         },
       })
-      .then((ingredients) =>
-        ingredients.filter((i) =>
-          productIngredients.flatMap((i) => i.id).includes(i.id)
-        )
-      )
       .catch(console.error)) || [];
 
   const irritatingIngredientClasses = getIrritatingIngredientClasses(
@@ -144,8 +137,8 @@ export async function calculateIrritantsResponse(
           .map((ingredient) => ({ type: "EXPLICITLY_ADDED", ingredient }));
 
       if (duplicateReason) irritationReasons.push(duplicateReason);
-      irritationReasons.concat(ingredientClassReasons);
-      irritationReasons.concat(explicitlyAddedReason);
+      irritationReasons.push(...ingredientClassReasons);
+      irritationReasons.push(...explicitlyAddedReason);
 
       return {
         ingredient,

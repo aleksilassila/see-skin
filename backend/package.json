@@ -10,7 +10,8 @@
     "import-ingredients": "ts-node prisma/scripts/import-ingredients.ts",
     "import-products": "ts-node prisma/scripts/import-products.ts",
     "pretest": "prisma generate && docker-compose -f ../docker-compose.test.yml up -d",
-    "test": "cross-env NODE_ENV=test DATABASE_URL=postgresql://post:post@localhost:5432/post jest --silent=false"
+    "test": "cross-env NODE_ENV=test DATABASE_URL=postgresql://post:post@localhost:5432/post jest --silent=false",
+    "db:push": "docker exec see-skin-dev-backend npx prisma db push"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"

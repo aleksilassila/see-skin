@@ -16,6 +16,7 @@ services:
 
   db:
     image: postgres:14
+    container_name: see-skin-dev-db
     environment:
       POSTGRES_USER: post
       POSTGRES_DB: post
@@ -27,6 +28,7 @@ services:
     restart: unless-stopped
 
   backend:
+    container_name: see-skin-dev-backend
     build:
       context: backend
       dockerfile: Dockerfile.dev
@@ -43,6 +45,7 @@ services:
     restart: unless-stopped
 
   frontend:
+    container_name: see-skin-dev-frontend
     build:
       context: frontend
       dockerfile: Dockerfile.dev

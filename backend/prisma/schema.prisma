@@ -31,7 +31,6 @@ model Product {
   knownToUnknownRatio Float
 
   ingredients          Ingredient[]
-  addedIrritantToUsers User[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -79,15 +78,6 @@ model User {
   preferredProviders ProductProvider[] @default([])
 
   skinProfile SkinProfile?
-  //  didSetupProfile Boolean  @default(false)
-  //  skinType        SkinType @default(NORMAL)
-  //
-  //  addedIrritativeIngredients Ingredient[]      @relation("_AddedIrritantToUser")
-  //  addedIrritativeProducts    Product[]
-  //  irritants                  Ingredient[]      @relation("_IrritantToUser")
-  //  irritativeClasses          IngredientClass[] @default([])
-  Product     Product?     @relation(fields: [productId], references: [id])
-  productId   String?
 }
 
 model SkinProfile {

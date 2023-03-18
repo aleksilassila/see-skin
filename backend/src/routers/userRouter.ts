@@ -9,7 +9,7 @@ import * as userController from "../controllers/userController";
 const userRouter = Router();
 
 userRouter.get("/", requireAuth, (req, res) => {
-  console.log("User", req.user);
+  // console.log("User", req.user);
   res.status(200).send(req.user);
 });
 

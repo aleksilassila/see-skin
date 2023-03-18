@@ -34,11 +34,6 @@ app.use(passport.session());
 
 app.use(passport.authenticate("session"));
 
-router.use((req, res, next) => {
-  console.log("Is authenticated?:", req.isAuthenticated());
-  next();
-});
-
 router.use(parsePagination);
 
 router.use("/auth", authRouter);
