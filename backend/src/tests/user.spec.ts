@@ -2,10 +2,13 @@ import { logIn } from "./auth.spec";
 import app from "../app";
 import request from "supertest";
 import prisma from "../prisma";
+import { Product } from "@prisma/client";
 
 const agent = request.agent(app);
 
-const explicitlyAddedIrritantIds = ["clcnfoarx000et05v3izsejy7"];
+const explicitlyAddedIrritantIdToProductId: { [key: string]: string } = {
+  clcnfobgw03tit05v9zm405cv: "clcnfolfu0n7yt05v10g13103",
+};
 const irritatingProductIds = [
   "clcnfomkl0n8et05v2nnm29fv",
   "clcnfoowd0n9wt05v1lvtgywx",
@@ -36,11 +39,11 @@ describe("/user", () => {
       })
       .expect(200);
   });
-  it("Should be able to calculate irritants", async () => {
+  it("Should be able to create a SkinProfile and calculate irritants", async () => {
     await agent
       .get("/api/user/calculate-irritants")
       .query(
-        explicitlyAddedIrritantIds
+        Object.keys(explicitlyAddedIrritantIdToProductId)
           .map((id) => `ingredientIds[]=${id}`)
           .concat(irritatingProductIds.map((id) => `productIds[]=${id}`))
           .join("&")
@@ -50,12 +53,10 @@ describe("/user", () => {
       })
       .expect(200);
   });
-  it("Should now have skin profile", async () => {
+  it("Did create skinProfile", async () => {
     await agent
       .get("/api/user")
       .expect((res) => {
-        // console.log("Response body: ", res.body);
-
         const skinProfile = res.body.skinProfile;
         expect(skinProfile).not.toBeNull();
         expect(skinProfile.skinType).toBe("DRY");
@@ -65,6 +66,31 @@ describe("/user", () => {
         expect(skinProfile.skinTypeClassIrritants).toHaveLength(1);
       })
       .expect(200);
+  });
+  it("Should get correct feed", async () => {
+    await agent
+      .get("/api/products/feed")
+      .query({
+        name: "",
+        filterIrritants: true,
+        take: 25,
+      })
+      .expect((res) => {
+        const receivedProductIds = res.body.map((i: Product) => i.id);
+        const explicitProductIrritants = Object.values(
+          explicitlyAddedIrritantIdToProductId
+        );
+
+        irritatingProductIds.forEach((id) => {
+          expect(receivedProductIds).not.toContain(id);
+        });
+
+        explicitProductIrritants.forEach((id) => {
+          expect(receivedProductIds).not.toContain(id);
+        });
+
+        console.log(receivedProductIds);
+      });
   });
   it("Should be able to update skin profile", async () => {
     await agent

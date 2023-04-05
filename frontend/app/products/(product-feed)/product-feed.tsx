@@ -35,7 +35,7 @@ export default function ProductFeed({
   const { data, fetchNextPage, isFetching } = useInfiniteQuery<Product[]>(
     ["products", { searchStr: searchState.searchStr }],
     async ({ pageParam = 0, queryKey }) =>
-      fetchProductsFeed(pageParam, searchState.getSearchStr()),
+      fetchProductsFeed(pageParam, searchState.getSearchStr(), true),
     {
       getNextPageParam: (lastPage, allPages) => {
         return allPages.length;

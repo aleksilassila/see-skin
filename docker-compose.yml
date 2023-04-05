@@ -38,6 +38,8 @@ services:
       - ./backend/prisma:/usr/src/app/prisma
     environment:
       DATABASE_URL: postgresql://post:post@db:5432/post
+    ports:
+      - "5555:5555"
     env_file:
       - ./backend/.env
     depends_on:

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import prisma from "../prisma";
 import { extractPagination } from "../middleware/parsePagination";
+import { getIrritantIds } from "../services/user.service";
 
 export async function find(
   req: Request<{}, {}, {}, { name: string }>,
@@ -30,22 +31,35 @@ export async function find(
 }
 
 export async function getFeed(
-  req: Request<{}, {}, {}, { name?: string }>,
+  req: Request<{}, {}, {}, { name?: string; filterIrritants?: boolean }>,
   res: Response
 ) {
-  const { name } = req.query;
+  const { name, filterIrritants } = req.query;
+
+  const irritantIds = getIrritantIds(req.user);
+
+  console.log("IrritantIds for user", req.user?.name, irritantIds);
 
   const products = await prisma.product
     .findMany({
-      ...(name && {
-        where: {
+      where: {
+        ...(name && {
           name: {
             contains: name,
             mode: "insensitive",
           },
-        },
-      }),
-      ...extractPagination(req),
+        }),
+        ...(filterIrritants && {
+          ingredients: {
+            every: {
+              id: {
+                notIn: irritantIds,
+              },
+            },
+          },
+        }),
+      },
+      ...extractPagination(req as Request),
     })
     .catch(console.error);
 

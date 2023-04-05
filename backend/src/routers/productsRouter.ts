@@ -15,6 +15,7 @@ productsRouter.get(
 productsRouter.get(
   "/feed",
   query("name").isString().optional(),
+  query("filterIrritants").isBoolean().optional(),
   productsController.getFeed
 );
 

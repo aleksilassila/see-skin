@@ -1,7 +1,5 @@
 "use client";
-import Navigation from "./(navigation)/Navigation";
 import "./global.css";
-import Footer from "./(footer)/Footer";
 import { UserContext, useUserContextValue } from "./user";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
@@ -25,6 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const userContextValue = useUserContextValue();
+  // const preferencesValue = usePreferencesContextValue();
 
   // if (userContextValue.loading) {
   //   return (
@@ -49,7 +48,11 @@ export default function RootLayout({
       <body className="min-h-screen flex flex-col">
         <QueryClientProvider client={queryClient}>
           <UserContext.Provider value={userContextValue}>
+            {/*<PreferencesContext.Provider*/}
+            {/*  value={{ ...preferencesValue, loading: false }}*/}
+            {/*>*/}
             {children}
+            {/*</PreferencesContext.Provider>*/}
           </UserContext.Provider>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
