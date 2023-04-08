@@ -19,6 +19,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
+      - name: Create env file
+        working-directory: ./backend
+        run: |
+          touch .env
+          echo DATABASE_URL=${{ vars.DATABASE_URL }} >> .env
+          echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> .env
+          echo GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} >> .env
+          cat .env
+
       - name: Start containers
         run: docker-compose -f "docker-compose.yml" up -d --build
 
