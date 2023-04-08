@@ -15,9 +15,12 @@ export const PreferencesContext = createLocalStorageContext<PreferencesState>({
 export function usePreferencesContextValue() {
   const [preferencesValue, setPreferencesValue] = useLocalStorage<{
     irritantIds: string[];
-  }>("preferences", {
-    irritantIds: [],
-  });
+  }>(
+    {
+      irritantIds: [],
+    },
+    "preferences"
+  );
 
   return {
     irritantIds: preferencesValue?.irritantIds || [],

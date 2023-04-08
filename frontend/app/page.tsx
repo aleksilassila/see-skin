@@ -45,9 +45,6 @@ function CardLink(props: AnchorHTMLAttributes<any>) {
 }
 
 export default function Page() {
-  const preferences = useLocalStorage("testads", null);
-  console.log(preferences);
-
   const cardHeading = classNames("font-medium text-xl mb-2");
 
   const cardBody = classNames("font-medium text-sm col-start-2 col-span-2");
