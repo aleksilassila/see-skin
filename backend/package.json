@@ -12,7 +12,9 @@
     "pretest": "prisma generate && docker-compose -f ../docker-compose.test.yml up -d",
     "test:backend": "cross-env NODE_ENV=test DATABASE_URL=postgresql://post:post@localhost:5432/post jest --silent=false",
     "db:push": "docker exec see-skin-dev-backend npx prisma db push",
-    "db:studio": "docker exec see-skin-dev-backend npx prisma studio"
+    "db:format": "docker exec see-skin-dev-backend npx prisma format",
+    "db:studio": "docker exec see-skin-dev-backend npx prisma studio",
+    "backend:sh": "docker exec -it see-skin-dev-backend bash"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"

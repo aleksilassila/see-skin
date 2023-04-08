@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { SkinType } from "@prisma/client";
-import { calculateIrritantsResponse } from "../services/irritantCalculator.service";
+import { calculateIrritants } from "../services/irritantCalculator.service";
 import prisma from "../prisma";
 
-export async function calculateIrritants(
+export async function createSkinProfile(
   req: Request<
     {},
     {},
@@ -18,40 +18,40 @@ export async function calculateIrritants(
     skinType = SkinType.NORMAL,
   } = req.query;
 
-  const response = await calculateIrritantsResponse(
+  const irritants = await calculateIrritants(
     ingredientIds,
     productIds,
     skinType
   ).catch(console.error);
 
-  if (!response) {
+  if (!irritants) {
     res.status(500).send("Internal Server Error");
     return;
   }
 
   if (req.user) {
-    const explicitIrritants = response.filter(
+    const explicitIrritants = irritants.filter(
       (irritant) =>
         irritant.irritationReasons.filter(
           (reason) => reason.type === "EXPLICITLY_ADDED"
         ).length > 0
     );
 
-    const duplicateIrritants = response.filter(
+    const duplicateIrritants = irritants.filter(
       (irritant) =>
         irritant.irritationReasons.filter(
           (reason) => reason.type === "DUPLICATE"
         ).length > 0
     );
 
-    const skinTypeClassIrritants = response.filter(
+    const skinTypeClassIrritants = irritants.filter(
       (irritant) =>
         irritant.irritationReasons.filter(
           (reason: any) => reason["reason"] === "SKIN_TYPE_IRRITANT"
         ).length > 0
     );
 
-    const commonClassIrritants = response.filter(
+    const commonClassIrritants = irritants.filter(
       (irritant) =>
         irritant.irritationReasons.filter(
           (reason: any) => reason["reason"] === "COMMON_IRRITANT"
@@ -67,7 +67,7 @@ export async function calculateIrritants(
           upsert: {
             create: {
               skinType,
-              explicitlyAddedProductIrritants: {
+              explicitlyAddedProducts: {
                 connect: productIds.map((id) => ({ id })),
               },
 
@@ -94,7 +94,7 @@ export async function calculateIrritants(
             },
             update: {
               skinType,
-              explicitlyAddedProductIrritants: {
+              explicitlyAddedProducts: {
                 set: productIds.map((id) => ({ id })),
               },
 
@@ -125,5 +125,5 @@ export async function calculateIrritants(
     });
   }
 
-  res.status(200).send(response);
+  res.status(200).send(irritants);
 }

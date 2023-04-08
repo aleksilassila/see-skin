@@ -74,7 +74,7 @@ passport.deserializeUser(async (id: any, done) => {
         include: {
           skinProfile: {
             include: {
-              explicitlyAddedProductIrritants: true,
+              explicitlyAddedProducts: true,
 
               explicitlyAddedIrritants: true,
               duplicateIrritants: true,

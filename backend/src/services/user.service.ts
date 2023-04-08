@@ -1,19 +1,24 @@
 import { UserWithSkinProfile } from "../types/prisma";
 import prisma from "../prisma";
 
-export function getIrritantIds(user?: UserWithSkinProfile): string[] {
-  const irritantIds: string[] = [];
+export function getSkinProfileExclusions(user?: UserWithSkinProfile): {
+  ingredientIds: string[];
+  productIds: string[];
+} {
+  const ingredientIds: string[] = [];
+  const productIds: string[] = [];
 
   console.log("SkinProfile of provided user", user);
 
   if (user && user.skinProfile) {
     const profile = user.skinProfile;
-    irritantIds.push(...profile.duplicateIrritants.map((i) => i.id));
-    irritantIds.push(...profile.explicitlyAddedIrritants.map((i) => i.id));
-    irritantIds.push(...profile.skinTypeClassIrritants.map((i) => i.id));
+    ingredientIds.push(...profile.duplicateIrritants.map((i) => i.id));
+    ingredientIds.push(...profile.explicitlyAddedIrritants.map((i) => i.id));
+    ingredientIds.push(...profile.skinTypeClassIrritants.map((i) => i.id));
+    productIds.push(...profile.explicitlyAddedProducts.map((i) => i.id));
   }
 
-  return irritantIds;
+  return { ingredientIds, productIds };
 }
 
 export async function getUserWithSkinProfile(
@@ -26,7 +31,7 @@ export async function getUserWithSkinProfile(
         include: {
           skinProfile: {
             include: {
-              explicitlyAddedProductIrritants: true,
+              explicitlyAddedProducts: true,
               explicitlyAddedIrritants: true,
               duplicateIrritants: true,
               skinTypeClassIrritants: true,

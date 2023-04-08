@@ -1,14 +1,14 @@
 "use client";
 import ProductFilters, {
   useProductFiltersState,
-} from "./(product-filters)/product-filters";
+} from "./product-filters/product-filters";
 import ProductSearch, {
   useProductSearchState,
-} from "./(product-search)/product-search";
-import ProductFeed from "./(product-feed)/product-feed";
+} from "./product-search/product-search";
+import ProductFeed from "./product-feed/product-feed";
 import ProductDetails, {
   useProductDetailsState,
-} from "./(product-details)/product-details";
+} from "./product-details/product-details";
 import Navigation from "../(navigation)/Navigation";
 import { useDrawerState } from "../(ui)/drawer";
 

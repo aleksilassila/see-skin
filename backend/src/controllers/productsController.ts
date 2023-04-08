@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import prisma from "../prisma";
 import { extractPagination } from "../middleware/parsePagination";
-import { getIrritantIds } from "../services/user.service";
+import { getSkinProfileExclusions } from "../services/user.service";
 
 export async function find(
   req: Request<{}, {}, {}, { name: string }>,
@@ -31,14 +31,12 @@ export async function find(
 }
 
 export async function getFeed(
-  req: Request<{}, {}, {}, { name?: string; filterIrritants?: boolean }>,
+  req: Request<{}, {}, {}, { name?: string; filterIrritants?: string }>,
   res: Response
 ) {
   const { name, filterIrritants } = req.query;
 
-  const irritantIds = getIrritantIds(req.user);
-
-  console.log("IrritantIds for user", req.user?.name, irritantIds);
+  const profileExclusions = getSkinProfileExclusions(req.user);
 
   const products = await prisma.product
     .findMany({
@@ -49,13 +47,16 @@ export async function getFeed(
             mode: "insensitive",
           },
         }),
-        ...(filterIrritants && {
+        ...(filterIrritants === "true" && {
           ingredients: {
             every: {
               id: {
-                notIn: irritantIds,
+                notIn: profileExclusions.ingredientIds,
               },
             },
+          },
+          id: {
+            notIn: profileExclusions.productIds,
           },
         }),
       },

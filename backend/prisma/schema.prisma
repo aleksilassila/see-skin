@@ -30,12 +30,12 @@ model Product {
   unknownIngredients  String[]
   knownToUnknownRatio Float
 
-  ingredients          Ingredient[]
+  ingredients Ingredient[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  SkinProfiles SkinProfile[]
+  explicitlyAddedSkinProfiles SkinProfile[] @relation("_ExplicitlyAddedProductsToSkinProfile")
 }
 
 model Ingredient {
@@ -87,9 +87,8 @@ model SkinProfile {
 
   skinType SkinType @default(NORMAL)
 
-  explicitlyAddedProductIrritants Product[]
-
   explicitlyAddedIrritants Ingredient[] @relation("_ExplicitlyAddedIrritantsToSkinProfile")
+  explicitlyAddedProducts  Product[]    @relation("_ExplicitlyAddedProductsToSkinProfile")
 
   duplicateIrritants Ingredient[] @relation("_DuplicateIrritantsToSkinProfile")
 

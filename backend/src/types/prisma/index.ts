@@ -4,7 +4,7 @@ export type UserWithSkinProfile = Prisma.UserGetPayload<{
   include: {
     skinProfile: {
       include: {
-        explicitlyAddedProductIrritants: true;
+        explicitlyAddedProducts: true;
         explicitlyAddedIrritants: true;
         duplicateIrritants: true;
         skinTypeClassIrritants: true;

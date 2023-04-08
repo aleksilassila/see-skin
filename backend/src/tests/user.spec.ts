@@ -41,7 +41,7 @@ describe("/user", () => {
   });
   it("Should be able to create a SkinProfile and calculate irritants", async () => {
     await agent
-      .get("/api/user/calculate-irritants")
+      .get("/api/user/create-skin-profile")
       .query(
         Object.keys(explicitlyAddedIrritantIdToProductId)
           .map((id) => `ingredientIds[]=${id}`)
@@ -61,7 +61,7 @@ describe("/user", () => {
         expect(skinProfile).not.toBeNull();
         expect(skinProfile.skinType).toBe("DRY");
         expect(skinProfile.explicitlyAddedIrritants).toHaveLength(1);
-        expect(skinProfile.explicitlyAddedProductIrritants).toHaveLength(3);
+        expect(skinProfile.explicitlyAddedProducts).toHaveLength(3);
         expect(skinProfile.duplicateIrritants.length).toBeGreaterThan(0);
         expect(skinProfile.skinTypeClassIrritants).toHaveLength(1);
       })
@@ -91,10 +91,33 @@ describe("/user", () => {
 
         console.log(receivedProductIds);
       });
+    // await agent
+    //   .get("/api/products/feed")
+    //   .query({
+    //     name: "",
+    //     filterIrritants: false,
+    //     take: 25,
+    //   })
+    //   .expect((res) => {
+    //     const receivedProductIds = res.body.map((i: Product) => i.id);
+    //     const explicitProductIrritants = Object.values(
+    //       explicitlyAddedIrritantIdToProductId
+    //     );
+    //
+    //     irritatingProductIds.forEach((id) => {
+    //       expect(receivedProductIds).toContain(id);
+    //     });
+    //
+    //     explicitProductIrritants.forEach((id) => {
+    //       expect(receivedProductIds).toContain(id);
+    //     });
+    //
+    //     console.log(receivedProductIds);
+    //   });
   });
   it("Should be able to update skin profile", async () => {
     await agent
-      .get("/api/user/calculate-irritants")
+      .get("/api/user/create-skin-profile")
       .query({
         skinType: "NORMAL",
       })
@@ -107,7 +130,7 @@ describe("/user", () => {
         expect(skinProfile).not.toBeNull();
         expect(skinProfile.skinType).toBe("NORMAL");
         expect(skinProfile.explicitlyAddedIrritants).toHaveLength(0);
-        expect(skinProfile.explicitlyAddedProductIrritants).toHaveLength(0);
+        expect(skinProfile.explicitlyAddedProducts).toHaveLength(0);
         expect(skinProfile.duplicateIrritants).toHaveLength(0);
         expect(skinProfile.skinTypeClassIrritants).toHaveLength(0);
       })

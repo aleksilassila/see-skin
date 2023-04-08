@@ -84,8 +84,9 @@ const skinTypeIrritatingClasses = {
  * @param explicitlyAddedIngredientIds A list of known irritating ingredient ids
  * @param explicitlyAddedProductIds A list of known irritating products
  * @param skinType User skin type
+ * @return A list of irritant ingredients
  */
-export async function calculateIrritantsResponse(
+export async function calculateIrritants(
   explicitlyAddedIngredientIds: string[],
   explicitlyAddedProductIds: string[],
   skinType: SkinType = SkinType.NORMAL

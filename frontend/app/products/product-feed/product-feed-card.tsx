@@ -1,7 +1,7 @@
 import Image from "next/image";
 import classNames from "classnames";
 import { Product } from "../../(api)/types";
-import { ProductDetailsState } from "../(product-details)/product-details";
+import { ProductDetailsState } from "../product-details/product-details";
 import { PRODUCT_PLACEHOLDER_URL } from "../../config";
 import { Button } from "../../(ui)/button";
 
