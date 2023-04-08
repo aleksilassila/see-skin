@@ -12,14 +12,18 @@ interface InputProps extends HTMLAttributes<HTMLInputElement> {
   overwriteStyles?: boolean;
 }
 
-export default function Input({ type = "text", ...props }: InputProps) {
+export default function Input({
+  type = "text",
+  onValueChange,
+  ...props
+}: InputProps) {
   const className = classNames(props.className, {});
 
   return (
     <input
       {...props}
       value={props.value}
-      onChange={(e) => props.onValueChange(e.target.value)}
+      onChange={(e) => onValueChange(e.target.value)}
       type={type}
       placeholder={props.placeholder}
       className={props.overwriteStyles ? props.className : className}

@@ -1,27 +1,31 @@
-import { Fragment, PropsWithChildren, useState } from "react";
+import { Fragment, PropsWithChildren, useEffect, useState } from "react";
 import classNames from "classnames";
 import Drawer, { DrawerState } from "../../(ui)/drawer";
 import { useToggle } from "../../(hooks)/use-toggle";
+import { useLocalStorage } from "../../utils/localstorage";
 
 export type ProductFiltersState = ReturnType<typeof useProductFiltersState>;
 
 export function useProductFiltersState() {
-  const toggles = useToggle({
-    irritantFiltering: true,
+  const toggles = useToggle(
+    {
+      irritantFiltering: true,
 
-    // Effect
-    uvProtecting: true,
-    antiAging: true,
-    brightening: true,
-    acneFighting: true,
-    healing: true,
+      // Effect
+      uvProtecting: true,
+      antiAging: true,
+      brightening: true,
+      acneFighting: true,
+      healing: true,
 
-    // Category
-    moisturizers: true,
-    cleansers: true,
-    sunscreens: true,
-    treatments: true,
-  });
+      // Category
+      moisturizers: true,
+      cleansers: true,
+      sunscreens: true,
+      treatments: true,
+    },
+    "product-filter-toggles"
+  );
 
   return {
     toggles,
