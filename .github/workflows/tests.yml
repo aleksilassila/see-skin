@@ -42,7 +42,7 @@ jobs:
 
       - name: Run tests
         working-directory: ./backend
-        run: npm run test
+        run: npm run test:backend
 
       - name: Stop containers
         if: always()
