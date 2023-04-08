@@ -4,7 +4,7 @@ services:
   nginx:
     container_name: see-skin-dev-nginx
     image: nginx
-    restart: always
+    restart: unless-stopped
     ports:
       - 80:80
       - 443:443
@@ -13,11 +13,10 @@ services:
     depends_on:
       - frontend
       - backend
-    networks:
-      - see-skin-dev
 
   db:
     image: postgres:14
+    container_name: see-skin-dev-db
     environment:
       POSTGRES_USER: post
       POSTGRES_DB: post
@@ -26,10 +25,10 @@ services:
       - 5432:5432
     volumes:
       - dbdata:/var/lib/postgresql/data
-    networks:
-      - see-skin-dev
+    restart: unless-stopped
 
   backend:
+    container_name: see-skin-dev-backend
     build:
       context: backend
       dockerfile: Dockerfile.dev
@@ -39,24 +38,22 @@ services:
       - ./backend/prisma:/usr/src/app/prisma
     environment:
       DATABASE_URL: postgresql://post:post@db:5432/post
-      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
-      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+    ports:
+      - "5555:5555"
+    env_file:
+      - ./backend/.env
     depends_on:
       - db
-    networks:
-      - see-skin-dev
+    restart: unless-stopped
 
   frontend:
+    container_name: see-skin-dev-frontend
     build:
       context: frontend
       dockerfile: Dockerfile.dev
     volumes:
       - ./frontend:/usr/src/app
-    networks:
-      - see-skin-dev
+    restart: unless-stopped
 
 volumes:
   dbdata:
-
-networks:
-  see-skin-dev:

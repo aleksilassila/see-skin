@@ -8,7 +8,7 @@ import Api from "../../../(api)/api";
 import { Ingredient } from "../../../(api)/types";
 import IngredientSearch, {
   useIngredientSearchState,
-} from "../../../components/ingredient-search";
+} from "../../../(components)/ingredient-search";
 
 export default function ManageIngredientsActions() {
   const {

@@ -9,7 +9,7 @@ import { Ingredient, SkinType } from "../(api)/types";
 import WithNav from "../with-nav";
 import ProductSearch, {
   useProductSearchState,
-} from "../components/product-search";
+} from "../(components)/product-search";
 
 function ShowIrritants({ irritants }: { irritants: Ingredient[] }) {
   if (irritants.length === 0) {

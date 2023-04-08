@@ -1,3 +1,4 @@
+"use client";
 import { AnchorHTMLAttributes, HTMLAttributes, PropsWithChildren } from "react";
 import classNames from "classnames";
 import Image from "next/image";
@@ -5,7 +6,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import WithNav from "./with-nav";
-import SkinProfileForm from "./components/skin-profile-form/skin-profile-form";
+import SkinProfileForm from "./(components)/skin-profile-form/skin-profile-form";
+import { usePreferences } from "./utils/preferences";
+import { useLocalStorage } from "./utils/localstorage";
 
 interface CardContainerProps extends HTMLAttributes<HTMLDivElement> {
   size?: "sm" | "lg";
@@ -42,6 +45,9 @@ function CardLink(props: AnchorHTMLAttributes<any>) {
 }
 
 export default function Page() {
+  const preferences = useLocalStorage("testads", null);
+  console.log(preferences);
+
   const cardHeading = classNames("font-medium text-xl mb-2");
 
   const cardBody = classNames("font-medium text-sm col-start-2 col-span-2");

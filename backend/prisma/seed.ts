@@ -1,8 +1,7 @@
-import { PrismaClient, Ingredient } from "@prisma/client";
-import products from "./products";
 import { importIngredients } from "./scripts/import-ingredients";
 import { importProducts } from "./scripts/import-products";
 import prisma from "../src/prisma";
+import { createTestUser } from "./scripts/create-test-user";
 
 // const prisma = new PrismaClient();
 
@@ -11,6 +10,7 @@ async function main() {
 
   await importIngredients();
   await importProducts();
+  await createTestUser();
 
   // require("./scripts/import-ingredients.ts");
   // require("./scripts/import-products.ts");

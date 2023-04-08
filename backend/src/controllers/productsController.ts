@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import prisma from "../prisma";
 import { extractPagination } from "../middleware/parsePagination";
+import { getSkinProfileExclusions } from "../services/user.service";
 
 export async function find(
   req: Request<{}, {}, {}, { name: string }>,
@@ -30,22 +31,36 @@ export async function find(
 }
 
 export async function getFeed(
-  req: Request<{}, {}, {}, { name?: string }>,
+  req: Request<{}, {}, {}, { name?: string; filterIrritants?: string }>,
   res: Response
 ) {
-  const { name } = req.query;
+  const { name, filterIrritants } = req.query;
+
+  const profileExclusions = getSkinProfileExclusions(req.user);
 
   const products = await prisma.product
     .findMany({
-      ...(name && {
-        where: {
+      where: {
+        ...(name && {
           name: {
             contains: name,
             mode: "insensitive",
           },
-        },
-      }),
-      ...extractPagination(req),
+        }),
+        ...(filterIrritants === "true" && {
+          ingredients: {
+            every: {
+              id: {
+                notIn: profileExclusions.ingredientIds,
+              },
+            },
+          },
+          id: {
+            notIn: profileExclusions.productIds,
+          },
+        }),
+      },
+      ...extractPagination(req as Request),
     })
     .catch(console.error);
 

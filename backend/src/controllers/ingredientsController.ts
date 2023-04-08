@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 import prisma from "../prisma";
-import { IngredientClass, SkinType } from "@prisma/client";
+import { IngredientClass } from "@prisma/client";
 import { extractPagination } from "../middleware/parsePagination";
-import { calculateIrritantsResponse } from "../irritantCalculator";
 
 export async function get(req: Request, res: Response) {
   const { groupId, id } = req.body;
@@ -78,44 +77,4 @@ export async function update(
   }
 
   res.status(200).send(ingredient);
-}
-
-export async function calculateIrritants(
-  req: Request<
-    {},
-    {},
-    {},
-    { ingredientIds?: string[]; productIds?: string[]; skinType?: SkinType }
-  >,
-  res: Response
-) {
-  const {
-    ingredientIds = [],
-    productIds = [],
-    skinType = SkinType.NORMAL,
-  } = req.query;
-
-  const response = await calculateIrritantsResponse(
-    ingredientIds,
-    productIds,
-    skinType
-  ).catch(console.error);
-
-  if (!response) {
-    res.status(500).send("Internal Server Error");
-    return;
-  }
-
-  if (req.user) {
-    await prisma.user.update({
-      where: {
-        id: req.user.id,
-      },
-      data: {
-        didSetupProfile: true,
-      },
-    });
-  }
-
-  res.status(200).send(response);
 }

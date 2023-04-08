@@ -23,14 +23,11 @@ export default async function fetchIrritantsCalculation(
   products: Product[],
   ingredients: Ingredient[]
 ): Promise<IrritantsCalculationResponse> {
-  return Api.fetch<IrritantsCalculationResponse>(
-    "/ingredients/calculate-irritants",
-    {
-      params: {
-        productIds: products.map((product) => product.id),
-        ingredientIds: ingredients.map((ingredient) => ingredient.id),
-        skinType,
-      },
-    }
-  ).then((response) => response.data);
+  return Api.fetch<IrritantsCalculationResponse>("/user/create-skin-profile", {
+    params: {
+      productIds: products.map((product) => product.id),
+      ingredientIds: ingredients.map((ingredient) => ingredient.id),
+      skinType,
+    },
+  }).then((response) => response.data);
 }

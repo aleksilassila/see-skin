@@ -30,11 +30,12 @@ model Product {
   unknownIngredients  String[]
   knownToUnknownRatio Float
 
-  ingredients          Ingredient[]
-  addedIrritantToUsers User[]
+  ingredients Ingredient[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  explicitlyAddedSkinProfiles SkinProfile[] @relation("_ExplicitlyAddedProductsToSkinProfile")
 }
 
 model Ingredient {
@@ -51,8 +52,10 @@ model Ingredient {
 
   products Product[]
 
-  addedIrritantToUsers User[] @relation("_AddedIrritantToUser")
-  irritantToUsers      User[] @relation("_IrritantToUser")
+  explicitlyAddedSkinProfiles SkinProfile[] @relation("_ExplicitlyAddedIrritantsToSkinProfile")
+  duplicateSkinProfiles       SkinProfile[] @relation("_DuplicateIrritantsToSkinProfile")
+  skinTypeClassSkinProfiles   SkinProfile[] @relation("_SkinTypeClassIrritantsToSkinProfile")
+  commonClassSkinProfiles     SkinProfile[] @relation("_CommonClassIrritantsToSkinProfile")
 }
 
 model IngredientAlias {
@@ -74,13 +77,23 @@ model User {
 
   preferredProviders ProductProvider[] @default([])
 
-  didSetupProfile Boolean  @default(false)
-  skinType        SkinType @default(NORMAL)
+  skinProfile SkinProfile?
+}
 
-  addedIrritativeIngredients Ingredient[]      @relation("_AddedIrritantToUser")
-  addedIrritativeProducts    Product[]
-  irritants                  Ingredient[]      @relation("_IrritantToUser")
-  irritativeClasses          IngredientClass[] @default([])
+model SkinProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+
+  skinType SkinType @default(NORMAL)
+
+  explicitlyAddedIrritants Ingredient[] @relation("_ExplicitlyAddedIrritantsToSkinProfile")
+  explicitlyAddedProducts  Product[]    @relation("_ExplicitlyAddedProductsToSkinProfile")
+
+  duplicateIrritants Ingredient[] @relation("_DuplicateIrritantsToSkinProfile")
+
+  skinTypeClassIrritants Ingredient[] @relation("_SkinTypeClassIrritantsToSkinProfile")
+  commonClassIrritants   Ingredient[] @relation("_CommonClassIrritantsToSkinProfile")
 }
 
 enum SkinType {

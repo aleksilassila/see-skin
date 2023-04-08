@@ -1,0 +1,49 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  docker:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Create env file
+        working-directory: ./backend
+        run: |
+          touch .env
+          echo DATABASE_URL=${{ vars.DATABASE_URL }} >> .env
+          echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> .env
+          echo GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} >> .env
+          cat .env
+
+      - name: Start containers
+        run: docker-compose -f "docker-compose.yml" up -d --build
+
+      - name: Install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+
+      - name: Install dependencies
+        working-directory: ./backend
+        run: npm install
+
+      - name: Run tests
+        working-directory: ./backend
+        run: npm run test:backend
+
+      - name: Stop containers
+        if: always()
+        run: docker-compose -f "docker-compose.yml" down

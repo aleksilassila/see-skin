@@ -1,9 +1,34 @@
 import passport from "passport";
 import passportGoogle from "passport-google-oauth20";
-import { ENDPOINT, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from "./config";
+import passportLocal from "passport-local";
+import {
+  ENDPOINT,
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
+  NODE_ENV,
+} from "./config";
 import prisma from "./prisma";
+import { getUserWithSkinProfile } from "./services/user.service";
 
 const GoogleStrategy = passportGoogle.Strategy;
+const LocalStrategy = passportLocal.Strategy;
+
+if (NODE_ENV !== "production") {
+  passport.use(
+    new LocalStrategy(async function (username, password, done) {
+      const user =
+        username === "test" && password === "test"
+          ? await getUserWithSkinProfile("test")
+          : false;
+
+      if (user) {
+        return done(null, user);
+      } else {
+        return done(null, false);
+      }
+    })
+  );
+}
 
 passport.use(
   new GoogleStrategy(
@@ -31,8 +56,6 @@ passport.use(
           })
           .catch((err) => err)) || false;
 
-      console.log("User", user);
-
       return cb(null, user);
     }
   )
@@ -40,25 +63,36 @@ passport.use(
 
 // Saved to cookie?
 passport.serializeUser(async (googleUser: any, done) => {
-  console.log("Serializing user");
-  console.log(googleUser);
-  done(null, googleUser?.googleId);
+  done(null, googleUser?.id);
 });
 
-passport.deserializeUser(async (googleId: any, done) => {
-  // const user = await prisma.user.findUnique({where: {
-  //   googleId: user,
-  //   }});
-  console.log("Deserializing");
+passport.deserializeUser(async (id: any, done) => {
   const user =
     (await prisma.user
-      .findUnique({ where: { googleId: googleId } })
-      .catch(console.error)) || false;
-  if (user) {
-    console.log(user.accessLevel);
-  }
+      .findUnique({
+        where: { id },
+        include: {
+          skinProfile: {
+            include: {
+              explicitlyAddedProducts: true,
 
-  console.log(googleId, user);
+              explicitlyAddedIrritants: true,
+              duplicateIrritants: true,
+              skinTypeClassIrritants: true,
+            },
+          },
+        },
+      })
+      .catch(console.error)) || false;
+
+  const irritantIds: string[] = [];
+
+  if (user && user.skinProfile) {
+    const profile = user.skinProfile;
+    irritantIds.push(...profile.duplicateIrritants.map((i) => i.id));
+    irritantIds.push(...profile.explicitlyAddedIrritants.map((i) => i.id));
+    irritantIds.push(...profile.skinTypeClassIrritants.map((i) => i.id));
+  }
 
   done(null, user);
 });

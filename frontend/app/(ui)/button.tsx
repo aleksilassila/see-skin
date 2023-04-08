@@ -6,6 +6,7 @@ import {
   FontAwesomeIconProps,
 } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import Link from "next/link";
 
 interface ButtonProps<T extends HTMLElement> extends HTMLAttributes<T> {
   disabled?: boolean;
@@ -75,8 +76,13 @@ export function AnchorButton({
   leadingIcon,
   trailingIcon,
   newTab = false,
+  nextLink = false,
   ...props
-}: ButtonProps<HTMLAnchorElement> & { href: string; newTab?: boolean }) {
+}: ButtonProps<HTMLAnchorElement> & {
+  href: string;
+  newTab?: boolean;
+  nextLink?: boolean;
+}) {
   const style = classNames(
     props.className,
     getButtonSizing(size),
@@ -85,8 +91,28 @@ export function AnchorButton({
       intent,
       round,
     }),
-    "inline-flex"
+    "flex"
   );
+
+  if (nextLink) {
+    return (
+      <Link
+        {...props}
+        href={props.href}
+        {...(newTab && { target: "_blank", rel: "noreferrer" })}
+        className={(props.overwriteStyles && props.className) || style}
+      >
+        <IconWrapper
+          leadingIcon={leadingIcon}
+          trailingIcon={trailingIcon}
+          size={size}
+          iconStyle={props.iconStyle}
+        >
+          {props.children}
+        </IconWrapper>
+      </Link>
+    );
+  }
 
   return (
     <a
@@ -170,7 +196,9 @@ export function getButtonColoring({
         "focus-within:ring": active,
       },
       primary: {
-        "bg-blue-500 text-white drop-shadow": true,
+        "text-white drop-shadow": true,
+        "bg-blue-500": active,
+        "bg-blue-400": !active,
         "hover:bg-blue-400": active,
         "active:bg-blue-500": active,
         "focus-within:ring ": active,
