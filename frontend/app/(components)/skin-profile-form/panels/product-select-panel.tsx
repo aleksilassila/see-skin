@@ -1,4 +1,4 @@
-import ProductSearch, { useProductSearchState } from "../product-search";
+import ProductSearch, { useProductSearchState } from "../../product-search";
 import { Tab } from "@headlessui/react";
 
 export type ProductSelectPanelState = ReturnType<

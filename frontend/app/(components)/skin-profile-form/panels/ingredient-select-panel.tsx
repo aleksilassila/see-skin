@@ -1,10 +1,10 @@
 import { PropsWithChildren } from "react";
 import { Tab } from "@headlessui/react";
-import { useRemoteSelectState } from "../../(hooks)/remote-select";
-import { Ingredient } from "../../(api)/types";
+import { useRemoteSelectState } from "../../../(hooks)/remote-select";
+import { Ingredient } from "../../../(api)/types";
 import IngredientSearch, {
   useIngredientSearchState,
-} from "../ingredient-search";
+} from "../../ingredient-search";
 
 export type IngredientSelectPanelState = ReturnType<
   typeof useIngredientSelectPanelState

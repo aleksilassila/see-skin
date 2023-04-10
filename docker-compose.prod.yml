@@ -28,6 +28,7 @@ services:
     restart: unless-stopped
 
   backend:
+    image: 896896/see-skin:backend
     container_name: see-skin-prod-backend
     build:
       context: backend
@@ -48,6 +49,7 @@ services:
       - db
 
   frontend:
+    image: 896896/see-skin:frontend
     container_name: see-skin-prod-frontend
     build:
       context: frontend

@@ -6,18 +6,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import SkinTypeSelectPanel, {
   useSkinTypeSelectPanelState,
-} from "./skin-type-select-panel";
+} from "./panels/skin-type-select-panel";
 import ProductSelectPanel, {
   useProductSelectPanelState,
-} from "./product-select-panel";
+} from "./panels/product-select-panel";
 import IrritantResultsPanel, {
   useResultsPanelState,
-} from "./irritant-results-panel";
+} from "./panels/irritant-results-panel";
 import { useUser } from "../../user";
 import { NextTab, PreviousTab } from "./tab-controls";
 import IngredientSelectPanel, {
   useIngredientSelectPanelState,
-} from "./ingredient-select-panel";
+} from "./panels/ingredient-select-panel";
 
 export default function SkinProfileForm() {
   const [currentTab, setCurrentTab] = useState(0);
@@ -33,8 +33,12 @@ export default function SkinProfileForm() {
   const user = useUser();
 
   function advance() {
-    if (currentTab === 2) {
-      resultsState.refetchResults().then(() => setCurrentTab(3));
+    if (currentTab === 1) {
+      if (user.user) {
+        resultsState.refetchResults().then(() => setCurrentTab(2));
+      } else {
+        setCurrentTab(2);
+      }
     } else {
       setCurrentTab((t) => t + 1);
     }
@@ -91,7 +95,7 @@ export default function SkinProfileForm() {
             onClick={() => setCurrentTab((p) => p - 1)}
           />
           <NextTab
-            isHidden={currentTab === 3}
+            isHidden={currentTab === 2}
             // currentTab={0}
             isDisabled={!canAdvance}
             isLoading={resultsState.resultsQuery.isFetching ?? false}

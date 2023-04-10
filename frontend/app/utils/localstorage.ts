@@ -6,6 +6,8 @@ function getStorageValue<T>(key: string, defaultValue: T) {
   if (typeof window !== "undefined") {
     const saved = localStorage.getItem(key);
     return saved !== null ? JSON.parse(saved) : defaultValue;
+  } else {
+    return defaultValue;
   }
 }
 
