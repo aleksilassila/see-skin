@@ -17,7 +17,7 @@ Does not produce correct aliases
  */
 
 export async function importIngredients() {
-  console.log(`Start seeding ...`);
+  console.log(`Creating ingredient structure...`);
 
   let skipped = 0;
   const stream = await fs.open(CSV_FILE).then((fd) => fd.createReadStream());
