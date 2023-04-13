@@ -11,4 +11,5 @@ COPY . .
 
 RUN npx prisma generate
 
-CMD ["yarn", "start"]
+#CMD npx prisma migrate reset --force && yarn start
+CMD npx prisma migrate reset --force && npx cross-env NODE_ENV=test jest

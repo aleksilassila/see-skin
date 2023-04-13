@@ -11,7 +11,7 @@ on:
       - main
 
 jobs:
-  docker:
+  tests:
     timeout-minutes: 10
     runs-on: ubuntu-latest
 
@@ -19,31 +19,40 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
-      - name: Create env file
-        working-directory: ./backend
-        run: |
-          touch .env
-          echo DATABASE_URL=${{ vars.DATABASE_URL }} >> .env
-          echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> .env
-          echo GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} >> .env
-          cat .env
+      #      - name: Create env file
+      #        working-directory: ./backend
+      #        run: |
+      #          touch .env
+      #          echo DATABASE_URL="${{ vars.DATABASE_URL }}" >> .env
+      #          echo GOOGLE_CLIENT_ID="${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
+      #          echo GOOGLE_CLIENT_SECRET="${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
+      #          cat .env
 
-      - name: Start containers
-        run: docker-compose -f "docker-compose.yml" up -d --build
+      - name: Build containers
+        run: docker-compose -f docker-compose.yml -f docker-compose.test.yml build
 
-      - name: Install node
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14.x
+      - name: Test backend
+        run: GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} docker-compose -f docker-compose.yml -f docker-compose.test.yml up --exit-code-from backend
 
-      - name: Install dependencies
-        working-directory: ./backend
-        run: npm install
+      - name: Test frontend
+        run: GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} docker-compose -f docker-compose.yml -f docker-compose.test.yml up --exit-code-from frontend
 
-      - name: Run tests
-        working-directory: ./backend
-        run: npm run test:backend
+      #      - name: Run Jest
+      #        run: docker exec see-skin-test-backend npx cross-env NODE_ENV=test DATABASE_URL=postgresql://post:post@localhost:5432/post jest --silent=false
+
+      #      - name: Install node
+      #        uses: actions/setup-node@v1
+      #        with:
+      #          node-version: 14.x
+      #
+      #      - name: Install dependencies
+      #        working-directory: ./backend
+      #        run: npm install
+      #
+      #      - name: Run tests
+      #        working-directory: ./backend
+      #        run: npm run test:backend
 
       - name: Stop containers
         if: always()
-        run: docker-compose -f "docker-compose.yml" down
+        run: docker-compose -f docker-compose.yml -f docker-compose.test.yml down
