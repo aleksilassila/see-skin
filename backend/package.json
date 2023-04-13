@@ -4,11 +4,12 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon --files ./src/server.ts",
+    "dev": "prisma generate && nodemon --files ./src/server.ts",
     "start": "prisma migrate deploy && ts-node --files ./src/server.ts",
     "import-ingredients": "ts-node prisma/scripts/import-ingredients.ts",
     "import-products": "ts-node prisma/scripts/import-products.ts",
     "backend:test": "prisma generate && cross-env DATABASE_URL=postgresql://post:post@localhost:5432/post jest --silent=false",
+    "backend:test:docker": "docker exec see-skin-dev-backend npx jest",
     "db:push": "docker exec see-skin-dev-backend npx prisma db push",
     "db:format": "docker exec see-skin-dev-backend npx prisma format",
     "db:studio": "docker exec see-skin-dev-backend npx prisma studio",

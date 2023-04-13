@@ -29,13 +29,22 @@ jobs:
       #          cat .env
 
       - name: Build containers
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
         run: docker-compose -f docker-compose.yml -f docker-compose.test.yml build
 
       - name: Test backend
-        run: GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} docker-compose -f docker-compose.yml -f docker-compose.test.yml up --exit-code-from backend
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+        run: docker-compose -f docker-compose.yml -f docker-compose.test.yml up --exit-code-from backend
 
       - name: Test frontend
-        run: GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} docker-compose -f docker-compose.yml -f docker-compose.test.yml up --exit-code-from frontend
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+        run: docker-compose -f docker-compose.yml -f docker-compose.test.yml up --exit-code-from frontend
 
       #      - name: Run Jest
       #        run: docker exec see-skin-test-backend npx cross-env NODE_ENV=test DATABASE_URL=postgresql://post:post@localhost:5432/post jest --silent=false

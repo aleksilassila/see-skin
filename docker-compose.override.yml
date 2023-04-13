@@ -9,8 +9,11 @@ services:
     ports:
       - "5555:5555"
     volumes:
-      - ./backend/src:/usr/src/app/src
-      - ./backend/prisma:/usr/src/app/prisma
+      - ./backend/:/usr/src/app/
+      - /usr/src/app/node_modules
+  #      - ./backend/src:/usr/src/app/src
+  #      - ./backend/prisma:/usr/src/app/prisma
+  #      - ./backend/jest.config.js:/usr/src/app/jest.config.js
 
   frontend:
     volumes:

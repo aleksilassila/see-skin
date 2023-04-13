@@ -58,71 +58,73 @@ export async function createSkinProfile(
         ).length > 0
     );
 
-    await prisma.user.update({
-      where: {
-        id: req.user.id,
-      },
-      data: {
-        skinProfile: {
-          upsert: {
-            create: {
-              skinType,
-              explicitlyAddedProducts: {
-                connect: productIds.map((id) => ({ id })),
-              },
+    await prisma.user
+      .update({
+        where: {
+          id: req.user.id,
+        },
+        data: {
+          skinProfile: {
+            upsert: {
+              create: {
+                skinType,
+                explicitlyAddedProducts: {
+                  connect: productIds.map((id) => ({ id })),
+                },
 
-              explicitlyAddedIrritants: {
-                connect: explicitIrritants.map((i) => ({
-                  id: i.ingredient.id,
-                })),
+                explicitlyAddedIrritants: {
+                  connect: explicitIrritants.map((i) => ({
+                    id: i.ingredient.id,
+                  })),
+                },
+                duplicateIrritants: {
+                  connect: duplicateIrritants.map((i) => ({
+                    id: i.ingredient.id,
+                  })),
+                },
+                skinTypeClassIrritants: {
+                  connect: skinTypeClassIrritants.map((i) => ({
+                    id: i.ingredient.id,
+                  })),
+                },
+                commonClassIrritants: {
+                  connect: commonClassIrritants.map((i) => ({
+                    id: i.ingredient.id,
+                  })),
+                },
               },
-              duplicateIrritants: {
-                connect: duplicateIrritants.map((i) => ({
-                  id: i.ingredient.id,
-                })),
-              },
-              skinTypeClassIrritants: {
-                connect: skinTypeClassIrritants.map((i) => ({
-                  id: i.ingredient.id,
-                })),
-              },
-              commonClassIrritants: {
-                connect: commonClassIrritants.map((i) => ({
-                  id: i.ingredient.id,
-                })),
-              },
-            },
-            update: {
-              skinType,
-              explicitlyAddedProducts: {
-                set: productIds.map((id) => ({ id })),
-              },
+              update: {
+                skinType,
+                explicitlyAddedProducts: {
+                  set: productIds.map((id) => ({ id })),
+                },
 
-              explicitlyAddedIrritants: {
-                set: explicitIrritants.map((i) => ({
-                  id: i.ingredient.id,
-                })),
-              },
-              duplicateIrritants: {
-                set: duplicateIrritants.map((i) => ({
-                  id: i.ingredient.id,
-                })),
-              },
-              skinTypeClassIrritants: {
-                set: skinTypeClassIrritants.map((i) => ({
-                  id: i.ingredient.id,
-                })),
-              },
-              commonClassIrritants: {
-                set: commonClassIrritants.map((i) => ({
-                  id: i.ingredient.id,
-                })),
+                explicitlyAddedIrritants: {
+                  set: explicitIrritants.map((i) => ({
+                    id: i.ingredient.id,
+                  })),
+                },
+                duplicateIrritants: {
+                  set: duplicateIrritants.map((i) => ({
+                    id: i.ingredient.id,
+                  })),
+                },
+                skinTypeClassIrritants: {
+                  set: skinTypeClassIrritants.map((i) => ({
+                    id: i.ingredient.id,
+                  })),
+                },
+                commonClassIrritants: {
+                  set: commonClassIrritants.map((i) => ({
+                    id: i.ingredient.id,
+                  })),
+                },
               },
             },
           },
         },
-      },
-    });
+      })
+      .catch(console.error);
   }
 
   res.status(200).send(irritants);
