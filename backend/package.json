@@ -6,17 +6,15 @@
   "scripts": {
     "dev": "prisma generate && nodemon --files ./src/server.ts",
     "start": "prisma migrate deploy && ts-node --files ./src/server.ts",
-    "import-ingredients": "ts-node prisma/scripts/import-ingredients.ts",
-    "import-products": "ts-node prisma/scripts/import-products.ts",
-    "backend:test": "prisma generate && cross-env DATABASE_URL=postgresql://post:post@localhost:5432/post jest --silent=false",
-    "backend:test:docker": "docker exec see-skin-dev-backend npx jest",
     "db:push": "docker exec see-skin-dev-backend npx prisma db push",
     "db:format": "docker exec see-skin-dev-backend npx prisma format",
     "db:studio": "docker exec see-skin-dev-backend npx prisma studio",
-    "backend:sh": "docker exec -it see-skin-dev-backend bash"
+    "db:dump": "docker exec -t see-skin-dev-db sh -c 'PGPASSWORD=post pg_dump -U post --insert --data-only post' > ./prisma/seed-dump.sql",
+    "backend:sh": "docker exec -it see-skin-dev-backend bash",
+    "backend:test": "docker exec -t see-skin-dev-backend npx jest"
   },
   "prisma": {
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "sh ./prisma/seed.sh"
   },
   "dependencies": {
     "@prisma/client": "^4.4.0",

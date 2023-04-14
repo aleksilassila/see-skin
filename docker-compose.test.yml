@@ -16,6 +16,9 @@ services:
       POSTGRES_PASSWORD: post
     volumes:
       - dbdata-test:/var/lib/postgresql/data
+    profiles:
+      - backend
+      - frontend
 
   backend:
     container_name: see-skin-test-backend
@@ -24,6 +27,8 @@ services:
       dockerfile: Dockerfile.test
     environment:
       NODE_ENV: test
+    profiles:
+      - backend
     restart: "no"
 
   frontend:
@@ -33,6 +38,8 @@ services:
       dockerfile: Dockerfile.test
     environment:
       NODE_ENV: production
+    profiles:
+      - frontend
     restart: "no"
 #    profiles:
 #      - disabled
