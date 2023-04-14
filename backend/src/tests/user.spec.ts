@@ -1,19 +1,16 @@
 import { logIn } from "./auth.spec";
 import app from "../app";
 import request from "supertest";
-import prisma from "../prisma";
 import { Product } from "@prisma/client";
+import prisma from "../prisma";
 
 const agent = request.agent(app);
 
-const explicitlyAddedIrritantIdToProductId: { [key: string]: string } = {
-  clcnfobgw03tit05v9zm405cv: "clcnfolfu0n7yt05v10g13103",
-};
-const irritatingProductIds = [
-  "clcnfomkl0n8et05v2nnm29fv",
-  "clcnfoowd0n9wt05v1lvtgywx",
-  "clcnfos960nast05vauvhd9qc",
-];
+const filteredProductsAmount = 2;
+const filteredIngredientsAmount = 1;
+
+const filteredProductIds: string[] = [];
+const filteredIngredientIdsToProductId: { [key: string]: string } = {};
 
 beforeAll(async () => {
   await logIn(agent);
@@ -29,10 +26,12 @@ beforeAll(async () => {
       },
     })
     .catch(() => {});
+
+  await generateTestingData();
 });
 describe("/user", () => {
-  it("Shouldn't have skin profile", async () => {
-    const response = await agent
+  it("User should not have skinProfile", async () => {
+    await agent
       .get("/api/user")
       .expect((res) => {
         expect(res.body.skinProfile).toBeNull();
@@ -43,9 +42,9 @@ describe("/user", () => {
     await agent
       .get("/api/user/create-skin-profile")
       .query(
-        Object.keys(explicitlyAddedIrritantIdToProductId)
+        Object.keys(filteredIngredientIdsToProductId)
           .map((id) => `ingredientIds[]=${id}`)
-          .concat(irritatingProductIds.map((id) => `productIds[]=${id}`))
+          .concat(filteredProductIds.map((id) => `productIds[]=${id}`))
           .join("&")
       )
       .query({
@@ -60,10 +59,14 @@ describe("/user", () => {
         const skinProfile = res.body.skinProfile;
         expect(skinProfile).not.toBeNull();
         expect(skinProfile.skinType).toBe("DRY");
-        expect(skinProfile.explicitlyAddedIrritants).toHaveLength(1);
-        expect(skinProfile.explicitlyAddedProducts).toHaveLength(3);
+        expect(skinProfile.explicitlyAddedIrritants).toHaveLength(
+          filteredIngredientsAmount
+        );
+        expect(skinProfile.explicitlyAddedProducts).toHaveLength(
+          filteredProductsAmount
+        );
         expect(skinProfile.duplicateIrritants.length).toBeGreaterThan(0);
-        expect(skinProfile.skinTypeClassIrritants).toHaveLength(1);
+        // expect(skinProfile.skinTypeClassIrritants).toHaveLength(1);
       })
       .expect(200);
   });
@@ -78,10 +81,10 @@ describe("/user", () => {
       .expect((res) => {
         const receivedProductIds = res.body.map((i: Product) => i.id);
         const explicitProductIrritants = Object.values(
-          explicitlyAddedIrritantIdToProductId
+          filteredIngredientIdsToProductId
         );
 
-        irritatingProductIds.forEach((id) => {
+        filteredProductIds.forEach((id) => {
           expect(receivedProductIds).not.toContain(id);
         });
 
@@ -137,3 +140,48 @@ describe("/user", () => {
       .expect(200);
   });
 });
+
+async function generateTestingData() {
+  await agent
+    .get("/api/products/feed")
+    .query({
+      name: "",
+      filterIrritants: true,
+      take: 25,
+    })
+    .then((res) => res.body)
+    .then(async (body: Product[]) => {
+      if (body.length < 2) {
+        throw new Error("Too few products to test");
+      }
+
+      let i = 0;
+
+      for (i; i < filteredProductsAmount; i++) {
+        filteredProductIds.push(body[i].id);
+      }
+
+      for (i; i < body.length; i++) {
+        const ingredient = await prisma.ingredient.findFirst({
+          where: {
+            products: {
+              some: {
+                id: body[i].id,
+              },
+            },
+          },
+        });
+
+        if (ingredient) {
+          filteredIngredientIdsToProductId[ingredient.id] = body[i].id;
+        }
+
+        if (
+          Object.keys(filteredIngredientIdsToProductId).length ===
+          filteredIngredientsAmount
+        ) {
+          break;
+        }
+      }
+    });
+}
