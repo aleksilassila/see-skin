@@ -11,4 +11,6 @@ RUN yarn install
 # RUN npm install --platform=linuxmusl --arch=arm64
 # npm install --platform=linuxmusl --arch=arm64 sharp on host
 
+RUN npx prisma generate
+
 CMD ["npm", "run", "dev"]

@@ -1,21 +1,35 @@
 import Api from "../api";
 import { Ingredient, IngredientClass, Product, SkinType } from "../types";
 
-interface ResultDuplicate {
-  ingredient: Ingredient;
+export type IrritantsCalculationResponse = Irritant[];
+
+type IrritationReason = {
+  type: string;
+} & (
+  | DuplicateIrritationReason
+  | IngredientClassIrritationReason
+  | ExplicitlyAddedIrritantReason
+);
+
+interface DuplicateIrritationReason {
+  type: "DUPLICATE";
   products: Product[];
 }
 
-interface ResultSkinTypeIrritant {
-  ingredient: Ingredient;
-  skinType: SkinType;
-  ingredientClasses: IngredientClass[];
-  products: Product[];
+export interface IngredientClassIrritationReason {
+  type: "CLASS_IRRITANT";
+  reason: "COMMON_IRRITANT" | "SKIN_TYPE_IRRITANT";
+  ingredientClass: IngredientClass;
 }
 
-export interface IrritantsCalculationResponse {
-  duplicates: ResultDuplicate[];
-  skinTypeIrritants: ResultSkinTypeIrritant[];
+interface ExplicitlyAddedIrritantReason {
+  type: "EXPLICITLY_ADDED";
+  ingredient: Ingredient;
+}
+
+interface Irritant {
+  ingredient: Ingredient;
+  irritationReasons: IrritationReason[];
 }
 
 export default async function fetchIrritantsCalculation(

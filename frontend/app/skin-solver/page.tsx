@@ -64,7 +64,7 @@ export default function SkinSolverPage() {
         Calculate
       </Button>
       {data ? (
-        <ShowIrritants irritants={data.duplicates.map((d) => d.ingredient)} />
+        <ShowIrritants irritants={data.map((d) => d.ingredient)} />
       ) : null}
     </WithNav>
   );
