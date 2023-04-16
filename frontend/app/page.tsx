@@ -5,10 +5,8 @@ import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
-import WithNav from "./with-nav";
 import SkinProfileForm from "./(components)/skin-profile-form/skin-profile-form";
-import { usePreferences } from "./utils/preferences";
-import { useLocalStorage } from "./utils/localstorage";
+import { WithNavigation } from "./(navigation)/Navigation";
 
 interface CardContainerProps extends HTMLAttributes<HTMLDivElement> {
   size?: "sm" | "lg";
@@ -44,7 +42,7 @@ function CardLink(props: AnchorHTMLAttributes<any>) {
   );
 }
 
-export default function Page() {
+function Page() {
   const cardHeading = classNames("font-medium text-xl mb-2");
 
   const cardBody = classNames("font-medium text-sm col-start-2 col-span-2");
@@ -52,7 +50,7 @@ export default function Page() {
   const imageIgnorePadding = classNames("col-span-4");
 
   return (
-    <WithNav className="flex flex-col items-center gap-8 mb-8">
+    <div className="flex flex-col items-center gap-8 mb-8">
       <div
         id="landing"
         className="w-screen py-32 flex items-center justify-center bg-red-50"
@@ -159,6 +157,8 @@ export default function Page() {
           />
         </CardContainer>
       </div>
-    </WithNav>
+    </div>
   );
 }
+
+export default WithNavigation(Page);

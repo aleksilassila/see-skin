@@ -1,10 +1,10 @@
 "use client";
 import React, { PropsWithChildren } from "react";
-import { useUser } from "../user";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import classNames from "classnames";
-import WithNav from "../with-nav";
+import { RequireAuthentication } from "../(components)/require-authentication";
+import { WithNavigation } from "../(navigation)/Navigation";
 
 function SideBarSubHeader(props: PropsWithChildren) {
   return (
@@ -39,7 +39,8 @@ interface SideBarProps {}
 
 function SideBar(props: PropsWithChildren<SideBarProps>) {
   return (
-    <WithNav className="flex-1 flex flex-row h-full">
+    // <WithNav className="flex-1 flex flex-row h-full">
+    <>
       <div className="flex flex-col bg-stone-100 border-r border-stone-500 p-2">
         <SideBarLink href="/manage" exact>
           Overview
@@ -49,25 +50,9 @@ function SideBar(props: PropsWithChildren<SideBarProps>) {
         <SideBarLink href="/manage/ingredients">Ingredients</SideBarLink>
       </div>
       <div className="flex-1 pl-2">{props.children}</div>
-    </WithNav>
+    </>
+    //{/*</WithNav>*/}
   );
 }
 
-export default function ManageLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const user = useUser();
-  const router = useRouter();
-
-  if (user.loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!user.user || user.user.accessLevel < 1) {
-    return <div>You don&apos;t have a permission to view this page.</div>;
-  }
-
-  return <SideBar>{children}</SideBar>;
-}
+export default RequireAuthentication(1)(WithNavigation(SideBar));

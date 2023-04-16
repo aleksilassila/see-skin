@@ -15,9 +15,7 @@ import IrritantResultsPanel, {
 } from "./panels/irritant-results-panel";
 import { useUser } from "../../user";
 import { NextTab, PreviousTab } from "./tab-controls";
-import IngredientSelectPanel, {
-  useIngredientSelectPanelState,
-} from "./panels/ingredient-select-panel";
+import { useIngredientSelectPanelState } from "./panels/ingredient-select-panel";
 
 export default function SkinProfileForm() {
   const [currentTab, setCurrentTab] = useState(0);

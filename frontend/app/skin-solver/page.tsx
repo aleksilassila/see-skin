@@ -6,10 +6,10 @@ import { useQuery } from "react-query";
 import IrritantItem from "./irritant-item";
 import { Button } from "../(ui)/button";
 import { Ingredient, SkinType } from "../(api)/types";
-import WithNav from "../with-nav";
 import ProductSearch, {
   useProductSearchState,
 } from "../(components)/product-search";
+import { WithNavigation } from "../(navigation)/Navigation";
 
 function ShowIrritants({ irritants }: { irritants: Ingredient[] }) {
   if (irritants.length === 0) {
@@ -31,7 +31,7 @@ function ShowIrritants({ irritants }: { irritants: Ingredient[] }) {
   );
 }
 
-export default function SkinSolverPage() {
+function SkinSolverPage() {
   const productSelectState = useProductSearchState();
 
   const { data, refetch, isRefetching, isLoading } =
@@ -53,7 +53,7 @@ export default function SkinSolverPage() {
   }
 
   return (
-    <WithNav>
+    <>
       <div>Skin solver</div>
       <ProductSearch {...productSelectState} />
       <Button
@@ -66,6 +66,8 @@ export default function SkinSolverPage() {
       {data ? (
         <ShowIrritants irritants={data.map((d) => d.ingredient)} />
       ) : null}
-    </WithNav>
+    </>
   );
 }
+
+export default WithNavigation(SkinSolverPage);

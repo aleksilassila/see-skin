@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useLocalStorage } from "../utils/localstorage";
 
 export function useToggle<T extends { [key: string]: boolean }>(
