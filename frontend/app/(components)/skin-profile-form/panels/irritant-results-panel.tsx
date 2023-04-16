@@ -5,7 +5,9 @@ import fetchIrritantsCalculation, {
 import { useQuery, UseQueryResult } from "react-query";
 import { useProductSelectPanelState } from "./product-select-panel";
 import { useUser } from "../../../user";
-import LoginButton from "../../../(navigation)/LoginButton";
+import AccountButton, {
+  GoogleLoginButton,
+} from "../../../(navigation)/AccountButton";
 import { Tab } from "@headlessui/react";
 import { Ingredient, Product, SkinType } from "../../../(api)/types";
 import updateUser from "../../../(api)/user/update-user";
@@ -111,7 +113,7 @@ export default function IrritantResultsPanel(
           <div>
             Log in to browse skin products that are compatible with your skin!
           </div>
-          <LoginButton />
+          <GoogleLoginButton />
         </div>
       )}
     </Tab.Panel>

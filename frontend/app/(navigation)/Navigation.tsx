@@ -2,7 +2,7 @@
 import { HTMLAttributes } from "react";
 import Logo from "./Logo";
 import Link from "next/link";
-import LoginButton from "./LoginButton";
+import AccountButton from "./AccountButton";
 import { useUser } from "../user";
 
 const NavItem = (props: HTMLAttributes<HTMLDivElement>) => (
@@ -68,7 +68,7 @@ const Navigation = ({
       </div>
       <div className="mx-8">
         <NavItem>
-          <LoginButton />
+          <AccountButton />
         </NavItem>
       </div>
     </div>

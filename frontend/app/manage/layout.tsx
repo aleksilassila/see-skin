@@ -54,4 +54,4 @@ function SideBar(props: PropsWithChildren<SideBarProps>) {
   );
 }
 
-export default RequireAuthentication(1, SideBar);
+export default RequireAuthentication(1)(SideBar);

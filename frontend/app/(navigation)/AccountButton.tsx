@@ -13,7 +13,7 @@ import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import classNames from "classnames";
 import Link from "next/link";
 
-function GoogleLoginButton() {
+export function GoogleLoginButton() {
   return (
     <AnchorButton
       intent="secondary"
@@ -25,7 +25,7 @@ function GoogleLoginButton() {
   );
 }
 
-export default function LoginButton() {
+export default function AccountButton() {
   const router = useRouter();
   const user = useUser();
 
