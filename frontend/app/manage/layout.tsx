@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import classNames from "classnames";
 import WithNav from "../with-nav";
+import { RequireAuthentication } from "../(components)/require-authentication";
 
 function SideBarSubHeader(props: PropsWithChildren) {
   return (
@@ -53,21 +54,4 @@ function SideBar(props: PropsWithChildren<SideBarProps>) {
   );
 }
 
-export default function ManageLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const user = useUser();
-  const router = useRouter();
-
-  if (user.loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!user.user || user.user.accessLevel < 1) {
-    return <div>You don&apos;t have a permission to view this page.</div>;
-  }
-
-  return <SideBar>{children}</SideBar>;
-}
+export default RequireAuthentication(1, SideBar);
