@@ -83,7 +83,11 @@ export function WithNavigation(Component?: FunctionComponent<any>) {
     return (
       <>
         <Navigation />
-        {Component ? <Component {...props} /> : props.children}
+        {Component ? (
+          <Component {...props} />
+        ) : (
+          <div className="flex-1">{props.children}</div>
+        )}
         <Footer />
       </>
     );
