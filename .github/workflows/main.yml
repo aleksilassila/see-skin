@@ -15,22 +15,13 @@ env:
   GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
 
 jobs:
-  tests:
+  test:
     timeout-minutes: 10
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-
-      #      - name: Create env file
-      #        working-directory: ./backend
-      #        run: |
-      #          touch .env
-      #          echo DATABASE_URL="${{ vars.DATABASE_URL }}" >> .env
-      #          echo GOOGLE_CLIENT_ID="${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
-      #          echo GOOGLE_CLIENT_SECRET="${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
-      #          cat .env
 
       - name: Build containers
         run: docker-compose -f docker-compose.yml -f docker-compose.test.yml build
@@ -41,28 +32,8 @@ jobs:
       - name: Test frontend
         run: docker-compose -f docker-compose.yml -f docker-compose.test.yml --profile frontend up --exit-code-from frontend
 
-      #      - name: Run Jest
-      #        run: docker exec see-skin-test-backend npx cross-env NODE_ENV=test DATABASE_URL=postgresql://post:post@localhost:5432/post jest --silent=false
-
-      #      - name: Install node
-      #        uses: actions/setup-node@v1
-      #        with:
-      #          node-version: 14.x
-      #
-      #      - name: Install dependencies
-      #        working-directory: ./backend
-      #        run: npm install
-      #
-      #      - name: Run tests
-      #        working-directory: ./backend
-      #        run: npm run test:backend
-
-  #      - name: Stop containers
-  #        if: always()
-  #        run: docker-compose -f docker-compose.yml -f docker-compose.test.yml down
-
   push:
-    timeout-minutes: 5
+    timeout-minutes: 10
     runs-on: ubuntu-latest
     needs: tests
 
