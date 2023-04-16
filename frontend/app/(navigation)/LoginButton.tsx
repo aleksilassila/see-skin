@@ -3,7 +3,11 @@ import { useRouter } from "next/navigation";
 import { useUser } from "../user";
 import { AnchorButton, Button } from "../(ui)/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faUser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronDown,
+  faChevronUp,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import { Popover } from "@headlessui/react";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import classNames from "classnames";
@@ -42,11 +46,16 @@ export default function LoginButton() {
   return (
     <div>
       <Popover className="relative">
-        <Popover.Button>
-          <div className="flex items-center gap-2 cursor-pointer px-6 h-10 rounded">
-            <FontAwesomeIcon icon={faUser} className="h-4" />
-            <FontAwesomeIcon icon={faChevronDown} className="h-4" />
-          </div>
+        <Popover.Button className="outline-0">
+          {({ open }) => (
+            <div className="flex items-center gap-2 cursor-pointer h-10 rounded">
+              <FontAwesomeIcon icon={faUser} className="h-4" />
+              <FontAwesomeIcon
+                icon={open ? faChevronUp : faChevronDown}
+                className="h-4"
+              />
+            </div>
+          )}
         </Popover.Button>
 
         <Popover.Panel className="absolute z-10 right-0 w-48 bg-white rounded-md shadow-md overflow-hidden text-sm text-zinc-700 border">

@@ -6,7 +6,9 @@ import LoginButton from "./LoginButton";
 import { useUser } from "../user";
 
 const NavItem = (props: HTMLAttributes<HTMLDivElement>) => (
-  <div className={`hidden sm:block ${props.className}`}>{props.children}</div>
+  <div className={`hidden sm:block mx-4 ${props.className}`}>
+    {props.children}
+  </div>
 );
 
 const NavLink = (
@@ -16,7 +18,7 @@ const NavLink = (
     href={props.href}
     className={`font-bold ${
       props.href === props.activeHref ? "text-stone-600" : ""
-    }`}
+    } ${props.className}`}
   >
     {props.children}
   </Link>
@@ -34,37 +36,41 @@ const Navigation = ({
 
   return (
     <div
-      className={`h-20 flex-shrink-0 flex justify-around items-center w-full z-20 shadow ${props.className}`}
+      className={`h-20 flex-shrink-0 flex justify-between items-center w-full z-20 shadow ${props.className}`}
       {...props}
     >
-      <NavLink activeHref={href} href="/">
-        <Logo className="text-black" />
-      </NavLink>
-      <NavItem>
-        <NavLink activeHref={href} href="/products">
-          Products
+      <div className="flex items-center mx-4">
+        <NavLink activeHref={href} href="/" className="mx-8">
+          <Logo className="text-black" />
         </NavLink>
-      </NavItem>
-      <NavItem>
-        <NavLink activeHref={href} href="/skin-solver">
-          Skin Solver
-        </NavLink>
-      </NavItem>
-      <NavItem>
-        <NavLink activeHref={href} href="/checker">
-          Checker
-        </NavLink>
-      </NavItem>
-      {user.user && user.user.accessLevel > 0 ? (
         <NavItem>
-          <NavLink href={"/manage"} activeHref={href}>
-            Manage
+          <NavLink activeHref={href} href="/products">
+            Products
           </NavLink>
         </NavItem>
-      ) : null}
-      <NavItem>
-        <LoginButton />
-      </NavItem>
+        <NavItem>
+          <NavLink activeHref={href} href="/skin-solver">
+            Skin Solver
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink activeHref={href} href="/checker">
+            Checker
+          </NavLink>
+        </NavItem>
+        {user.user && user.user.accessLevel > 0 ? (
+          <NavItem>
+            <NavLink href={"/manage"} activeHref={href}>
+              Manage
+            </NavLink>
+          </NavItem>
+        ) : null}
+      </div>
+      <div className="mx-8">
+        <NavItem>
+          <LoginButton />
+        </NavItem>
+      </div>
     </div>
   );
 };
