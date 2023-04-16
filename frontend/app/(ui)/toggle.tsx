@@ -1,6 +1,6 @@
 import { HTMLAttributes, PropsWithChildren, useState } from "react";
 import classNames from "classnames";
-import { getButtonColoring, getButtonSizing } from "./button";
+import { getButtonSizing } from "./button";
 
 export type ToggleState = ReturnType<typeof useToggleState>;
 

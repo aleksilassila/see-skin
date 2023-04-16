@@ -6,7 +6,7 @@ import { GoogleLoginButton } from "../(navigation)/AccountButton";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 export function RequireAuthentication(accessLevel = 0) {
-  return (Component?: FunctionComponent) =>
+  return (Component?: FunctionComponent<any>) =>
     function AuthenticationView(props: PropsWithChildren<{}>) {
       const user = useUser();
 
@@ -20,9 +20,6 @@ export function RequireAuthentication(accessLevel = 0) {
 
       const hasAccess =
         (user?.user ? user.user.accessLevel : -1) >= accessLevel;
-
-      console.log("hasAccess", hasAccess);
-      console.log(user?.user ? user.user.accessLevel : -1);
 
       if (!hasAccess) {
         return (
@@ -47,7 +44,7 @@ export function RequireAuthentication(accessLevel = 0) {
       }
 
       if (Component) {
-        return <Component />;
+        return <Component {...props} />;
       } else {
         return <div>{props.children}</div>;
       }

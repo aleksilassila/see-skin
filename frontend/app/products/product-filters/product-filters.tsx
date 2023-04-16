@@ -1,8 +1,7 @@
-import { Fragment, PropsWithChildren, useEffect, useState } from "react";
+import { Fragment, PropsWithChildren } from "react";
 import classNames from "classnames";
 import Drawer, { DrawerState } from "../../(ui)/drawer";
 import { useToggle } from "../../(hooks)/use-toggle";
-import { useLocalStorage } from "../../utils/localstorage";
 
 export type ProductFiltersState = ReturnType<typeof useProductFiltersState>;
 

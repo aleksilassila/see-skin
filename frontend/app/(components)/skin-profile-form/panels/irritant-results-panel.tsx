@@ -5,12 +5,9 @@ import fetchIrritantsCalculation, {
 import { useQuery, UseQueryResult } from "react-query";
 import { useProductSelectPanelState } from "./product-select-panel";
 import { useUser } from "../../../user";
-import AccountButton, {
-  GoogleLoginButton,
-} from "../../../(navigation)/AccountButton";
+import { GoogleLoginButton } from "../../../(navigation)/AccountButton";
 import { Tab } from "@headlessui/react";
 import { Ingredient, Product, SkinType } from "../../../(api)/types";
-import updateUser from "../../../(api)/user/update-user";
 import { useEffect } from "react";
 
 export function useResultsPanelState(

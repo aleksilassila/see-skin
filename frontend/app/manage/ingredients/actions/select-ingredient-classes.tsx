@@ -22,9 +22,9 @@ const selectable = (["NONE", ...Object.values(IngredientClass)] as const).map(
 );
 
 export function useSelectIngredientClassState() {
-  const [selectedClass, setSelectedClass] = useState<typeof selectable[number]>(
-    selectable[0]
-  );
+  const [selectedClass, setSelectedClass] = useState<
+    (typeof selectable)[number]
+  >(selectable[0]);
   const [classes, setClasses] = useState<IngredientClass[]>([]);
   return {
     classes,

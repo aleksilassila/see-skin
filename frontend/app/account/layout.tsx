@@ -1,4 +1,7 @@
 "use client";
 import { RequireAuthentication } from "../(components)/require-authentication";
 
-export default RequireAuthentication(0)();
+import { WithNavigation } from "../(navigation)/Navigation";
+
+export default RequireAuthentication(0)(WithNavigation());
+// export default RequireAuthentication(0)(UseNavigation());

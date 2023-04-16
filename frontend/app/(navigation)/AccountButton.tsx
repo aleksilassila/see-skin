@@ -11,7 +11,6 @@ import {
 import { Popover } from "@headlessui/react";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import classNames from "classnames";
-import Link from "next/link";
 
 export function GoogleLoginButton() {
   return (

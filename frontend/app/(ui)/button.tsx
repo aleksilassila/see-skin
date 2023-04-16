@@ -1,10 +1,7 @@
 "use client";
 import React, { HTMLAttributes, MouseEvent, PropsWithChildren } from "react";
 import classNames from "classnames";
-import {
-  FontAwesomeIcon,
-  FontAwesomeIconProps,
-} from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import Link from "next/link";
 

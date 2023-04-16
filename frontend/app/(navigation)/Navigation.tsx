@@ -1,9 +1,10 @@
 "use client";
-import { HTMLAttributes } from "react";
+import { FunctionComponent, HTMLAttributes, PropsWithChildren } from "react";
 import Logo from "./Logo";
 import Link from "next/link";
 import AccountButton from "./AccountButton";
 import { useUser } from "../user";
+import Footer from "../(footer)/Footer";
 
 const NavItem = (props: HTMLAttributes<HTMLDivElement>) => (
   <div className={`hidden sm:block mx-4 ${props.className}`}>
@@ -74,5 +75,19 @@ const Navigation = ({
     </div>
   );
 };
+
+export function WithNavigation(Component?: FunctionComponent<any>) {
+  return function NavigationView(props: PropsWithChildren) {
+    console.log("Children", props.children);
+
+    return (
+      <>
+        <Navigation />
+        {Component ? <Component {...props} /> : props.children}
+        <Footer />
+      </>
+    );
+  };
+}
 
 export default Navigation;
