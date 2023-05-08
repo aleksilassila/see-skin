@@ -74,10 +74,6 @@ export default function IrritantResultsPanel(
     return <Tab.Panel>Please log in to get the results</Tab.Panel>;
   }
 
-  console.log("data", data);
-  console.log("isLoading", isLoading);
-  console.log("isError", isError);
-
   if (isError || !data) {
     return <Tab.Panel>Could not fetch irritants.</Tab.Panel>;
   }

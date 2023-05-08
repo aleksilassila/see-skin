@@ -1,4 +1,11 @@
-import { Ingredient, IngredientClass, Product, SkinType, User } from "./types";
+import {
+  Ingredient,
+  IngredientClass,
+  Product,
+  SkinType,
+  User,
+  UserWithSkinProfile,
+} from "./types";
 import { IrritantsCalculationResponse } from "./solver/fetch-irritants-calculation";
 
 export type ApiType = {
@@ -17,7 +24,7 @@ type AuthApiTypes = {
 
 type UserApiTypes = {
   user: {
-    get: ApiTypeOf<User>;
+    get: ApiTypeOf<UserWithSkinProfile>;
     put: ApiTypeOf<
       User,
       {

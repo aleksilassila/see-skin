@@ -5,12 +5,14 @@ import { body, query } from "express-validator";
 import { SkinType } from "@prisma/client";
 import validateRequest from "../middleware/validateRequest";
 import * as userController from "../controllers/userController";
+import { getUser } from "../middleware/requestUtilities";
 
 const userRouter = Router();
 
-userRouter.get("/", requireAuth, (req, res) => {
-  // console.log("User", req.user);
-  res.status(200).send(req.user);
+userRouter.get("/", requireAuth, async (req, res) => {
+  const user = await getUser(req);
+
+  res.status(200).send(user);
 });
 
 userRouter.put(

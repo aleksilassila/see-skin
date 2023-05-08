@@ -1,9 +1,10 @@
-import express, { Router } from "express";
+import express, { NextFunction, Request, Response, Router } from "express";
 import passport from "passport";
 import productsRouter from "./routers/productsRouter";
 import { COOKIE_SECRET, NODE_ENV } from "./config";
 import authRouter from "./routers/authRouter";
 import session from "express-session";
+import "express-async-errors";
 
 // Setup passport
 import "./passport";
@@ -46,4 +47,8 @@ app.use("/api", router);
 
 app.use((req, res) => res.status(404).send("Not Found"));
 
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  console.error(err);
+  res.status(500).send("Internal server error");
+});
 export default app;
