@@ -3,8 +3,8 @@ version: "3"
 services:
   nginx:
     container_name: see-skin-prod-nginx
-    volumes:
-      - ./nginx/default.prod.conf:/etc/nginx/conf.d/default.conf:ro
+    image: 896896/see-skin:nginx
+    build: nginx
 
   db:
     container_name: see-skin-prod-db
