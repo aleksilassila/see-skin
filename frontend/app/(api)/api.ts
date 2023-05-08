@@ -20,27 +20,32 @@ class Api {
 
 const defaultApi = new Api("/api");
 
-export const buildUseFetch =
-  (api: Api) =>
-  <T extends ApiType>(
+export const buildUseFetch = (api: Api) =>
+  function useFetch<T extends ApiType>(
     url: string,
-    params: T["params"] = {},
-    axiosConfig?: AxiosRequestConfig,
-    queryConfig?: UseQueryOptions<T, Error, T, QueryKey>
-  ) => {
+    options: {
+      params?: T["params"];
+      axiosConfig?: AxiosRequestConfig;
+      queryConfig?: UseQueryOptions<
+        T["response"],
+        Error,
+        T["response"],
+        QueryKey
+      >;
+    } = {}
+  ) {
     return useQuery<T["response"], Error, T["response"], QueryKey>(
-      [url, params],
-      () => api.fetch<T["response"]>(url, axiosConfig).then((res) => res.data),
+      [url, options.params],
+      () =>
+        api
+          .fetch<T["response"]>(url, options.axiosConfig)
+          .then((res) => res.data),
       {
         enabled: !!url,
-        ...queryConfig,
+        ...options.queryConfig,
       }
     );
   };
 
-const api = {
-  fetch: defaultApi.fetch,
-  useFetch: buildUseFetch(defaultApi),
-};
-
-export default api;
+export const fetch = defaultApi.fetch.bind(defaultApi);
+export const useFetch = buildUseFetch(defaultApi);

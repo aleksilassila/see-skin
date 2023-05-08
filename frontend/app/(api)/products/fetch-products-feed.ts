@@ -1,12 +1,12 @@
-import Api from "../api";
 import { Product } from "../types";
+import { fetch } from "../api";
 
 export default function fetchProductsFeed(
   page: number,
   name?: string,
   filterIrritants?: boolean
 ): Promise<Product[]> {
-  return Api.fetch<Product[]>("/products/feed", {
+  return fetch<Product[]>("/products/feed", {
     params: {
       name,
       page,

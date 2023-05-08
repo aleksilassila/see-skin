@@ -1,7 +1,7 @@
 "use client";
 
 import Input from "./ui/input";
-import Api from "../(api)/api";
+import { fetch } from "../(api)/api";
 import { Product } from "../(api)/types";
 import {
   RemoteSelectState,
@@ -10,7 +10,7 @@ import {
 
 export function useProductSearchState() {
   return useRemoteSelectState<Product>((searchTerm, selected) =>
-    Api.fetch<Product[]>("/products/find", {
+    fetch<Product[]>("/products/find", {
       params: {
         name: searchTerm,
       },
