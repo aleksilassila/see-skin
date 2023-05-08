@@ -4,7 +4,7 @@ import {
   RemoteSelectState,
   useRemoteSelectState,
 } from "../(hooks)/remote-select";
-import Input from "../(ui)/input";
+import Input from "./ui/input";
 import Api from "../(api)/api";
 import { Ingredient } from "../(api)/types";
 

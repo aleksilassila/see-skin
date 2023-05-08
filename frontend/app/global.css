@@ -5,3 +5,7 @@
 [data-nextjs-scroll-focus-boundary] {
     flex: 1;
 }
+
+* {
+    box-sizing: border-box;
+}

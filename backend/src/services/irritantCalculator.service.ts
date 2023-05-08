@@ -159,9 +159,7 @@ export async function calculateIrritants(
  * @param skinType User's skin type
  */
 function getIrritatingIngredientClasses(
-  possibleIrritants: Prisma.IngredientGetPayload<{
-    include: { aliases: true };
-  }>[],
+  possibleIrritants: IngredientWithAliases[],
   skinType: SkinType
 ): IngredientClass[] {
   const irritatingIngredientClasses: IngredientClass[] = [];

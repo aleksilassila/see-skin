@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useUser } from "../user";
-import { AnchorButton, Button } from "../(ui)/button";
+import { AnchorButton, Button } from "../(components)/ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronDown,

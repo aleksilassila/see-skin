@@ -1,7 +1,7 @@
 "use client";
 import { FunctionComponent, PropsWithChildren } from "react";
 import { useUser } from "../user";
-import { AnchorButton } from "../(ui)/button";
+import { AnchorButton } from "./ui/button";
 import { GoogleLoginButton } from "../(navigation)/AccountButton";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 

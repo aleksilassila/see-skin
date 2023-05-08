@@ -1,6 +1,6 @@
 import { Fragment, PropsWithChildren } from "react";
 import classNames from "classnames";
-import Drawer, { DrawerState } from "../../(ui)/drawer";
+import Drawer, { DrawerState } from "../../(components)/ui/drawer";
 import { useToggle } from "../../(hooks)/use-toggle";
 
 export type ProductFiltersState = ReturnType<typeof useProductFiltersState>;

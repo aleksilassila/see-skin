@@ -1,6 +1,6 @@
 "use client";
 
-import Input from "../(ui)/input";
+import Input from "./ui/input";
 import Api from "../(api)/api";
 import { Product } from "../(api)/types";
 import {

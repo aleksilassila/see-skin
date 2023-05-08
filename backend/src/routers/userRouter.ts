@@ -14,7 +14,7 @@ userRouter.get("/", requireAuth, (req, res) => {
 });
 
 userRouter.put(
-  "/update",
+  "/",
   // body("irritativeIngredientIds").isArray().optional(),
   // body("irritativeIngredientIds.*").isString().isLength({ max: 50, min: 1 }),
   // body("irritativeProductIds").isArray().optional(),

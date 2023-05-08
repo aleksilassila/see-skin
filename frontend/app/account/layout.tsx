@@ -8,7 +8,7 @@ import AccountSidebar from "./account-sidebar";
 function AccountLayout(props: PropsWithChildren) {
   return (
     <div className="flex-1 flex justify-center mx-16 my-16">
-      <div className="flex-1 flex justify-center max-w-7xl">
+      <div className="flex-1 flex justify-center max-w-7xl gap-8">
         <AccountSidebar />
         <div className="flex-1">{props.children}</div>
       </div>
@@ -17,4 +17,3 @@ function AccountLayout(props: PropsWithChildren) {
 }
 
 export default RequireAuthentication(0)(WithNavigation(AccountLayout));
-// export default RequireAuthentication(0)(UseNavigation());

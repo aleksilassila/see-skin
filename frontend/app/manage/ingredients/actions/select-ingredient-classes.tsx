@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Listbox } from "@headlessui/react";
-import { Button } from "../../../(ui)/button";
+import { Button } from "../../../(components)/ui/button";
 import classNames from "classnames";
 import { IngredientClass } from "../../../(api)/types";
 
