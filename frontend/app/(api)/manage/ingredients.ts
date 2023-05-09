@@ -1,4 +1,4 @@
-import { Ingredient } from "../types";
+import { Ingredient } from "../api-types";
 import { fetch } from "../api";
 
 export async function fetchIngredients() {

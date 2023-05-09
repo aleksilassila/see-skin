@@ -4,7 +4,7 @@ import routes, { ApiTypes } from "../../(api)/api-routes";
 import { ProductListItem } from "../../(components)/common/product-list-item";
 import { Button } from "../../(components)/ui/button";
 import ListContainer from "../../(components)/common/list-container";
-import { Modal, ModalHeader, useModalState } from "../../(components)/ui/modal";
+import { useModalState } from "../../(components)/ui/modal";
 import { ProductSearchModal } from "../../(components)/product-search-modal";
 
 export default function ManageIrritants() {
@@ -13,7 +13,8 @@ export default function ManageIrritants() {
 
   if (!data) return null;
 
-  const explicitlyAddedProducts = data.skinProfile.explicitlyAddedProducts;
+  const explicitlyAddedProducts =
+    data.skinProfile?.explicitlyAddedProducts || [];
   const productsFromIngredients = [];
 
   return (

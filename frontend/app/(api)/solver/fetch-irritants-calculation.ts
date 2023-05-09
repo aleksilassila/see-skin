@@ -1,4 +1,4 @@
-import { Ingredient, IngredientClass, Product, SkinType } from "../types";
+import { Ingredient, IngredientClass, Product, SkinType } from "../api-types";
 import { fetch } from "../api";
 
 export type IrritantsCalculationResponse = Irritant[];

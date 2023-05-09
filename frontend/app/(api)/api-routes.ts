@@ -2,10 +2,11 @@ import {
   Ingredient,
   IngredientClass,
   Product,
+  SkinProfile,
   SkinType,
   User,
   UserWithSkinProfile,
-} from "./types";
+} from "./api-types";
 import { IrritantsCalculationResponse } from "./solver/fetch-irritants-calculation";
 
 export type ApiType = {
@@ -31,24 +32,25 @@ type UserApiTypes = {
     put: ApiTypeOf<
       User,
       {
-        irritativeIngredientIds: string[];
-        irritativeProductIds: string[];
-        irritantIds: string[];
-        irritativeClasses: IngredientClass[];
-        skinType: SkinType;
         email: string;
         name: string;
       }
     >;
   };
-  createSkinProfile: ApiTypeOf<
-    IrritantsCalculationResponse,
-    {
-      skinType: SkinType;
-      productIds: string[];
-      ingredientIds: string[];
-    }
-  >;
+};
+
+type SkinProfileApiTypes = {
+  skinProfile: {
+    get: ApiTypeOf<SkinProfile>;
+    put: ApiTypeOf<
+      SkinProfile,
+      {
+        skinType?: SkinType;
+        irritatingProductIds?: string[];
+        filteredIngredientIds?: string[];
+      }
+    >;
+  };
 };
 
 type ProductApiTypes = {
@@ -72,6 +74,7 @@ type ManagementApiTypes = {
 };
 
 export type ApiTypes = UserApiTypes &
+  SkinProfileApiTypes &
   ProductApiTypes &
   ManagementApiTypes &
   AuthApiTypes;
@@ -83,7 +86,8 @@ const routes: { [Property in keyof ApiTypes]: string } = {
   authGoogleCallback: "/auth/google/callback",
 
   user: "/user",
-  createSkinProfile: "/user/create-skin-profile",
+
+  skinProfile: "/skin-profile",
 
   findProducts: "/products/find",
   productsFeed: "/products/feed",

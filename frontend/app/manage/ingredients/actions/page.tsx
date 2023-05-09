@@ -5,7 +5,7 @@ import SelectIngredientClasses, {
 } from "./select-ingredient-classes";
 import { useQuery } from "react-query";
 import { fetch } from "../../../(api)/api";
-import { Ingredient } from "../../../(api)/types";
+import { Ingredient } from "../../../(api)/api-types";
 import IngredientSearch, {
   useIngredientSearchState,
 } from "../../../(components)/ingredient-search";

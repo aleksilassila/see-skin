@@ -1,4 +1,4 @@
-import { Ingredient, IngredientAlias } from "../(api)/types";
+import { Ingredient, IngredientAlias } from "../(api)/api-types";
 
 interface Props {
   irritant: Ingredient;

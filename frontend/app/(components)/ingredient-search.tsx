@@ -5,7 +5,7 @@ import {
   useRemoteSelectState,
 } from "../(hooks)/remote-select";
 import Input from "./ui/input";
-import { Ingredient } from "../(api)/types";
+import { Ingredient } from "../(api)/api-types";
 import { fetch } from "../(api)/api";
 
 export function useIngredientSearchState() {

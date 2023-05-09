@@ -1,6 +1,6 @@
 "use client";
 
-import { Ingredient } from "../../(api)/types";
+import { Ingredient } from "../../(api)/api-types";
 
 interface Props {
   ingredient: Ingredient;

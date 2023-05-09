@@ -13,6 +13,7 @@ import ingredientsRouter from "./routers/ingredientsRouter";
 import manageRouter from "./routers/manageRouter";
 import parsePagination from "./middleware/parsePagination";
 import { requireAuth } from "./middleware/requireAuth";
+import skinProfileRouter from "./routers/skinProfileRouter";
 
 const app = express();
 const router = Router();
@@ -39,6 +40,7 @@ router.use(parsePagination);
 
 router.use("/auth", authRouter);
 router.use("/user", requireAuth, userRouter);
+router.use("/skin-profile", requireAuth, skinProfileRouter);
 router.use("/manage", /*requireAuthLevel(1),*/ manageRouter);
 router.use("/products", productsRouter);
 router.use("/ingredients", ingredientsRouter);

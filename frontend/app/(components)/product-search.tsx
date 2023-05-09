@@ -2,7 +2,7 @@
 
 import Input from "./ui/input";
 import { fetch } from "../(api)/api";
-import { Product } from "../(api)/types";
+import { Product } from "../(api)/api-types";
 import {
   RemoteSelectState,
   useRemoteSelectState,

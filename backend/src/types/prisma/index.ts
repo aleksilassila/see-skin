@@ -12,3 +12,13 @@ export type UserWithSkinProfile = Prisma.UserGetPayload<{
     };
   };
 }>;
+export type ProductWithIngredients = Prisma.ProductGetPayload<{
+  include: {
+    ingredients: {
+      include: { aliases: true };
+    };
+  };
+}>;
+export type IngredientWithAliases = Prisma.IngredientGetPayload<{
+  include: { aliases: true };
+}>;

@@ -1,4 +1,4 @@
-import { Product } from "../types";
+import { Product } from "../api-types";
 import { fetch } from "../api";
 
 export default function fetchProductsFeed(

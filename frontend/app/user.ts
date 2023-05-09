@@ -1,7 +1,7 @@
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
 import { fetch } from "./(api)/api";
-import { UserWithSkinProfile } from "./(api)/types";
+import { UserWithSkinProfile } from "./(api)/api-types";
 import routes from "./(api)/api-routes";
 
 interface User {

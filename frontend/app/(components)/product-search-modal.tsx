@@ -5,7 +5,7 @@ import Input, { useInputState } from "./ui/input";
 import { ReactNode, useEffect } from "react";
 import { ProductListItem } from "./common/product-list-item";
 import { Button } from "./ui/button";
-import { Product } from "../(api)/types";
+import { Product } from "../(api)/api-types";
 
 interface Props {
   buttonText?: string;

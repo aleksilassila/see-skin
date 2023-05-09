@@ -7,7 +7,7 @@ import { useProductSelectPanelState } from "./product-select-panel";
 import { useUser } from "../../../user";
 import { GoogleLoginButton } from "../../../(navigation)/AccountButton";
 import { Tab } from "@headlessui/react";
-import { Ingredient, Product, SkinType } from "../../../(api)/types";
+import { Ingredient, Product, SkinType } from "../../../(api)/api-types";
 import { useEffect } from "react";
 
 export function useResultsPanelState(

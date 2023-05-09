@@ -1,4 +1,4 @@
-import { IngredientClass, SkinType } from "../types";
+import { IngredientClass, SkinType } from "../api-types";
 import { fetch } from "../api";
 
 interface Params {
