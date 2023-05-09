@@ -1,9 +1,10 @@
 "use client";
 import { FunctionComponent, PropsWithChildren } from "react";
 import { useUser } from "../user";
-import { AnchorButton } from "../(ui)/button";
+import { AnchorButton } from "./ui/button";
 import { GoogleLoginButton } from "../(navigation)/AccountButton";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import Spinner from "./spinner";
 
 export function RequireAuthentication(accessLevel = 0) {
   return (Component?: FunctionComponent<any>) =>

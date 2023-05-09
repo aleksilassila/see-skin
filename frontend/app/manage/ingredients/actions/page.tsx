@@ -1,10 +1,10 @@
 "use client";
-import { Button } from "../../../(ui)/button";
+import { Button } from "../../../(components)/ui/button";
 import SelectIngredientClasses, {
   useSelectIngredientClassState,
 } from "./select-ingredient-classes";
 import { useQuery } from "react-query";
-import Api from "../../../(api)/api";
+import { fetch } from "../../../(api)/api";
 import { Ingredient } from "../../../(api)/types";
 import IngredientSearch, {
   useIngredientSearchState,
@@ -25,7 +25,7 @@ export default function ManageIngredientsActions() {
   function updateQueryClasses() {
     return Promise.all(
       ingredientSearchState.selected.map((ingredient) =>
-        Api.fetch("/ingredients/update/" + ingredient.id, {
+        fetch("/ingredients/update/" + ingredient.id, {
           method: "PUT",
           data: {
             ingredientClasses: selectIngredientClassState.classes,

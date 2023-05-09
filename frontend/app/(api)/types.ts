@@ -1,36 +1,95 @@
-export interface IngredientAlias {
-  id: string;
-  name: string;
-  ingredientId: string;
-}
+// Prisma types from backend Prisma Client
 
-export interface Product {
+/**
+ * Model Product
+ *
+ */
+export type Product = {
   id: string;
   name: string;
   description: string;
   brand: string;
   price: number;
-  priceBeforeDiscount?: number;
+  priceBeforeDiscount: number | null;
   priceCurrency: Currency;
-  rating?: number;
-  ratingCount?: number;
+  rating: number | null;
+  ratingCount: number | null;
   effects: ProductEffect[];
-  category?: ProductCategory;
+  category: ProductCategory | null;
+  imageUrl: string | null;
+  shopPageUrl: string | null;
+  provider: ProductProvider | null;
+  ingredientsString: string;
+  unknownIngredients: string[];
+  knownToUnknownRatio: number;
+  createdAt: Date;
+  updatedAt: Date;
+} & {
+  ingredients?: Ingredient[];
+};
 
-  imageUrl?: string;
-  shopPageUrl?: string;
-}
-
-export interface Ingredient {
+/**
+ * Model Ingredient
+ *
+ */
+export type Ingredient = {
   id: string;
   name: string;
   cosingRef: number;
   description: string;
   function: string;
-  aliases?: IngredientAlias[];
   ingredientClasses: IngredientClass[];
   updatedAt: Date;
   createdAt: Date;
+} & {
+  aliases?: IngredientAlias[];
+};
+
+/**
+ * Model IngredientAlias
+ *
+ */
+export type IngredientAlias = {
+  id: string;
+  name: string;
+  ingredientId: string;
+};
+
+/**
+ * Model User
+ *
+ */
+export type User = {
+  id: string;
+  googleId: string | null;
+  email: string;
+  password: string | null;
+  name: string;
+  accessLevel: number;
+  logoutAt: Date | null;
+  preferredProviders: ProductProvider[];
+} & {
+  skinProfile?: SkinProfile;
+};
+
+/**
+ * Model SkinProfile
+ *
+ */
+export type SkinProfile = {
+  id: string;
+  userId: string;
+  skinType: SkinType;
+} & {
+  explicitlyAddedProducts?: Product[];
+  explicitlyAddedIrritants?: Ingredient[];
+  duplicateIrritants?: Ingredient[];
+  skinTypeClassIrritants?: Ingredient[];
+};
+
+export enum Currency {
+  USD = "USD",
+  EUR = "EUR",
 }
 
 export enum IngredientClass {
@@ -43,27 +102,6 @@ export enum IngredientClass {
   OILY_IRRITANT = "OILY_IRRITANT",
   DRY_OILY_IRRITANT = "DRY_OILY_IRRITANT",
   SENSITIVE_IRRITANT = "SENSITIVE_IRRITANT",
-}
-
-export enum SkinType {
-  NORMAL = "NORMAL",
-  DRY = "DRY",
-  OILY = "OILY",
-  COMBINATION = "COMBINATION",
-  NORMAL_SENSITIVE = "NORMAL_SENSITIVE",
-  DRY_SENSITIVE = "DRY_SENSITIVE",
-  OILY_SENSITIVE = "OILY_SENSITIVE",
-  COMBINATION_SENSITIVE = "COMBINATION_SENSITIVE",
-}
-
-export enum Currency {
-  USD = "USD",
-  EUR = "EUR",
-}
-
-export enum ProductProvider {
-  ULTA = "ULTA",
-  AMAZON = "AMAZON",
 }
 
 export enum ProductCategory {
@@ -90,3 +128,38 @@ export enum ProductEffect {
   ACNE_FIGHTING = "ACNE_FIGHTING",
   HEALING = "HEALING",
 }
+
+export enum ProductProvider {
+  ULTA = "ULTA",
+  AMAZON = "AMAZON",
+}
+
+export enum SkinType {
+  NORMAL = "NORMAL",
+  DRY = "DRY",
+  OILY = "OILY",
+  COMBINATION = "COMBINATION",
+  NORMAL_SENSITIVE = "NORMAL_SENSITIVE",
+  DRY_SENSITIVE = "DRY_SENSITIVE",
+  OILY_SENSITIVE = "OILY_SENSITIVE",
+  COMBINATION_SENSITIVE = "COMBINATION_SENSITIVE",
+}
+
+// Types with includes
+
+export type IngredientWithAliases = Ingredient & {
+  aliases: IngredientAlias[];
+};
+
+export type ProductWithIngredients = Product & {
+  ingredients: IngredientWithAliases[];
+};
+
+export type UserWithSkinProfile = User & {
+  skinProfile: SkinProfile & {
+    explicitlyAddedProducts: ProductWithIngredients[];
+    explicitlyAddedIrritants: IngredientWithAliases[];
+    duplicateIrritants: IngredientWithAliases[];
+    skinTypeClassIrritants: IngredientWithAliases[];
+  };
+};

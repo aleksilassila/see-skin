@@ -1,6 +1,8 @@
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
-import Api from "./(api)/api";
+import { fetch } from "./(api)/api";
+import { UserWithSkinProfile } from "./(api)/types";
+import routes from "./(api)/api-routes";
 
 interface User {
   id: string;
@@ -32,18 +34,6 @@ function cacheUser(user?: User) {
   }
 }
 
-async function fetchUser(): Promise<User | false> {
-  return await Api.fetch<User>("/user")
-    .then((user) => {
-      cacheUser(user.data);
-      return user.data;
-    })
-    .catch(() => {
-      cacheUser();
-      return false;
-    });
-}
-
 export function useUser() {
   return useContext(UserContext);
 }
@@ -62,7 +52,13 @@ export function useUserContextValue(): UserContextState {
 
     // Validate user
     setState({ user: getCachedUser(), initialized: true });
-    fetchUser().then((user) => setState({ ...state, user }));
+    fetch<UserWithSkinProfile>(routes.user)
+      .then((res) => res.data)
+      .then((user) => setState({ ...state, user }))
+      .catch((err) => {
+        setState({ ...state, user: false });
+        console.error(err);
+      });
   }, []);
 
   return {

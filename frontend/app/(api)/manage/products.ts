@@ -1,8 +1,6 @@
-import Api from "../api";
+import { fetch } from "../api";
 import { Product } from "../types";
 
 export async function fetchProducts() {
-  return await Api.fetch<Product[]>("/manage/issues/products").then(
-    (r) => r.data
-  );
+  return await fetch<Product[]>("/manage/issues/products").then((r) => r.data);
 }

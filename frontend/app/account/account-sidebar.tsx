@@ -30,7 +30,7 @@ function SidebarLink(
 
 export default function AccountSidebar() {
   return (
-    <div className="flex flex-col mx-4">
+    <div className="flex flex-col">
       <div className="flex items-center border-b-2 border-stone-100 mb-2 p-2">
         <FontAwesomeIcon icon={faBoxesStacked} className="mr-2 h-5" />
         <h1 className="text-2xl font-medium tracking-wide">Skin Solver</h1>

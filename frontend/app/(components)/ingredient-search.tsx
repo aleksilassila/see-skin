@@ -4,13 +4,13 @@ import {
   RemoteSelectState,
   useRemoteSelectState,
 } from "../(hooks)/remote-select";
-import Input from "../(ui)/input";
-import Api from "../(api)/api";
+import Input from "./ui/input";
 import { Ingredient } from "../(api)/types";
+import { fetch } from "../(api)/api";
 
 export function useIngredientSearchState() {
   return useRemoteSelectState<Ingredient>((searchTerm, selected) =>
-    Api.fetch<Ingredient[]>("/ingredients/find", {
+    fetch<Ingredient[]>("/ingredients/find", {
       params: {
         name: searchTerm,
       },

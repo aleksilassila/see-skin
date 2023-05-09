@@ -1,8 +1,8 @@
 "use client";
-import Input from "../(ui)/input";
+import Input from "../(components)/ui/input";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "../(ui)/button";
+import { Button } from "../(components)/ui/button";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");

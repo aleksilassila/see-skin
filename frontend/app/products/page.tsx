@@ -9,7 +9,7 @@ import ProductFeed from "./product-feed/product-feed";
 import ProductDetails, {
   useProductDetailsState,
 } from "./product-details/product-details";
-import { useDrawerState } from "../(ui)/drawer";
+import { useDrawerState } from "../(components)/ui/drawer";
 
 import { WithNavigation } from "../(navigation)/Navigation";
 
