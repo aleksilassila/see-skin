@@ -33,6 +33,8 @@ export default function ManageIrritants() {
           </Button>
           <ProductSearchModal
             handleProductSelect={(product) => {}}
+            handleProductUnselect={(product) => {}}
+            selectedProducts={[]}
             {...productSearchModalState}
           />
         </div>

@@ -10,11 +10,14 @@ import { Product } from "../(api)/types";
 interface Props {
   buttonText?: string;
   handleProductSelect: (product: Product) => void;
+  handleProductUnselect: (product: Product) => void;
+  selectedProducts: Product[];
 }
 
 export function ProductSearchModal({
   handleProductSelect,
-  buttonText = "Add",
+  handleProductUnselect,
+  selectedProducts,
   ...modalState
 }: ModalState & Props) {
   const inputState = useInputState();
@@ -36,6 +39,8 @@ export function ProductSearchModal({
     if (shouldFetchProducts) query.refetch();
   }, [inputState.value]);
 
+  const selectedProductIds = selectedProducts.map((product) => product.id);
+
   return (
     <Modal top={5} {...modalState}>
       <ModalHeader {...modalState}>Search Products</ModalHeader>
@@ -49,21 +54,24 @@ export function ProductSearchModal({
           />
         </div>
         <div className="flex flex-col">
-          {query.data?.map((product, key) => (
-            <ProductListItem
-              product={product}
-              key={key}
-              actionElement={
-                <Button
-                  intent="secondary"
-                  size="sm"
-                  onClick={() => handleProductSelect(product)}
-                >
-                  {buttonText}
-                </Button>
-              }
-            />
-          ))}
+          {query.data?.map((product, key) => {
+            const isSelected = selectedProductIds.includes(product.id);
+            return (
+              <ProductListItem
+                product={product}
+                key={key}
+                actionElement={
+                  <Button
+                    intent={isSelected ? "danger" : "secondary"}
+                    size="sm"
+                    onClick={() => handleProductSelect(product)}
+                  >
+                    {isSelected ? "Remove" : "Add"}
+                  </Button>
+                }
+              />
+            );
+          })}
         </div>
       </div>
     </Modal>
