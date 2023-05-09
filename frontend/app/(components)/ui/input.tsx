@@ -1,4 +1,4 @@
-import { HTMLAttributes } from "react";
+import { HTMLAttributes, useState } from "react";
 import classNames from "classnames";
 
 interface InputProps extends HTMLAttributes<HTMLInputElement> {
@@ -10,6 +10,16 @@ interface InputProps extends HTMLAttributes<HTMLInputElement> {
   error?: boolean;
   errorText?: string;
   overwriteStyles?: boolean;
+}
+
+export function useInputState() {
+  const [value, setValue] = useState("");
+
+  return {
+    value,
+    setValue,
+    onValueChange: (value: string) => setValue(value),
+  };
 }
 
 export default function Input({

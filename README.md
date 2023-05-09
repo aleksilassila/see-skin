@@ -68,7 +68,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - see-skin-db:/var/lib/postgresql/data
+      - dbdata:/var/lib/postgresql/data
     restart: unless-stopped
 
   backend:
@@ -91,5 +91,5 @@ services:
       NODE_ENV: production
 
 volumes:
-  see-skin-db:
+  dbdata:
 ```

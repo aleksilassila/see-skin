@@ -18,6 +18,16 @@ class Api {
   }
 }
 
+const fetcher = <T>(
+  url: string,
+  options: AxiosRequestConfig<T> = {}
+): Promise<T> =>
+  axios<T>({
+    ...options,
+    baseURL: "/api",
+    url,
+  }).then((res) => res.data);
+
 const defaultApi = new Api("/api");
 
 export const buildUseFetch = (api: Api) =>
@@ -25,7 +35,7 @@ export const buildUseFetch = (api: Api) =>
     url: string,
     options: {
       params?: T["params"];
-      axiosConfig?: AxiosRequestConfig;
+      axiosConfig?: AxiosRequestConfig<T["response"]>;
       queryConfig?: UseQueryOptions<
         T["response"],
         Error,
@@ -36,10 +46,14 @@ export const buildUseFetch = (api: Api) =>
   ) {
     return useQuery<T["response"], Error, T["response"], QueryKey>(
       [url, options.params],
-      () =>
-        api
-          .fetch<T["response"]>(url, options.axiosConfig)
-          .then((res) => res.data),
+      async () =>
+        await fetcher<T["response"]>(url, {
+          ...options.axiosConfig,
+          params: {
+            ...options.axiosConfig?.params,
+            ...options.params,
+          },
+        }),
       {
         enabled: !!url,
         ...options.queryConfig,

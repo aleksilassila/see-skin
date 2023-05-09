@@ -10,10 +10,13 @@ import { IrritantsCalculationResponse } from "./solver/fetch-irritants-calculati
 
 export type ApiType = {
   response: any;
-  params: any;
+  params?: object;
 };
 
-type ApiTypeOf<R = any, P = any> = { response: R; params: P };
+type ApiTypeOf<R = any, P = object> = {
+  response: R;
+  params: { take?: number; skip?: number } & P;
+};
 
 type AuthApiTypes = {
   authLogout: ApiTypeOf;
@@ -49,7 +52,7 @@ type UserApiTypes = {
 };
 
 type ProductApiTypes = {
-  findProducts: ApiTypeOf<Product[]>;
+  findProducts: ApiTypeOf<Product[], { name: string }>;
   productsFeed: ApiTypeOf<
     Product[],
     {

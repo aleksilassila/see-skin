@@ -2,12 +2,14 @@ import { Product } from "../../(api)/types";
 import Image from "next/image";
 import { PRODUCT_PLACEHOLDER_URL } from "../../config";
 import { Button } from "../ui/button";
+import { ReactNode } from "react";
 
 interface Props {
   product: Product;
+  actionElement?: ReactNode;
 }
 
-export function ProductListItem({ product }: Props) {
+export function ProductListItem({ product, actionElement }: Props) {
   return (
     <div className="flex items-center justify-between h-24 bg-stone-50 px-4 gap-2">
       <div className="flex gap-2 min-w-0">
@@ -21,7 +23,7 @@ export function ProductListItem({ product }: Props) {
             className="w-auto h-full"
           />
         </div>
-        <div className="min-w-0 flex flex-col justify-center">
+        <div className="min-w-0 flex flex-1 flex-col justify-center">
           <div className="font-medium text-sm text-stone-700">
             {product.brand}
           </div>
@@ -30,11 +32,7 @@ export function ProductListItem({ product }: Props) {
           </div>
         </div>
       </div>
-      <div className="flex-1">
-        <Button intent="secondary" size="sm">
-          Remove
-        </Button>
-      </div>
+      {actionElement && <div className="flex-shrink-0">{actionElement}</div>}
     </div>
   );
 }
