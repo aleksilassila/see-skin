@@ -1,10 +1,10 @@
-import { Modal, ModalHeader, ModalState, useModalState } from "./ui/modal";
-import { useFetch } from "../(api)/api";
+import { Modal, ModalHeader, ModalState } from "./ui/modal";
+import { useFetchApi } from "../(api)/api";
 import routes, { ApiTypes } from "../(api)/api-routes";
 import Input, { useInputState } from "./ui/input";
-import { ReactNode, useEffect } from "react";
+import { useEffect } from "react";
 import { ProductListItem } from "./common/product-list-item";
-import { Button } from "./ui/button";
+import { Button, ButtonProps } from "./ui/button";
 import { Product } from "../(api)/api-types";
 
 interface Props {
@@ -12,28 +12,34 @@ interface Props {
   handleProductSelect: (product: Product) => void;
   handleProductUnselect: (product: Product) => void;
   selectedProducts: Product[];
+  buttonProps?: ButtonProps<any> | any;
 }
 
 export function ProductSearchModal({
   handleProductSelect,
   handleProductUnselect,
   selectedProducts,
+  buttonProps,
   ...modalState
 }: ModalState & Props) {
   const inputState = useInputState();
   const shouldFetchProducts = inputState.value.length >= 3;
 
-  const query = useFetch<ApiTypes["findProducts"]>(routes.findProducts, {
-    params: {
-      name: inputState.value,
-      take: 7,
+  const query = useFetchApi<ApiTypes["findProducts"]>(
+    routes.findProducts,
+    {
+      params: {
+        name: inputState.value,
+        take: 7,
+      },
     },
-    queryConfig: {
+    {
       enabled: shouldFetchProducts,
       suspense: false,
       retry: false,
-    },
-  });
+      keepPreviousData: true,
+    }
+  );
 
   useEffect(() => {
     if (shouldFetchProducts) query.refetch();
@@ -62,9 +68,14 @@ export function ProductSearchModal({
                 key={key}
                 actionElement={
                   <Button
-                    intent={isSelected ? "danger" : "secondary"}
+                    intent="secondary" //{isSelected ? "danger" : "secondary"}
                     size="sm"
-                    onClick={() => handleProductSelect(product)}
+                    onClick={() =>
+                      isSelected
+                        ? handleProductUnselect(product)
+                        : handleProductSelect(product)
+                    }
+                    {...buttonProps}
                   >
                     {isSelected ? "Remove" : "Add"}
                   </Button>

@@ -1,7 +1,7 @@
 import { Fragment, PropsWithChildren, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCross, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames";
 
 export type ModalState = ReturnType<typeof useModalState>;

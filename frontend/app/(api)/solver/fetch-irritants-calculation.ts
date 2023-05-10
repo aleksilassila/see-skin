@@ -1,5 +1,5 @@
 import { Ingredient, IngredientClass, Product, SkinType } from "../api-types";
-import { fetch } from "../api";
+import { fetchApi } from "../api";
 
 export type IrritantsCalculationResponse = Irritant[];
 
@@ -37,11 +37,11 @@ export default async function fetchIrritantsCalculation(
   products: Product[],
   ingredients: Ingredient[]
 ): Promise<IrritantsCalculationResponse> {
-  return fetch<IrritantsCalculationResponse>("/user/create-skin-profile", {
+  return fetchApi<IrritantsCalculationResponse>("/user/create-skin-profile", {
     params: {
       productIds: products.map((product) => product.id),
       ingredientIds: ingredients.map((ingredient) => ingredient.id),
       skinType,
     },
-  }).then((response) => response.data);
+  });
 }

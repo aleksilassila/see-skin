@@ -1,13 +1,11 @@
 import {
   Ingredient,
-  IngredientClass,
   Product,
   SkinProfile,
   SkinType,
   User,
   UserWithSkinProfile,
 } from "./api-types";
-import { IrritantsCalculationResponse } from "./solver/fetch-irritants-calculation";
 
 export type ApiType = {
   response: any;
@@ -46,6 +44,20 @@ type SkinProfileApiTypes = {
       SkinProfile,
       {
         skinType?: SkinType;
+        irritatingProductIds?: string[];
+        filteredIngredientIds?: string[];
+      }
+    >;
+    post: ApiTypeOf<
+      SkinProfile,
+      {
+        irritatingProductIds?: string[];
+        filteredIngredientIds?: string[];
+      }
+    >;
+    delete: ApiTypeOf<
+      SkinProfile,
+      {
         irritatingProductIds?: string[];
         filteredIngredientIds?: string[];
       }

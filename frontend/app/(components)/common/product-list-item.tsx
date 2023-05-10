@@ -1,7 +1,6 @@
 import { Product } from "../../(api)/api-types";
 import Image from "next/image";
 import { PRODUCT_PLACEHOLDER_URL } from "../../config";
-import { Button } from "../ui/button";
 import { ReactNode } from "react";
 
 interface Props {

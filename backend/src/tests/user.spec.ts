@@ -40,7 +40,7 @@ describe("/user", () => {
   });
   it("Should be able to create a SkinProfile and calculate irritants", async () => {
     await agent
-      .get("/api/user/create-skin-profile")
+      .put("/api/skin-profile")
       .query(
         Object.keys(filteredIngredientIdsToProductId)
           .map((id) => `ingredientIds[]=${id}`)
@@ -120,7 +120,7 @@ describe("/user", () => {
   });
   it("Should be able to update skin profile", async () => {
     await agent
-      .get("/api/user/create-skin-profile")
+      .put("/api/skin-profile")
       .query({
         skinType: "NORMAL",
       })

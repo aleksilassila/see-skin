@@ -25,6 +25,7 @@ export function useInputState() {
 export default function Input({
   type = "text",
   onValueChange,
+  overwriteStyles,
   ...props
 }: InputProps) {
   const className = classNames(props.className, {});
@@ -36,7 +37,7 @@ export default function Input({
       onChange={(e) => onValueChange(e.target.value)}
       type={type}
       placeholder={props.placeholder}
-      className={props.overwriteStyles ? props.className : className}
+      className={overwriteStyles ? props.className : className}
     />
   );
 }

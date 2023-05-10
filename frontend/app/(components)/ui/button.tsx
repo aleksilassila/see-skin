@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import Link from "next/link";
 
-interface ButtonProps<T extends HTMLElement> extends HTMLAttributes<T> {
+export interface ButtonProps<T extends HTMLElement> extends HTMLAttributes<T> {
   disabled?: boolean;
   icon?: string;
   iconStyle?: string;
@@ -26,6 +26,7 @@ export function Button({
   trailingIcon,
   round,
   onClick = () => {},
+  overwriteStyles,
   ...props
 }: ButtonProps<HTMLButtonElement> & {
   loading?: boolean;
@@ -50,7 +51,7 @@ export function Button({
       {...props}
       type="button"
       disabled={!active}
-      className={(props.overwriteStyles && props.className) || style}
+      className={(overwriteStyles && props.className) || style}
       onClick={handleClick}
     >
       <IconWrapper
@@ -74,6 +75,7 @@ export function AnchorButton({
   trailingIcon,
   newTab = false,
   nextLink = false,
+  overwriteStyles,
   ...props
 }: ButtonProps<HTMLAnchorElement> & {
   href: string;
@@ -97,7 +99,7 @@ export function AnchorButton({
         {...props}
         href={props.href}
         {...(newTab && { target: "_blank", rel: "noreferrer" })}
-        className={(props.overwriteStyles && props.className) || style}
+        className={(overwriteStyles && props.className) || style}
       >
         <IconWrapper
           leadingIcon={leadingIcon}
@@ -116,7 +118,7 @@ export function AnchorButton({
       {...props}
       {...(newTab && { target: "_blank", rel: "noreferrer" })}
       href={props.href}
-      className={(props.overwriteStyles && props.className) || style}
+      className={(overwriteStyles && props.className) || style}
     >
       <IconWrapper
         leadingIcon={leadingIcon}

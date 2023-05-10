@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { createContext, PropsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRight,

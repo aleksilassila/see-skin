@@ -1,48 +1,73 @@
 import { Request, Response } from "express";
-import { SkinType } from "@prisma/client";
+import { Ingredient, Product, SkinType } from "@prisma/client";
 import { calculateIrritants } from "../services/irritantCalculator.service";
 import prisma from "../prisma";
 import { IngredientWithAliases, ProductWithIngredients } from "../types/prisma";
 import { getUser } from "../middleware/requestUtilities";
 
-export async function setSkinProfile(
-  req: Request<
-    {},
-    {},
-    {},
-    {
-      filteredIngredientIds?: string[];
-      irritatingProductIds?: string[];
-      skinType?: SkinType;
-    }
-  >,
-  res: Response
-) {
-  const { filteredIngredientIds, irritatingProductIds, skinType } = req.query;
+type UpdateFunctionData = {
+  filteredIngredients: Ingredient[];
+  irritatingProducts: Product[];
+  skinType: SkinType;
+};
 
-  const user = await getUser(req);
+export const setSkinProfile = (
+  updateFunction: (
+    oldData: UpdateFunctionData,
+    newData: Partial<UpdateFunctionData>
+  ) => UpdateFunctionData
+) =>
+  async function (
+    req: Request<
+      {},
+      {},
+      {},
+      {
+        filteredIngredientIds?: string[];
+        irritatingProductIds?: string[];
+        skinType?: SkinType;
+      }
+    >,
+    res: Response
+  ) {
+    const { filteredIngredientIds, irritatingProductIds, skinType } = req.query;
 
-  const filteredIngredients = await getFilteredIngredients(
-    filteredIngredientIds ||
-      user.skinProfile?.explicitlyAddedIrritants.map((i) => i.id) ||
-      []
-  );
+    const user = await getUser(req);
 
-  const irritatingProducts = await getIrritatingProducts(
-    irritatingProductIds ||
-      user.skinProfile?.explicitlyAddedProducts.map((p) => p.id) ||
-      []
-  );
+    const filteredIngredients = await getIngredientsWithAliases(
+      filteredIngredientIds ||
+        user.skinProfile?.explicitlyAddedIrritants.map((i) => i.id) ||
+        []
+    );
 
-  const updated = updateSkinProfile(
-    user.id,
-    skinType || user.skinProfile?.skinType || SkinType.NORMAL,
-    filteredIngredients,
-    irritatingProducts
-  );
+    const irritatingProducts = await getProductsWithIngredients(
+      irritatingProductIds ||
+        user.skinProfile?.explicitlyAddedProducts.map((p) => p.id) ||
+        []
+    );
 
-  res.status(200).send(updated);
-}
+    const toSet = updateFunction(
+      {
+        filteredIngredients: user.skinProfile?.explicitlyAddedIrritants || [],
+        irritatingProducts: user.skinProfile?.explicitlyAddedProducts || [],
+        skinType: user.skinProfile?.skinType || SkinType.NORMAL,
+      },
+      { filteredIngredients, irritatingProducts, skinType }
+    );
+
+    const updated = await updateSkinProfile(
+      user.id,
+      toSet.skinType,
+      await getIngredientsWithAliases(
+        toSet.filteredIngredients.map((i) => i.id)
+      ),
+      await getProductsWithIngredients(
+        toSet.irritatingProducts.map((p) => p.id)
+      )
+    ).then((u) => u?.skinProfile);
+
+    res.status(200).send(updated);
+  };
 
 async function updateSkinProfile(
   userId: string,
@@ -153,12 +178,23 @@ async function updateSkinProfile(
             },
           },
         },
+        include: {
+          skinProfile: {
+            include: {
+              explicitlyAddedProducts: true,
+              explicitlyAddedIrritants: true,
+              duplicateIrritants: true,
+              skinTypeClassIrritants: true,
+              commonClassIrritants: true,
+            },
+          },
+        },
       })
       .catch(console.error)) || undefined
   );
 }
 
-async function getFilteredIngredients(ingredientIds: string[]) {
+async function getIngredientsWithAliases(ingredientIds: string[]) {
   return await prisma.ingredient.findMany({
     where: {
       id: {
@@ -171,7 +207,7 @@ async function getFilteredIngredients(ingredientIds: string[]) {
   });
 }
 
-async function getIrritatingProducts(productIds: string[]) {
+async function getProductsWithIngredients(productIds: string[]) {
   return await prisma.product.findMany({
     where: {
       id: {

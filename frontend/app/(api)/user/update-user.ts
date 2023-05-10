@@ -1,5 +1,5 @@
 import { IngredientClass, SkinType } from "../api-types";
-import { fetch } from "../api";
+import { fetchApi } from "../api";
 
 interface Params {
   irritativeIngredientIds: string[];
@@ -12,7 +12,7 @@ interface Params {
 }
 
 export default function updateUser(params: Partial<Params>) {
-  return fetch("/user/update", {
+  return fetchApi("/user/update", {
     method: "PUT",
     data: { ...params },
   });

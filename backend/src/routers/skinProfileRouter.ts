@@ -19,7 +19,51 @@ skinProfileRouter.put(
   query("irritatingProductIds.*").isString().optional(),
   query("skinType").isIn(Object.keys(SkinType)).optional(),
   validateRequest,
-  skinProfileController.setSkinProfile
+  skinProfileController.setSkinProfile((oldData, newData) => ({
+    skinType: newData.skinType || oldData.skinType,
+    filteredIngredients:
+      newData.filteredIngredients || oldData.filteredIngredients,
+    irritatingProducts:
+      newData.irritatingProducts || oldData.irritatingProducts,
+  }))
+);
+
+skinProfileRouter.post(
+  "/",
+  query("filteredIngredientIds").isArray({ min: 0, max: 50 }).optional(),
+  query("filteredIngredientIds.*").isString().optional(),
+  query("irritatingProductIds").isArray({ min: 0, max: 30 }).optional(),
+  query("irritatingProductIds.*").isString().optional(),
+  validateRequest,
+  skinProfileController.setSkinProfile((oldData, newData) => ({
+    skinType: oldData.skinType,
+    filteredIngredients: [
+      ...oldData.filteredIngredients,
+      ...(newData.filteredIngredients || []),
+    ],
+    irritatingProducts: [
+      ...oldData.irritatingProducts,
+      ...(newData.irritatingProducts || []),
+    ],
+  }))
+);
+
+skinProfileRouter.delete(
+  "/",
+  query("filteredIngredientIds").isArray({ min: 0, max: 50 }).optional(),
+  query("filteredIngredientIds.*").isString().optional(),
+  query("irritatingProductIds").isArray({ min: 0, max: 30 }).optional(),
+  query("irritatingProductIds.*").isString().optional(),
+  validateRequest,
+  skinProfileController.setSkinProfile((oldData, newData) => ({
+    skinType: oldData.skinType,
+    filteredIngredients: oldData.filteredIngredients.filter(
+      (i) => !newData.filteredIngredients?.find((ni) => ni.id === i.id)
+    ),
+    irritatingProducts: oldData.irritatingProducts.filter(
+      (p) => !newData.irritatingProducts?.find((np) => np.id === p.id)
+    ),
+  }))
 );
 
 export default skinProfileRouter;

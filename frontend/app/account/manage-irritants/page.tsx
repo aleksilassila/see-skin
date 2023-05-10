@@ -1,21 +1,48 @@
 "use client";
-import { useFetch } from "../../(api)/api";
+import {
+  getQueryKey,
+  useFetchApi,
+  useMutateApiWithParams,
+} from "../../(api)/api";
 import routes, { ApiTypes } from "../../(api)/api-routes";
 import { ProductListItem } from "../../(components)/common/product-list-item";
 import { Button } from "../../(components)/ui/button";
 import ListContainer from "../../(components)/common/list-container";
 import { useModalState } from "../../(components)/ui/modal";
 import { ProductSearchModal } from "../../(components)/product-search-modal";
+import { Product } from "../../(api)/api-types";
+import { useQueryClient } from "react-query";
 
 export default function ManageIrritants() {
-  const { data } = useFetch<ApiTypes["user"]["get"]>(routes.user);
   const productSearchModalState = useModalState();
 
-  if (!data) return null;
+  const { data: skinProfile, ...userQuery } = useFetchApi<
+    ApiTypes["skinProfile"]["get"]
+  >(routes.skinProfile);
 
-  const explicitlyAddedProducts =
-    data.skinProfile?.explicitlyAddedProducts || [];
+  const [mutateProductsPost, mutateProductsDelete] = useProductMutations();
+
+  if (!skinProfile) return null;
+
+  function removeProduct(product: Product) {
+    mutateProductsDelete.mutate({
+      irritatingProductIds: [product.id],
+    });
+  }
+
+  function addProduct(product: Product) {
+    mutateProductsPost.mutate({
+      irritatingProductIds: [product.id],
+    });
+  }
+
+  const explicitlyAddedProducts = skinProfile.explicitlyAddedProducts || [];
   const productsFromIngredients = [];
+
+  const buttonsLoading =
+    mutateProductsDelete.isLoading ||
+    mutateProductsPost.isLoading ||
+    userQuery.isLoading;
 
   return (
     <div className="m-auto max-w-md lg:max-w-xl xl:max-w-2xl">
@@ -33,9 +60,10 @@ export default function ManageIrritants() {
             Add Products
           </Button>
           <ProductSearchModal
-            handleProductSelect={(product) => {}}
-            handleProductUnselect={(product) => {}}
-            selectedProducts={[]}
+            handleProductSelect={(product) => addProduct(product)}
+            handleProductUnselect={(product) => removeProduct(product)}
+            selectedProducts={explicitlyAddedProducts}
+            buttonProps={{ disabled: buttonsLoading }}
             {...productSearchModalState}
           />
         </div>
@@ -51,7 +79,12 @@ export default function ManageIrritants() {
                 product={product}
                 key={key}
                 actionElement={
-                  <Button intent="secondary" size="sm">
+                  <Button
+                    intent="secondary"
+                    size="sm"
+                    onClick={() => removeProduct(product)}
+                    loading={buttonsLoading}
+                  >
                     Remove
                   </Button>
                 }
@@ -65,4 +98,37 @@ export default function ManageIrritants() {
       </div>
     </div>
   );
+}
+
+function useProductMutations() {
+  const queryClient = useQueryClient();
+
+  const onSuccess = (data: any) =>
+    queryClient.setQueryData(getQueryKey(routes.skinProfile), data);
+
+  const mutateProductsDelete = useMutateApiWithParams<
+    ApiTypes["skinProfile"]["delete"]
+  >(
+    routes.skinProfile,
+    {
+      method: "DELETE",
+    },
+    {
+      onSuccess,
+    }
+  );
+
+  const mutateProductsPost = useMutateApiWithParams<
+    ApiTypes["skinProfile"]["post"]
+  >(
+    routes.skinProfile,
+    {
+      method: "POST",
+    },
+    {
+      onSuccess,
+    }
+  );
+
+  return [mutateProductsPost, mutateProductsDelete];
 }
