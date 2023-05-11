@@ -5,6 +5,9 @@ name: see-skin-prod
 services:
   nginx:
     container_name: see-skin-prod-nginx
+    build:
+      context: nginx
+      target: production
 
   db:
     container_name: see-skin-prod-db

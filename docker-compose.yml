@@ -6,7 +6,9 @@ services:
   nginx:
     container_name: see-skin-dev-nginx
     image: 896896/see-skin:nginx
-    build: nginx
+    build:
+      context: nginx
+      target: development
     restart: unless-stopped
     ports:
       - 80:80
