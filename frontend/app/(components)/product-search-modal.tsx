@@ -1,10 +1,10 @@
 import { Modal, ModalHeader, ModalState } from "./ui/modal";
-import { useFetchApi } from "../(api)/api";
+import { useFetchApi, useMutateApiWithParams } from "../(api)/api";
 import routes, { ApiTypes } from "../(api)/api-routes";
 import Input, { useInputState } from "./ui/input";
 import { useEffect } from "react";
 import { ProductListItem } from "./common/product-list-item";
-import { Button, ButtonProps } from "./ui/button";
+import { Button, ButtonProps, XmarkButton } from "./ui/button";
 import { Product } from "../(api)/api-types";
 
 interface Props {
@@ -23,9 +23,10 @@ export function ProductSearchModal({
   ...modalState
 }: ModalState & Props) {
   const inputState = useInputState();
-  const shouldFetchProducts = inputState.value.length >= 3;
+  const shouldDisplayProducts = inputState.value.length >= 3;
+  const shouldFetchProducts = shouldDisplayProducts && inputState.didStopTyping;
 
-  const query = useFetchApi<ApiTypes["findProducts"]>(
+  const findQuery = useFetchApi<ApiTypes["findProducts"]>(
     routes.findProducts,
     {
       params: {
@@ -34,7 +35,7 @@ export function ProductSearchModal({
       },
     },
     {
-      enabled: shouldFetchProducts,
+      enabled: false,
       suspense: false,
       retry: false,
       keepPreviousData: true,
@@ -42,49 +43,59 @@ export function ProductSearchModal({
   );
 
   useEffect(() => {
-    if (shouldFetchProducts) query.refetch();
-  }, [inputState.value]);
+    if (shouldFetchProducts) {
+      findQuery.refetch().then();
+    }
+  }, [inputState.didStopTyping]);
 
   const selectedProductIds = selectedProducts.map((product) => product.id);
 
+  const products = findQuery.data || [];
+
   return (
     <Modal top={5} {...modalState}>
-      <ModalHeader {...modalState}>Search Products</ModalHeader>
       <div className="flex flex-col gap-4">
-        <div className="flex justify-between items-center">
+        <div className="flex items-center gap-2">
           <Input
             value={inputState.value}
             onValueChange={inputState.setValue}
             placeholder="Search for products..."
-            className="w-full"
+            className="flex-1"
           />
+          <XmarkButton handleClick={modalState.close} />
         </div>
-        <div className="flex flex-col">
-          {query.data?.map((product, key) => {
-            const isSelected = selectedProductIds.includes(product.id);
-            return (
-              <ProductListItem
-                product={product}
-                key={key}
-                actionElement={
-                  <Button
-                    intent="secondary" //{isSelected ? "danger" : "secondary"}
-                    size="sm"
-                    onClick={() =>
-                      isSelected
-                        ? handleProductUnselect(product)
-                        : handleProductSelect(product)
-                    }
-                    {...buttonProps}
-                  >
-                    {isSelected ? "Remove" : "Add"}
-                  </Button>
-                }
-              />
-            );
-          })}
-        </div>
+        {shouldDisplayProducts && products.length ? (
+          <div className={findQuery.isRefetching ? "opacity-70" : ""}>
+            {products.map((product, key) => {
+              const isSelected = selectedProductIds.includes(product.id);
+              return (
+                <ProductListItem
+                  product={product}
+                  key={key}
+                  actionElement={
+                    <Button
+                      intent="secondary"
+                      size="sm"
+                      onClick={() =>
+                        isSelected
+                          ? handleProductUnselect(product)
+                          : handleProductSelect(product)
+                      }
+                      {...buttonProps}
+                    >
+                      {isSelected ? "Remove" : "Add"}
+                    </Button>
+                  }
+                />
+              );
+            })}
+          </div>
+        ) : null}
       </div>
     </Modal>
   );
+}
+
+function Heading() {
+  return <div></div>;
 }
