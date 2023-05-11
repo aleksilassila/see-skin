@@ -28,6 +28,7 @@ export function Button({
   round,
   onClick = () => {},
   overwriteStyles,
+  iconStyle,
   ...props
 }: ButtonProps<HTMLButtonElement> & {
   loading?: boolean;
@@ -59,7 +60,7 @@ export function Button({
         leadingIcon={leadingIcon}
         trailingIcon={trailingIcon}
         size={size}
-        iconStyle={props.iconStyle}
+        iconStyle={iconStyle}
       >
         {loading ? "Button loading..." : props.children}
       </IconWrapper>
