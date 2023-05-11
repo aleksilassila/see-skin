@@ -22,10 +22,10 @@ const router = Router();
 app.use(
   session({
     secret: COOKIE_SECRET,
-    // resave: false,
-    // saveUninitialized: false,
+    resave: false,
+    saveUninitialized: false,
     cookie: {
-      secure: ENDPOINT.startsWith("https"), // Not working for some reason
+      secure: false, // Because connection to nginx is http
     },
   })
 );
