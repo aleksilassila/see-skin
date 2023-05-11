@@ -123,10 +123,11 @@ describe("/user", () => {
   it("Should be able to update skin profile", async () => {
     await agent
       .delete("/api/skin-profile")
-      .query({
-        ingredientIds: Object.keys(filteredIngredientIdsToProductId),
-        productIds: filteredProductIds,
-      })
+      .query(
+        Object.keys(filteredIngredientIdsToProductId)
+          .map((id) => `ingredientIds[]=${id}`)
+          .concat(filteredProductIds.map((id) => `productIds[]=${id}`))
+      )
       .expect(200);
 
     await agent

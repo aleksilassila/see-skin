@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
+import { NODE_ENV } from "../config";
 
 const validate = (req: Request, res: Response, next: NextFunction) => {
   // express validator middleware
@@ -7,6 +8,9 @@ const validate = (req: Request, res: Response, next: NextFunction) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      if (NODE_ENV === "development") {
+        console.log(req.originalUrl, errors.array());
+      }
       return res.status(400).json({ errors: errors.array() });
     }
 

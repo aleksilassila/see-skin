@@ -12,6 +12,7 @@ import { useModalState } from "../../(components)/ui/modal";
 import { ProductSearchModal } from "../../(components)/product-search-modal";
 import { Product } from "../../(api)/api-types";
 import { useQueryClient } from "react-query";
+import { CreateSkinProfileFirst } from "./create-skin-profile-first";
 
 export default function ManageIrritants() {
   const productSearchModalState = useModalState();
@@ -22,17 +23,17 @@ export default function ManageIrritants() {
 
   const [mutateProductsPost, mutateProductsDelete] = useProductMutations();
 
-  if (!skinProfile) return null;
+  if (!skinProfile) return <CreateSkinProfileFirst />;
 
   function removeProduct(product: Product) {
     mutateProductsDelete.mutate({
-      irritatingProductIds: [product.id],
+      productIds: [product.id],
     });
   }
 
   function addProduct(product: Product) {
     mutateProductsPost.mutate({
-      irritatingProductIds: [product.id],
+      productIds: [product.id],
     });
   }
 
@@ -100,7 +101,10 @@ export default function ManageIrritants() {
   );
 }
 
-function useProductMutations() {
+function useProductMutations(): [
+  ReturnType<typeof useMutateApiWithParams<ApiTypes["skinProfile"]["delete"]>>,
+  ReturnType<typeof useMutateApiWithParams<ApiTypes["skinProfile"]["post"]>>
+] {
   const queryClient = useQueryClient();
 
   const onSuccess = (data: any) =>

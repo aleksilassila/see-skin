@@ -44,22 +44,23 @@ type SkinProfileApiTypes = {
       SkinProfile,
       {
         skinType?: SkinType;
-        irritatingProductIds?: string[];
-        filteredIngredientIds?: string[];
+        productIds?: string[];
+        ingredientIds?: string[];
       }
     >;
     post: ApiTypeOf<
       SkinProfile,
       {
-        irritatingProductIds?: string[];
-        filteredIngredientIds?: string[];
+        skinType?: SkinType;
+        productIds?: string[];
+        ingredientIds?: string[];
       }
     >;
     delete: ApiTypeOf<
       SkinProfile,
       {
-        irritatingProductIds?: string[];
-        filteredIngredientIds?: string[];
+        productIds?: string[];
+        ingredientIds?: string[];
       }
     >;
   };

@@ -20,8 +20,8 @@ export function useResultsPanelState(
     {
       params: {
         skinType,
-        filteredIngredientIds: selectedIngredients.map((i) => i.id),
-        irritatingProductIds: selectedProducts.map((p) => p.id),
+        ingredientIds: selectedIngredients.map((i) => i.id),
+        productIds: selectedProducts.map((p) => p.id),
       },
       method: "PUT",
     },
