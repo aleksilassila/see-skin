@@ -1,10 +1,8 @@
-version: "3"
+version: "3.8"
 
 services:
   nginx:
     container_name: see-skin-prod-nginx
-    image: 896896/see-skin:nginx
-    build: nginx
 
   db:
     container_name: see-skin-prod-db
@@ -17,14 +15,10 @@ services:
     container_name: see-skin-prod-backend
     build:
       context: backend
-      dockerfile: Dockerfile.prod
-    environment:
-      NODE_ENV: production
+      target: production
 
   frontend:
     container_name: see-skin-prod-frontend
     build:
       context: frontend
-      dockerfile: Dockerfile.prod
-    environment:
-      NODE_ENV: production
+      target: production

@@ -1,39 +1,34 @@
 "use client";
-import fetchIrritantsCalculation, {
-  IrritantsCalculationResponse,
-} from "../../../(api)/solver/fetch-irritants-calculation";
-import { useQuery, UseQueryResult } from "react-query";
+import { IrritantsCalculationResponse } from "../../../(api)/solver/fetch-irritants-calculation";
+import { UseQueryResult } from "react-query";
 import { useProductSelectPanelState } from "./product-select-panel";
 import { useUser } from "../../../user";
 import { GoogleLoginButton } from "../../../(navigation)/AccountButton";
 import { Tab } from "@headlessui/react";
-import { Ingredient, Product, SkinType } from "../../../(api)/types";
-import { useEffect } from "react";
+import { Ingredient, Product, SkinType } from "../../../(api)/api-types";
+import { useFetchApi } from "../../../(api)/api";
+import routes, { ApiTypes } from "../../../(api)/api-routes";
 
 export function useResultsPanelState(
   skinType: SkinType,
   selectedProducts: Product[],
-  selectedIngredients: Ingredient[]
+  selectedIngredients: Ingredient[],
+  enabled: boolean
 ) {
-  const resultsQuery = useQuery<IrritantsCalculationResponse>(
-    "irritants",
-    () =>
-      fetchIrritantsCalculation(
-        skinType,
-        selectedProducts,
-        selectedIngredients
-      ),
+  const resultsQuery = useFetchApi<ApiTypes["skinProfile"]["put"]>(
+    routes.skinProfile,
     {
-      // refetchOnReconnect: false,
-      // refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      // refetchInterval: false,
-      // refetchIntervalInBackground: false,
-      enabled: false,
+      params: {
+        skinType,
+        ingredientIds: selectedIngredients.map((i) => i.id),
+        productIds: selectedProducts.map((p) => p.id),
+      },
+      method: "PUT",
+    },
+    {
+      enabled,
     }
   );
-
-  useEffect(() => console.log(resultsQuery), [resultsQuery]);
 
   function updateUserIrritants() {
     if (!resultsQuery.data) return;
@@ -82,24 +77,24 @@ export default function IrritantResultsPanel(
     return <Tab.Panel>Loading...</Tab.Panel>;
   }
 
-  const results =
-    data.length === 0 ? (
-      <div>Did not find irritants. Nice</div>
-    ) : (
-      data.map((irritant, key) => (
-        <div key={key}>
-          <div className="font-medium">{irritant.ingredient.name}</div>
-          This ingredient may be an irritant for the following reasons:
-          {irritant.irritationReasons.map((reason, key) => (
-            <div key={key}>{reason.type}</div>
-          ))}
-        </div>
-      ))
-    );
+  // const results =
+  //   data.length === 0 ? (
+  //     <div>Did not find irritants. Nice</div>
+  //   ) : (
+  //     data.map((irritant, key) => (
+  //       <div key={key}>
+  //         <div className="font-medium">{irritant.ingredient.name}</div>
+  //         This ingredient may be an irritant for the following reasons:
+  //         {irritant.irritationReasons.map((reason, key) => (
+  //           <div key={key}>{reason.type}</div>
+  //         ))}
+  //       </div>
+  //     ))
+  //   );
   // @ts-ignore
   return (
     <Tab.Panel>
-      {results}
+      {/*{results}*/}
       {/*@ts-ignore*/}
       {user.user === false && (
         <div>

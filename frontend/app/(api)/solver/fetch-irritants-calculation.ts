@@ -1,5 +1,11 @@
-import { Ingredient, IngredientClass, Product, SkinType } from "../types";
-import { fetch } from "../api";
+import {
+  Ingredient,
+  IngredientClass,
+  IngredientWithAliases,
+  Product,
+  SkinType,
+} from "../api-types";
+import { fetchApi } from "../api";
 
 export type IrritantsCalculationResponse = Irritant[];
 
@@ -28,7 +34,7 @@ interface ExplicitlyAddedIrritantReason {
 }
 
 interface Irritant {
-  ingredient: Ingredient;
+  ingredient: IngredientWithAliases;
   irritationReasons: IrritationReason[];
 }
 
@@ -37,11 +43,11 @@ export default async function fetchIrritantsCalculation(
   products: Product[],
   ingredients: Ingredient[]
 ): Promise<IrritantsCalculationResponse> {
-  return fetch<IrritantsCalculationResponse>("/user/create-skin-profile", {
+  return fetchApi<IrritantsCalculationResponse>("/user/create-skin-profile", {
     params: {
       productIds: products.map((product) => product.id),
       ingredientIds: ingredients.map((ingredient) => ingredient.id),
       skinType,
     },
-  }).then((response) => response.data);
+  });
 }

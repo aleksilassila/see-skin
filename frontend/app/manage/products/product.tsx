@@ -1,6 +1,6 @@
 "use client";
 
-import { Product } from "../../(api)/types";
+import { Product } from "../../(api)/api-types";
 
 interface Props {
   product: Product;

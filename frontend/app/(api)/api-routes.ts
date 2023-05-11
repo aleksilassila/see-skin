@@ -1,19 +1,21 @@
 import {
   Ingredient,
-  IngredientClass,
   Product,
+  SkinProfile,
   SkinType,
   User,
   UserWithSkinProfile,
-} from "./types";
-import { IrritantsCalculationResponse } from "./solver/fetch-irritants-calculation";
+} from "./api-types";
 
 export type ApiType = {
   response: any;
-  params: any;
+  params?: object;
 };
 
-type ApiTypeOf<R = any, P = any> = { response: R; params: P };
+type ApiTypeOf<R = any, P = object> = {
+  response: R;
+  params: { take?: number; skip?: number } & P;
+};
 
 type AuthApiTypes = {
   authLogout: ApiTypeOf;
@@ -28,28 +30,44 @@ type UserApiTypes = {
     put: ApiTypeOf<
       User,
       {
-        irritativeIngredientIds: string[];
-        irritativeProductIds: string[];
-        irritantIds: string[];
-        irritativeClasses: IngredientClass[];
-        skinType: SkinType;
         email: string;
         name: string;
       }
     >;
   };
-  createSkinProfile: ApiTypeOf<
-    IrritantsCalculationResponse,
-    {
-      skinType: SkinType;
-      productIds: string[];
-      ingredientIds: string[];
-    }
-  >;
+};
+
+type SkinProfileApiTypes = {
+  skinProfile: {
+    get: ApiTypeOf<SkinProfile>;
+    put: ApiTypeOf<
+      SkinProfile,
+      {
+        skinType?: SkinType;
+        productIds?: string[];
+        ingredientIds?: string[];
+      }
+    >;
+    post: ApiTypeOf<
+      SkinProfile,
+      {
+        skinType?: SkinType;
+        productIds?: string[];
+        ingredientIds?: string[];
+      }
+    >;
+    delete: ApiTypeOf<
+      SkinProfile,
+      {
+        productIds?: string[];
+        ingredientIds?: string[];
+      }
+    >;
+  };
 };
 
 type ProductApiTypes = {
-  findProducts: ApiTypeOf<Product[]>;
+  findProducts: ApiTypeOf<Product[], { name: string }>;
   productsFeed: ApiTypeOf<
     Product[],
     {
@@ -69,6 +87,7 @@ type ManagementApiTypes = {
 };
 
 export type ApiTypes = UserApiTypes &
+  SkinProfileApiTypes &
   ProductApiTypes &
   ManagementApiTypes &
   AuthApiTypes;
@@ -80,7 +99,8 @@ const routes: { [Property in keyof ApiTypes]: string } = {
   authGoogleCallback: "/auth/google/callback",
 
   user: "/user",
-  createSkinProfile: "/user/create-skin-profile",
+
+  skinProfile: "/skin-profile",
 
   findProducts: "/products/find",
   productsFeed: "/products/feed",

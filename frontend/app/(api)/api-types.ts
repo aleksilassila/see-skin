@@ -24,8 +24,6 @@ export type Product = {
   knownToUnknownRatio: number;
   createdAt: Date;
   updatedAt: Date;
-} & {
-  ingredients?: Ingredient[];
 };
 
 /**
@@ -41,8 +39,6 @@ export type Ingredient = {
   ingredientClasses: IngredientClass[];
   updatedAt: Date;
   createdAt: Date;
-} & {
-  aliases?: IngredientAlias[];
 };
 
 /**
@@ -68,8 +64,6 @@ export type User = {
   accessLevel: number;
   logoutAt: Date | null;
   preferredProviders: ProductProvider[];
-} & {
-  skinProfile?: SkinProfile;
 };
 
 /**
@@ -156,10 +150,12 @@ export type ProductWithIngredients = Product & {
 };
 
 export type UserWithSkinProfile = User & {
-  skinProfile: SkinProfile & {
-    explicitlyAddedProducts: ProductWithIngredients[];
-    explicitlyAddedIrritants: IngredientWithAliases[];
-    duplicateIrritants: IngredientWithAliases[];
-    skinTypeClassIrritants: IngredientWithAliases[];
-  };
+  skinProfile:
+    | (SkinProfile & {
+        explicitlyAddedProducts: ProductWithIngredients[];
+        explicitlyAddedIrritants: IngredientWithAliases[];
+        duplicateIrritants: IngredientWithAliases[];
+        skinTypeClassIrritants: IngredientWithAliases[];
+      })
+    | null;
 };

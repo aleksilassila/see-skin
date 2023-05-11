@@ -1,6 +1,6 @@
 import { PropsWithChildren, useState } from "react";
 import Image from "next/image";
-import { Product } from "../../(api)/types";
+import { Product } from "../../(api)/api-types";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";

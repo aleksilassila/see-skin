@@ -1,4 +1,4 @@
-import { HTMLAttributes } from "react";
+import { HTMLAttributes, useState } from "react";
 import classNames from "classnames";
 
 interface InputProps extends HTMLAttributes<HTMLInputElement> {
@@ -12,9 +12,20 @@ interface InputProps extends HTMLAttributes<HTMLInputElement> {
   overwriteStyles?: boolean;
 }
 
+export function useInputState() {
+  const [value, setValue] = useState("");
+
+  return {
+    value,
+    setValue,
+    onValueChange: (value: string) => setValue(value),
+  };
+}
+
 export default function Input({
   type = "text",
   onValueChange,
+  overwriteStyles,
   ...props
 }: InputProps) {
   const className = classNames(props.className, {});
@@ -26,7 +37,7 @@ export default function Input({
       onChange={(e) => onValueChange(e.target.value)}
       type={type}
       placeholder={props.placeholder}
-      className={props.overwriteStyles ? props.className : className}
+      className={overwriteStyles ? props.className : className}
     />
   );
 }

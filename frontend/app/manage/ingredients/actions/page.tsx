@@ -4,8 +4,8 @@ import SelectIngredientClasses, {
   useSelectIngredientClassState,
 } from "./select-ingredient-classes";
 import { useQuery } from "react-query";
-import { fetch } from "../../../(api)/api";
-import { Ingredient } from "../../../(api)/types";
+import { fetchApi } from "../../../(api)/api";
+import { Ingredient } from "../../../(api)/api-types";
 import IngredientSearch, {
   useIngredientSearchState,
 } from "../../../(components)/ingredient-search";
@@ -25,12 +25,12 @@ export default function ManageIngredientsActions() {
   function updateQueryClasses() {
     return Promise.all(
       ingredientSearchState.selected.map((ingredient) =>
-        fetch("/ingredients/update/" + ingredient.id, {
+        fetchApi("/ingredients/update/" + ingredient.id, {
           method: "PUT",
           data: {
             ingredientClasses: selectIngredientClassState.classes,
           },
-        }).then((res) => res.data)
+        })
       )
     );
   }

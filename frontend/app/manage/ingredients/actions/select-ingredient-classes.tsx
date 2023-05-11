@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Listbox } from "@headlessui/react";
 import { Button } from "../../../(components)/ui/button";
 import classNames from "classnames";
-import { IngredientClass } from "../../../(api)/types";
+import { IngredientClass } from "../../../(api)/api-types";
 
 export type SelectIngredientClassState = ReturnType<
   typeof useSelectIngredientClassState

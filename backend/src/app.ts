@@ -13,6 +13,8 @@ import ingredientsRouter from "./routers/ingredientsRouter";
 import manageRouter from "./routers/manageRouter";
 import parsePagination from "./middleware/parsePagination";
 import { requireAuth } from "./middleware/requireAuth";
+import skinProfileRouter from "./routers/skinProfileRouter";
+import RequestError from "./request-error";
 
 const app = express();
 const router = Router();
@@ -39,6 +41,7 @@ router.use(parsePagination);
 
 router.use("/auth", authRouter);
 router.use("/user", requireAuth, userRouter);
+router.use("/skin-profile", requireAuth, skinProfileRouter);
 router.use("/manage", /*requireAuthLevel(1),*/ manageRouter);
 router.use("/products", productsRouter);
 router.use("/ingredients", ingredientsRouter);
@@ -49,6 +52,10 @@ app.use((req, res) => res.status(404).send("Not Found"));
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err);
-  res.status(500).send("Internal server error");
+  if (err instanceof RequestError) {
+    res.status(err.statusCode).send(err.message);
+  } else {
+    res.status(500).send("Internal server error");
+  }
 });
 export default app;

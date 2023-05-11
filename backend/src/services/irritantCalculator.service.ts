@@ -1,23 +1,5 @@
-import {
-  Ingredient,
-  IngredientClass,
-  Prisma,
-  Product,
-  SkinType,
-} from "@prisma/client";
-import prisma from "../prisma";
-
-type ProductWithIngredients = Prisma.ProductGetPayload<{
-  include: {
-    ingredients: {
-      include: { aliases: true };
-    };
-  };
-}>;
-
-type IngredientWithAliases = Prisma.IngredientGetPayload<{
-  include: { aliases: true };
-}>;
+import { Ingredient, IngredientClass, Product, SkinType } from "@prisma/client";
+import { IngredientWithAliases, ProductWithIngredients } from "../types/prisma";
 
 type IrritationReason = {
   type: string;
@@ -80,44 +62,27 @@ const skinTypeIrritatingClasses = {
 };
 
 /**
- *
- * @param explicitlyAddedIngredientIds A list of known irritating ingredient ids
- * @param explicitlyAddedProductIds A list of known irritating products
  * @param skinType User skin type
+ * @param filteredIngredients A list of known irritating ingredients
+ * @param explicitlyAddedProducts A list of products that the user has explicitly added
  * @return A list of irritant ingredients
  */
 export async function calculateIrritants(
-  explicitlyAddedIngredientIds: string[],
-  explicitlyAddedProductIds: string[],
-  skinType: SkinType = SkinType.NORMAL
+  skinType: SkinType = SkinType.NORMAL,
+  filteredIngredients: IngredientWithAliases[],
+  explicitlyAddedProducts: ProductWithIngredients[]
 ): Promise<Irritant[]> {
-  const explicitlyAddedProducts = await getProductsFromIds(
-    explicitlyAddedProductIds
-  );
-
   const productIngredients = explicitlyAddedProducts.flatMap(
     (product) => product.ingredients
   );
 
-  const explicitlyAddedIngredients =
-    (await prisma.ingredient
-      .findMany({
-        where: {
-          id: { in: explicitlyAddedIngredientIds },
-        },
-        include: {
-          aliases: true,
-        },
-      })
-      .catch(console.error)) || [];
-
   const irritatingIngredientClasses = getIrritatingIngredientClasses(
-    [...productIngredients, ...explicitlyAddedIngredients],
+    [...productIngredients, ...filteredIngredients],
     skinType
   );
 
   const allUniqueIngredients = getUniqueIngredients(
-    explicitlyAddedIngredients,
+    filteredIngredients,
     productIngredients
   );
 
@@ -133,7 +98,7 @@ export async function calculateIrritants(
         irritatingIngredientClasses
       );
       const explicitlyAddedReason: ExplicitlyAddedIrritantReason[] =
-        explicitlyAddedIngredients
+        filteredIngredients
           .filter((i) => i.id === ingredient.id)
           .map((ingredient) => ({ type: "EXPLICITLY_ADDED", ingredient }));
 
@@ -178,27 +143,6 @@ function getIrritatingIngredientClasses(
 
   irritatingIngredientClasses.push(...skinTypeIrritatingClasses[skinType]);
   return irritatingIngredientClasses;
-}
-
-async function getProductsFromIds(explicitlyAddedProductIds: string[]) {
-  return (
-    (await prisma.product
-      .findMany({
-        where: {
-          id: {
-            in: explicitlyAddedProductIds,
-          },
-        },
-        include: {
-          ingredients: {
-            include: {
-              aliases: true,
-            },
-          },
-        },
-      })
-      .catch(console.error)) || []
-  );
 }
 
 function getUniqueIngredients(...ingredients: Ingredient[][]): Ingredient[] {

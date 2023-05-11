@@ -1,7 +1,7 @@
-import { Ingredient, IngredientAlias } from "../(api)/types";
+import { IngredientAlias, IngredientWithAliases } from "../(api)/api-types";
 
 interface Props {
-  irritant: Ingredient;
+  irritant: IngredientWithAliases;
 }
 
 function IngredientItem({ ingredient }: { ingredient: IngredientAlias }) {

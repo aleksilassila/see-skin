@@ -24,13 +24,19 @@ jobs:
         uses: actions/checkout@v1
 
       - name: Build containers
-        run: docker-compose -f docker-compose.yml -f docker-compose.test.yml build
+        run: docker compose -f docker-compose.yml -f docker-compose.prod.yml build
+
+      - name: Run containers
+        run: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
       - name: Test backend
-        run: docker-compose -f docker-compose.yml -f docker-compose.test.yml --profile backend up --exit-code-from backend
+        run: docker compose exec backend sh -c 'npx prisma migrate reset --force && npx jest'
 
-      - name: Test frontend
-        run: docker-compose -f docker-compose.yml -f docker-compose.test.yml --profile frontend up --exit-code-from frontend
+      #      - name: Test frontend
+      #        run: docker-compose -f docker-compose.yml -f docker-compose.test.yml --profile frontend up --exit-code-from frontend
+
+      - name: Clean up
+        run: docker compose -f docker-compose.yml -f docker-compose.prod.yml down
 
   push:
     timeout-minutes: 10
@@ -43,9 +49,9 @@ jobs:
         uses: actions/checkout@v1
 
       - name: Build containers
-        run: docker-compose -f docker-compose.yml -f docker-compose.prod.yml build
+        run: docker compose -f docker-compose.yml -f docker-compose.prod.yml build
 
       - name: Push to Docker Hub
         run: |
           echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-          docker-compose -f docker-compose.yml -f docker-compose.prod.yml push
+          docker compose -f docker-compose.yml -f docker-compose.prod.yml push

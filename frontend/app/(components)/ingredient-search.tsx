@@ -5,17 +5,17 @@ import {
   useRemoteSelectState,
 } from "../(hooks)/remote-select";
 import Input from "./ui/input";
-import { Ingredient } from "../(api)/types";
-import { fetch } from "../(api)/api";
+import { Ingredient } from "../(api)/api-types";
+import { fetchApi } from "../(api)/api";
 
 export function useIngredientSearchState() {
   return useRemoteSelectState<Ingredient>((searchTerm, selected) =>
-    fetch<Ingredient[]>("/ingredients/find", {
+    fetchApi<Ingredient[]>("/ingredients/find", {
       params: {
         name: searchTerm,
       },
-    }).then((res) =>
-      res.data.filter(
+    }).then((data) =>
+      data.filter(
         (ingredient) => !selected.flatMap((s) => s.id).includes(ingredient.id)
       )
     )

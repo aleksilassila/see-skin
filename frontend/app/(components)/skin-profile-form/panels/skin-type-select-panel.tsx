@@ -2,7 +2,7 @@
 import { PropsWithChildren, useState } from "react";
 import { getButtonColoring, getButtonSizing } from "../../ui/button";
 import classNames from "classnames";
-import { SkinType } from "../../../(api)/types";
+import { SkinType } from "../../../(api)/api-types";
 import Toggle, { ToggleData, useToggleState } from "../../ui/toggle";
 import { Tab } from "@headlessui/react";
 

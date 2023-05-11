@@ -1,8 +1,8 @@
 "use client";
 
 import Input from "./ui/input";
-import { fetch } from "../(api)/api";
-import { Product } from "../(api)/types";
+import { fetchApi } from "../(api)/api";
+import { Product } from "../(api)/api-types";
 import {
   RemoteSelectState,
   useRemoteSelectState,
@@ -10,12 +10,12 @@ import {
 
 export function useProductSearchState() {
   return useRemoteSelectState<Product>((searchTerm, selected) =>
-    fetch<Product[]>("/products/find", {
+    fetchApi<Product[]>("/products/find", {
       params: {
         name: searchTerm,
       },
-    }).then((res) =>
-      res.data.filter(
+    }).then((data) =>
+      data.filter(
         (product) => !selected.flatMap((s) => s.id).includes(product.id)
       )
     )

@@ -25,7 +25,8 @@ export default function SkinProfileForm() {
   const resultsState = useResultsPanelState(
     skinTypeState.getSkinType(),
     productsState.selected,
-    []
+    [],
+    currentTab === 2
   );
 
   const user = useUser();

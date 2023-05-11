@@ -1,7 +1,7 @@
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
-import { fetch } from "./(api)/api";
-import { UserWithSkinProfile } from "./(api)/types";
+import { fetchApi } from "./(api)/api";
+import { UserWithSkinProfile } from "./(api)/api-types";
 import routes from "./(api)/api-routes";
 
 interface User {
@@ -52,12 +52,11 @@ export function useUserContextValue(): UserContextState {
 
     // Validate user
     setState({ user: getCachedUser(), initialized: true });
-    fetch<UserWithSkinProfile>(routes.user)
-      .then((res) => res.data)
+    fetchApi<UserWithSkinProfile>(routes.user)
       .then((user) => setState({ ...state, user }))
       .catch((err) => {
         setState({ ...state, user: false });
-        console.error(err);
+        console.error("Could not fetch user");
       });
   }, []);
 

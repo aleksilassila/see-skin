@@ -1,8 +1,9 @@
 import { logIn } from "./auth.spec";
 import app from "../app";
 import request from "supertest";
-import { Product } from "@prisma/client";
+import { Product, SkinProfile } from "@prisma/client";
 import prisma from "../prisma";
+import { SkinProfileFull } from "../types/prisma";
 
 const agent = request.agent(app);
 
@@ -25,22 +26,22 @@ beforeAll(async () => {
         },
       },
     })
-    .catch(() => {});
+    .catch(console.error);
 
   await generateTestingData();
 });
 describe("/user", () => {
   it("User should not have skinProfile", async () => {
     await agent
-      .get("/api/user")
+      .get("/api/skin-profile")
       .expect((res) => {
-        expect(res.body.skinProfile).toBeNull();
+        expect(res.body).toEqual({});
       })
       .expect(200);
   });
   it("Should be able to create a SkinProfile and calculate irritants", async () => {
     await agent
-      .get("/api/user/create-skin-profile")
+      .put("/api/skin-profile")
       .query(
         Object.keys(filteredIngredientIdsToProductId)
           .map((id) => `ingredientIds[]=${id}`)
@@ -54,10 +55,11 @@ describe("/user", () => {
   });
   it("Did create skinProfile", async () => {
     await agent
-      .get("/api/user")
+      .get("/api/skin-profile")
       .expect((res) => {
-        const skinProfile = res.body.skinProfile;
-        expect(skinProfile).not.toBeNull();
+        const skinProfile: SkinProfileFull | undefined = res.body;
+        expect(skinProfile).not.toEqual({});
+        if (!skinProfile) return;
         expect(skinProfile.skinType).toBe("DRY");
         expect(skinProfile.explicitlyAddedIrritants).toHaveLength(
           filteredIngredientsAmount
@@ -120,22 +122,24 @@ describe("/user", () => {
   });
   it("Should be able to update skin profile", async () => {
     await agent
-      .get("/api/user/create-skin-profile")
-      .query({
-        skinType: "NORMAL",
-      })
+      .delete("/api/skin-profile")
+      .query(
+        Object.keys(filteredIngredientIdsToProductId)
+          .map((id) => `ingredientIds[]=${id}`)
+          .concat(filteredProductIds.map((id) => `productIds[]=${id}`))
+      )
       .expect(200);
 
     await agent
-      .get("/api/user")
+      .get("/api/skin-profile")
       .expect((res) => {
-        const skinProfile = res.body.skinProfile;
+        const skinProfile: SkinProfileFull | undefined = res.body;
         expect(skinProfile).not.toBeNull();
-        expect(skinProfile.skinType).toBe("NORMAL");
-        expect(skinProfile.explicitlyAddedIrritants).toHaveLength(0);
-        expect(skinProfile.explicitlyAddedProducts).toHaveLength(0);
-        expect(skinProfile.duplicateIrritants).toHaveLength(0);
-        expect(skinProfile.skinTypeClassIrritants).toHaveLength(0);
+        // expect(skinProfile?.skinType).toBe("NORMAL");
+        expect(skinProfile?.explicitlyAddedIrritants).toHaveLength(0);
+        expect(skinProfile?.explicitlyAddedProducts).toHaveLength(0);
+        expect(skinProfile?.duplicateIrritants).toHaveLength(0);
+        expect(skinProfile?.skinTypeClassIrritants).toHaveLength(0);
       })
       .expect(200);
   });
