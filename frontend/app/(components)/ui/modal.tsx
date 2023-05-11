@@ -3,6 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames";
+import { XmarkButton } from "./button";
 
 export type ModalState = ReturnType<typeof useModalState>;
 
@@ -18,7 +19,7 @@ export function Modal({
 }: ReturnType<typeof useModalState> & PropsWithChildren<Props>) {
   const { isOpen, open, close } = props;
 
-  const panelStyle = classNames("bg-white rounded-xl p-8 shadow-lg", {
+  const panelStyle = classNames("bg-white rounded-xl p-8 py-6 shadow-lg", {
     "flex-grow w-full h-full": size === "lg",
     "max-w-2xl flex-grow": size === "md",
   });
@@ -71,12 +72,8 @@ export function useModalState() {
 export function ModalHeader(props: PropsWithChildren<ModalState>) {
   return (
     <div className="flex justify-between items-center mb-2">
-      <div className="text-2xl font-medium">{props.children}</div>
-      <FontAwesomeIcon
-        icon={faXmark}
-        className="text-stone-500 hover:text-stone-700 cursor-pointer w-6 h-6"
-        onClick={() => props.close()}
-      />
+      <div className="text-xl font-medium">{props.children}</div>
+      <XmarkButton handleClick={props.close} />
     </div>
   );
 }

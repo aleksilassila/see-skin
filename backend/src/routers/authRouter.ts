@@ -5,12 +5,6 @@ import { NODE_ENV } from "../config";
 
 const authRouter = Router();
 
-// authRouter.get("/logout", (req, res) => {
-//   res.clearCookie("session");
-//   req.session.destroy((err) => {});
-//   res.redirect("/");
-// });
-
 authRouter.get("/verify", requireAuth, function (req, res) {
   res.status(200).send(req.user);
 });
@@ -45,8 +39,7 @@ authRouter.get("/logout", (req, res, next) => {
     if (err) {
       return next(err);
     }
-
-    res.send("OK");
+    res.redirect("/");
   });
 });
 

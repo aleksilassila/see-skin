@@ -46,7 +46,7 @@ export default function ManageIrritants() {
     userQuery.isLoading;
 
   return (
-    <div className="m-auto max-w-md lg:max-w-xl xl:max-w-2xl">
+    <>
       <div className="flex justify-between items-start flex-col gap-2 mb-4 lg:flex-row lg:items-end">
         <h1 className="font-bold text-xl">Mange Your Irritants</h1>
         <div className="flex gap-2">
@@ -97,7 +97,7 @@ export default function ManageIrritants() {
           empty="Your custom products will appear here."
         />
       </div>
-    </div>
+    </>
   );
 }
 

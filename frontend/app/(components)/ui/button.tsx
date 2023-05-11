@@ -4,6 +4,7 @@ import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import Link from "next/link";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 export interface ButtonProps<T extends HTMLElement> extends HTMLAttributes<T> {
   disabled?: boolean;
@@ -27,6 +28,7 @@ export function Button({
   round,
   onClick = () => {},
   overwriteStyles,
+  iconStyle,
   ...props
 }: ButtonProps<HTMLButtonElement> & {
   loading?: boolean;
@@ -58,7 +60,7 @@ export function Button({
         leadingIcon={leadingIcon}
         trailingIcon={trailingIcon}
         size={size}
-        iconStyle={props.iconStyle}
+        iconStyle={iconStyle}
       >
         {loading ? "Button loading..." : props.children}
       </IconWrapper>
@@ -74,7 +76,7 @@ export function AnchorButton({
   leadingIcon,
   trailingIcon,
   newTab = false,
-  nextLink = false,
+  nextLink = true,
   overwriteStyles,
   ...props
 }: ButtonProps<HTMLAnchorElement> & {
@@ -224,4 +226,14 @@ export function getButtonColoring({
       },
     }[intent],
   });
+}
+
+export function XmarkButton(props: { handleClick: () => void }) {
+  return (
+    <FontAwesomeIcon
+      icon={faXmark}
+      className="text-stone-500 hover:text-stone-700 cursor-pointer w-6 h-6"
+      onClick={() => props.handleClick()}
+    />
+  );
 }

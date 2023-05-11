@@ -29,7 +29,7 @@ export default function ProductDetails({
   const containerStyle = classNames(
     "w-full max-w-md",
     "absolute right-0 top-0 bottom-0 z-10",
-    "bg-white shadow-lg p-4",
+    "bg-white shadow-lg",
     "flex flex-col gap-2"
   );
 
@@ -41,56 +41,60 @@ export default function ProductDetails({
     <>
       <div className="bg-[#00000022] absolute inset-0" onClick={close} />
       <div className={containerStyle}>
-        <FontAwesomeIcon
-          icon={faXmark}
-          onClick={close}
-          className="h-5 text-zinc-500 cursor-pointer p-1 self-start"
-        />
-        <div className="rounded overflow-hidden flex justify-center">
-          <Image
-            width={200}
-            height={200}
-            quality={50}
-            src={product.imageUrl || PRODUCT_PLACEHOLDER_URL}
-            alt={product.name}
-            className="w-auto h-auto"
+        <div className="sticky top-0 p-4">
+          <FontAwesomeIcon
+            icon={faXmark}
+            onClick={close}
+            className="h-5 text-zinc-500 cursor-pointer p-1 self-start"
           />
-        </div>
-        <div>
-          <div className="uppercase font-medium text-xs text-zinc-400">
-            {product.category}
+          <div className="rounded overflow-hidden flex justify-center">
+            <Image
+              width={200}
+              height={200}
+              quality={50}
+              src={product.imageUrl || PRODUCT_PLACEHOLDER_URL}
+              alt={product.name}
+              className="w-auto h-auto"
+            />
           </div>
+          <div>
+            <div className="uppercase font-medium text-xs text-zinc-400">
+              {product.category}
+            </div>
 
-          <div className="flex space-between">
-            <div className="text-lg font-medium text-zinc-900 flex-1">
-              {product.name}
+            <div className="flex space-between">
+              <div className="text-lg font-medium text-zinc-900 flex-1">
+                {product.name}
+              </div>
+              {product.price && (
+                <div className="text-zinc-600">${product.price}</div>
+              )}
             </div>
-            {product.price && (
-              <div className="text-zinc-600">${product.price}</div>
-            )}
           </div>
+          {product.description && (
+            <div className="text-zinc-900">{product.description}</div>
+          )}
+          {!!product.effects.length && (
+            <div className="flex w-full">
+              <span className="text-zinc-400 font-medium">Effects</span>
+              <div className="flex-1 text-right text-sm">
+                {product.effects.join(", ")}
+              </div>
+            </div>
+          )}
+          <AnchorButton
+            intent="primary"
+            disabled={!product.shopPageUrl}
+            href={product.shopPageUrl || ""}
+            leadingIcon={faAmazon}
+            iconStyle={"h-4 mr-2"}
+            newTab
+          >
+            {product.shopPageUrl
+              ? "View store page"
+              : "No store page available"}
+          </AnchorButton>
         </div>
-        {product.description && (
-          <div className="text-zinc-900">{product.description}</div>
-        )}
-        {!!product.effects.length && (
-          <div className="flex w-full">
-            <span className="text-zinc-400 font-medium">Effects</span>
-            <div className="flex-1 text-right text-sm">
-              {product.effects.join(", ")}
-            </div>
-          </div>
-        )}
-        <AnchorButton
-          intent="primary"
-          disabled={!product.shopPageUrl}
-          href={product.shopPageUrl || ""}
-          leadingIcon={faAmazon}
-          iconStyle={"h-4 mr-2"}
-          newTab
-        >
-          {product.shopPageUrl ? "View store page" : "No store page available"}
-        </AnchorButton>
       </div>
     </>
   );
