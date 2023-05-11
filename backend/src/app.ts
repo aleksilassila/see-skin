@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response, Router } from "express";
 import passport from "passport";
 import productsRouter from "./routers/productsRouter";
-import { COOKIE_SECRET, NODE_ENV } from "./config";
+import { COOKIE_SECRET, ENDPOINT, NODE_ENV } from "./config";
 import authRouter from "./routers/authRouter";
 import session from "express-session";
 import "express-async-errors";
@@ -22,10 +22,10 @@ const router = Router();
 app.use(
   session({
     secret: COOKIE_SECRET,
-    resave: false,
-    saveUninitialized: false,
+    // resave: false,
+    // saveUninitialized: false,
     cookie: {
-      secure: NODE_ENV === "production", // Not working for some reason
+      secure: ENDPOINT.startsWith("https"), // Not working for some reason
     },
   })
 );

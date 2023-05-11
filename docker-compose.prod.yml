@@ -1,5 +1,7 @@
 version: "3.8"
 
+name: see-skin-prod
+
 services:
   nginx:
     container_name: see-skin-prod-nginx
@@ -16,6 +18,8 @@ services:
     build:
       context: backend
       target: production
+    environment:
+      ENDPOINT: http://localhost
 
   frontend:
     container_name: see-skin-prod-frontend

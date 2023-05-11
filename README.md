@@ -27,7 +27,6 @@ Create a `.env` file in the project root. The following environment variables ar
 ```
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
-
 ```
 
 ### Development
@@ -78,7 +77,6 @@ services:
       DATABASE_URL: ${DATABASE_URL:-postgresql://post:post@db:5432/post}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-      NODE_ENV: production
     depends_on:
       - db
     restart: unless-stopped
@@ -87,8 +85,6 @@ services:
     container_name: see-skin-frontend
     image: 896896/see-skin:frontend
     restart: unless-stopped
-    environment:
-      NODE_ENV: production
 
 volumes:
   dbdata:
