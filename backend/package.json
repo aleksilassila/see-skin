@@ -11,13 +11,13 @@
     "db:studio": "docker exec see-skin-dev-backend npx prisma studio",
     "db:dump": "docker exec -t see-skin-dev-db sh -c 'PGPASSWORD=post pg_dump -U post --insert --data-only post' > ./prisma/seed-dump.sql",
     "backend:sh": "docker exec -it see-skin-dev-backend bash",
-    "backend:test": "docker compose exec backend npx jest"
+    "backend:test": "docker compose exec backend sh -c 'npx prisma migrate reset --force && npx jest'"
   },
   "prisma": {
     "seed": "sh ./prisma/seed.sh"
   },
   "dependencies": {
-    "@prisma/client": "^4.4.0",
+    "@prisma/client": "^4.14.0",
     "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.14",
     "@types/express-session": "^1.17.5",
@@ -39,7 +39,7 @@
     "passport": "^0.6.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",
-    "prisma": "^4.4.0",
+    "prisma": "^4.14.0",
     "ts-node": "^10.9.1",
     "typescript": "^4.8.4"
   },
