@@ -22,3 +22,12 @@ export type ProductWithIngredients = Prisma.ProductGetPayload<{
 export type IngredientWithAliases = Prisma.IngredientGetPayload<{
   include: { aliases: true };
 }>;
+
+export type SkinProfileFull = Prisma.SkinProfileGetPayload<{
+  include: {
+    explicitlyAddedProducts: true;
+    explicitlyAddedIrritants: true;
+    duplicateIrritants: true;
+    skinTypeClassIrritants: true;
+  };
+}>;

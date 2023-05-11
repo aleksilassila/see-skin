@@ -13,10 +13,10 @@ skinProfileRouter.get("/", async (req, res) =>
 
 skinProfileRouter.put(
   "/",
-  query("filteredIngredientIds").isArray({ min: 0, max: 50 }).optional(),
-  query("filteredIngredientIds.*").isString().optional(),
-  query("irritatingProductIds").isArray({ min: 0, max: 30 }).optional(),
-  query("irritatingProductIds.*").isString().optional(),
+  query("ingredientIds").isArray({ min: 0, max: 50 }).optional(),
+  query("ingredientIds.*").isString().optional(),
+  query("productIds").isArray({ min: 0, max: 30 }).optional(),
+  query("productIds.*").isString().optional(),
   query("skinType").isIn(Object.keys(SkinType)).optional(),
   validateRequest,
   skinProfileController.setSkinProfile((oldData, newData) => ({
@@ -30,13 +30,14 @@ skinProfileRouter.put(
 
 skinProfileRouter.post(
   "/",
-  query("filteredIngredientIds").isArray({ min: 0, max: 50 }).optional(),
-  query("filteredIngredientIds.*").isString().optional(),
-  query("irritatingProductIds").isArray({ min: 0, max: 30 }).optional(),
-  query("irritatingProductIds.*").isString().optional(),
+  query("ingredientIds").isArray({ min: 0, max: 50 }).optional(),
+  query("ingredientIds.*").isString().optional(),
+  query("productIds").isArray({ min: 0, max: 30 }).optional(),
+  query("productIds.*").isString().optional(),
+  query("skinType").isIn(Object.keys(SkinType)).optional(),
   validateRequest,
   skinProfileController.setSkinProfile((oldData, newData) => ({
-    skinType: oldData.skinType,
+    skinType: newData.skinType || oldData.skinType,
     filteredIngredients: [
       ...oldData.filteredIngredients,
       ...(newData.filteredIngredients || []),
@@ -50,10 +51,10 @@ skinProfileRouter.post(
 
 skinProfileRouter.delete(
   "/",
-  query("filteredIngredientIds").isArray({ min: 0, max: 50 }).optional(),
-  query("filteredIngredientIds.*").isString().optional(),
-  query("irritatingProductIds").isArray({ min: 0, max: 30 }).optional(),
-  query("irritatingProductIds.*").isString().optional(),
+  query("ingredientIds").isArray({ min: 0, max: 50 }).optional(),
+  query("ingredientIds.*").isString().optional(),
+  query("productIds").isArray({ min: 0, max: 30 }).optional(),
+  query("productIds.*").isString().optional(),
   validateRequest,
   skinProfileController.setSkinProfile((oldData, newData) => ({
     skinType: oldData.skinType,

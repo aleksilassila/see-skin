@@ -23,25 +23,25 @@ export const setSkinProfile = (
       {},
       {},
       {
-        filteredIngredientIds?: string[];
-        irritatingProductIds?: string[];
+        ingredientIds?: string[];
+        productIds?: string[];
         skinType?: SkinType;
       }
     >,
     res: Response
   ) {
-    const { filteredIngredientIds, irritatingProductIds, skinType } = req.query;
+    const { ingredientIds, productIds, skinType } = req.query;
 
     const user = await getUser(req);
 
     const filteredIngredients = await getIngredientsWithAliases(
-      filteredIngredientIds ||
+      ingredientIds ||
         user.skinProfile?.explicitlyAddedIrritants.map((i) => i.id) ||
         []
     );
 
     const irritatingProducts = await getProductsWithIngredients(
-      irritatingProductIds ||
+      productIds ||
         user.skinProfile?.explicitlyAddedProducts.map((p) => p.id) ||
         []
     );
