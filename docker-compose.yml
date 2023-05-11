@@ -1,9 +1,10 @@
-version: "3"
+version: "3.8"
 
 services:
   nginx:
     container_name: see-skin-dev-nginx
-    image: nginx:1.24.0-alpine
+    image: 896896/see-skin:nginx
+    build: nginx
     restart: unless-stopped
     ports:
       - 80:80
@@ -30,12 +31,11 @@ services:
     image: 896896/see-skin:backend
     build:
       context: backend
-      dockerfile: Dockerfile.dev
+      target: development
     environment:
       DATABASE_URL: ${DATABASE_URL:-postgresql://post:post@db:5432/post}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-      NODE_ENV: development
     depends_on:
       - db
     restart: unless-stopped
@@ -45,7 +45,7 @@ services:
     image: 896896/see-skin:frontend
     build:
       context: frontend
-      dockerfile: Dockerfile.dev
+      target: development
     restart: unless-stopped
 
 volumes:

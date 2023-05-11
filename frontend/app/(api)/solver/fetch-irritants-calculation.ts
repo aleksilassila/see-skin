@@ -1,4 +1,10 @@
-import { Ingredient, IngredientClass, Product, SkinType } from "../api-types";
+import {
+  Ingredient,
+  IngredientClass,
+  IngredientWithAliases,
+  Product,
+  SkinType,
+} from "../api-types";
 import { fetchApi } from "../api";
 
 export type IrritantsCalculationResponse = Irritant[];
@@ -28,7 +34,7 @@ interface ExplicitlyAddedIrritantReason {
 }
 
 interface Irritant {
-  ingredient: Ingredient;
+  ingredient: IngredientWithAliases;
   irritationReasons: IrritationReason[];
 }
 

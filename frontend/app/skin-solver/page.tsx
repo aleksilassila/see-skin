@@ -5,13 +5,17 @@ import fetchIrritantsCalculation, {
 import { useQuery } from "react-query";
 import IrritantItem from "./irritant-item";
 import { Button } from "../(components)/ui/button";
-import { Ingredient, SkinType } from "../(api)/api-types";
+import {
+  Ingredient,
+  IngredientWithAliases,
+  SkinType,
+} from "../(api)/api-types";
 import ProductSearch, {
   useProductSearchState,
 } from "../(components)/product-search";
 import { WithNavigation } from "../(navigation)/Navigation";
 
-function ShowIrritants({ irritants }: { irritants: Ingredient[] }) {
+function ShowIrritants({ irritants }: { irritants: IngredientWithAliases[] }) {
   if (irritants.length === 0) {
     return <div>No irritants found</div>;
   }

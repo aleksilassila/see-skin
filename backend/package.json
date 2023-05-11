@@ -11,7 +11,7 @@
     "db:studio": "docker exec see-skin-dev-backend npx prisma studio",
     "db:dump": "docker exec -t see-skin-dev-db sh -c 'PGPASSWORD=post pg_dump -U post --insert --data-only post' > ./prisma/seed-dump.sql",
     "backend:sh": "docker exec -it see-skin-dev-backend bash",
-    "backend:test": "docker exec -t see-skin-dev-backend npx jest"
+    "backend:test": "docker compose exec backend npx jest"
   },
   "prisma": {
     "seed": "sh ./prisma/seed.sh"
