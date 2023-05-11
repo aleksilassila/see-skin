@@ -5,14 +5,14 @@ name: see-skin-dev
 services:
   nginx:
     container_name: see-skin-dev-nginx
-    image: 896896/see-skin:nginx
+    image: see-skin-dev:nginx
     build:
       context: nginx
       target: development
     restart: unless-stopped
     ports:
-      - 80:80
-      - 443:443
+      - "80:80"
+      - "443:443"
     depends_on:
       - frontend
       - backend
@@ -25,14 +25,14 @@ services:
       POSTGRES_DB: post
       POSTGRES_PASSWORD: post
     ports:
-      - 5432:5432
+      - "5432:5432"
     volumes:
       - dbdata:/var/lib/postgresql/data
     restart: unless-stopped
 
   backend:
     container_name: see-skin-dev-backend
-    image: 896896/see-skin:backend
+    image: see-skin-dev:backend
     build:
       context: backend
       target: development
@@ -46,7 +46,7 @@ services:
 
   frontend:
     container_name: see-skin-dev-frontend
-    image: 896896/see-skin:frontend
+    image: see-skin-dev:frontend
     build:
       context: frontend
       target: development
