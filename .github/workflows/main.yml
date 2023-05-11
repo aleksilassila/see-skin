@@ -30,7 +30,7 @@ jobs:
         run: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
       - name: Test backend
-        environment:
+        env:
           NODE_ENV: test
         run: docker compose exec backend sh -c 'npx prisma migrate reset --force && npx jest'
 
