@@ -61,7 +61,6 @@ passport.use(
   )
 );
 
-// Saved to cookie?
 passport.serializeUser(async (googleUser: any, done) => {
   done(null, googleUser?.id);
 });

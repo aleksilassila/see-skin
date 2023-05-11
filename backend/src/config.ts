@@ -13,6 +13,5 @@ export const NODE_ENV: "production" | "development" | "test" =
     : "development";
 
 export const ENDPOINT =
-  process.env.ENDPOINT || NODE_ENV === "production"
-    ? "https://see-skin.com"
-    : "http://localhost";
+  process.env.ENDPOINT ||
+  (NODE_ENV === "production" ? "https://see-skin.com" : "http://localhost");

@@ -1,5 +1,7 @@
 version: "3.8"
 
+name: see-skin-dev
+
 services:
   nginx:
     container_name: see-skin-dev-nginx
