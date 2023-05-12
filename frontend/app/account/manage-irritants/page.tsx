@@ -13,9 +13,13 @@ import { ProductSearchModal } from "../../(components)/product-search-modal";
 import { Product } from "../../(api)/api-types";
 import { useQueryClient } from "react-query";
 import { CreateSkinProfileFirst } from "./create-skin-profile-first";
+import ProductDetails, {
+  useProductDetailsState,
+} from "../../products/product-details/product-details";
 
 export default function ManageIrritants() {
   const productSearchModalState = useModalState();
+  const productDetailsState = useProductDetailsState();
 
   const { data: skinProfile, ...userQuery } = useFetchApi<
     ApiTypes["skinProfile"]["get"]
@@ -77,6 +81,7 @@ export default function ManageIrritants() {
           {explicitlyAddedProducts.length &&
             explicitlyAddedProducts.map((product, key) => (
               <ProductListItem
+                handleClick={() => productDetailsState.show(product)}
                 product={product}
                 key={key}
                 actionElement={
@@ -97,6 +102,7 @@ export default function ManageIrritants() {
           empty="Your custom products will appear here."
         />
       </div>
+      <ProductDetails {...productDetailsState} />
     </>
   );
 }
