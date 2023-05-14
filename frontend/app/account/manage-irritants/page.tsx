@@ -21,9 +21,15 @@ export default function ManageIrritants() {
   const productSearchModalState = useModalState();
   const productDetailsState = useProductDetailsState();
 
-  const { data: skinProfile, ...userQuery } = useFetchApi<
+  const { data: skinProfile, ...skinProfileQuery } = useFetchApi<
     ApiTypes["skinProfile"]["get"]
-  >(routes.skinProfile);
+  >(
+    routes.skinProfile,
+    {},
+    {
+      suspense: false,
+    }
+  );
 
   const [mutateProductsPost, mutateProductsDelete] = useProductMutations();
 
@@ -47,7 +53,7 @@ export default function ManageIrritants() {
   const buttonsLoading =
     mutateProductsDelete.isLoading ||
     mutateProductsPost.isLoading ||
-    userQuery.isLoading;
+    skinProfileQuery.isLoading;
 
   return (
     <>
@@ -77,6 +83,7 @@ export default function ManageIrritants() {
         <ListContainer
           heading="Products"
           empty="Your irritative products will appear here."
+          isLoading={skinProfileQuery.isLoading}
         >
           {explicitlyAddedProducts.length &&
             explicitlyAddedProducts.map((product, key) => (

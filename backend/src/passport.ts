@@ -39,8 +39,6 @@ passport.use(
       scope: ["profile", "email"],
     },
     async function verify(accessToken, refreshToken, profile, cb) {
-      console.log("Verifying user");
-
       const user =
         (await prisma.user
           .upsert({

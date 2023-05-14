@@ -21,8 +21,6 @@ export async function find(
     })
     .catch(console.error);
 
-  console.log(products);
-
   if (!products) {
     res.status(404).send("Not Found");
   }

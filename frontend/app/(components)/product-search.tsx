@@ -39,7 +39,6 @@ export default function ProductSearch(state: RemoteSelectState<Product>) {
           value={state.searchTerm}
           onValueChange={state.setSearchTerm}
           placeholder="Search for products"
-          onClick={() => console.log("click")}
           className="outline-0"
         />
         {state.searchResults.length > 0 && (

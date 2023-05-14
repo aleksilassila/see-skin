@@ -17,8 +17,6 @@ export async function createTestUser() {
       accessLevel: 1,
     },
   });
-
-  console.log(JSON.stringify(response));
 }
 
 // (async () => await createTestUser())();

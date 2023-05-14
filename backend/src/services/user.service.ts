@@ -8,8 +8,6 @@ export function getSkinProfileExclusions(user?: UserWithSkinProfile): {
   const ingredientIds: string[] = [];
   const productIds: string[] = [];
 
-  console.log("SkinProfile of provided user", user);
-
   if (user && user.skinProfile) {
     const profile = user.skinProfile;
     ingredientIds.push(...profile.duplicateIrritants.map((i) => i.id));
