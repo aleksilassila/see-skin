@@ -118,6 +118,7 @@ enum IngredientClass {
   OILY_IRRITANT
   DRY_OILY_IRRITANT
   SENSITIVE_IRRITANT
+  SINGLE_IRRITANT
 }
 
 enum Currency {
