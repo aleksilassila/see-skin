@@ -127,7 +127,7 @@ function getIrritatingIngredientClasses(
   possibleIrritants: IngredientWithAliases[],
   skinType: SkinType
 ): IngredientClass[] {
-  const irritatingIngredientClasses: IngredientClass[] = [];
+  const irritatingIngredientClasses: IngredientClass[] = ["SINGLE_IRRITANT"];
 
   for (const ingredient of possibleIrritants) {
     const commonIrritantClassesPresent = commonIrritatingClasses.filter((i) =>
@@ -142,7 +142,7 @@ function getIrritatingIngredientClasses(
   }
 
   irritatingIngredientClasses.push(...skinTypeIrritatingClasses[skinType]);
-  return irritatingIngredientClasses;
+  return [...new Set(irritatingIngredientClasses)];
 }
 
 function getUniqueIngredients(...ingredients: Ingredient[][]): Ingredient[] {
