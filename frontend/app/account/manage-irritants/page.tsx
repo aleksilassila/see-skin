@@ -2,6 +2,7 @@
 import {
   getQueryKey,
   useFetchApi,
+  useMutateApiWithBody,
   useMutateApiWithParams,
 } from "../../(api)/api";
 import routes, { ApiTypes } from "../../(api)/api-routes";
@@ -13,13 +14,23 @@ import { ProductSearchModal } from "../../(components)/product-search-modal";
 import { Product } from "../../(api)/api-types";
 import { useQueryClient } from "react-query";
 import { CreateSkinProfileFirst } from "./create-skin-profile-first";
+import ProductDetails, {
+  useProductDetailsState,
+} from "../../products/product-details/product-details";
 
 export default function ManageIrritants() {
   const productSearchModalState = useModalState();
+  const productDetailsState = useProductDetailsState();
 
-  const { data: skinProfile, ...userQuery } = useFetchApi<
+  const { data: skinProfile, ...skinProfileQuery } = useFetchApi<
     ApiTypes["skinProfile"]["get"]
-  >(routes.skinProfile);
+  >(
+    routes.skinProfile,
+    {},
+    {
+      suspense: false,
+    }
+  );
 
   const [mutateProductsPost, mutateProductsDelete] = useProductMutations();
 
@@ -43,7 +54,7 @@ export default function ManageIrritants() {
   const buttonsLoading =
     mutateProductsDelete.isLoading ||
     mutateProductsPost.isLoading ||
-    userQuery.isLoading;
+    skinProfileQuery.isLoading;
 
   return (
     <>
@@ -73,10 +84,12 @@ export default function ManageIrritants() {
         <ListContainer
           heading="Products"
           empty="Your irritative products will appear here."
+          isLoading={skinProfileQuery.isLoading}
         >
           {explicitlyAddedProducts.length &&
             explicitlyAddedProducts.map((product, key) => (
               <ProductListItem
+                handleClick={() => productDetailsState.show(product)}
                 product={product}
                 key={key}
                 actionElement={
@@ -97,6 +110,7 @@ export default function ManageIrritants() {
           empty="Your custom products will appear here."
         />
       </div>
+      <ProductDetails {...productDetailsState} />
     </>
   );
 }
@@ -110,7 +124,7 @@ function useProductMutations(): [
   const onSuccess = (data: any) =>
     queryClient.setQueryData(getQueryKey(routes.skinProfile), data);
 
-  const mutateProductsDelete = useMutateApiWithParams<
+  const mutateProductsDelete = useMutateApiWithBody<
     ApiTypes["skinProfile"]["delete"]
   >(
     routes.skinProfile,
@@ -122,7 +136,7 @@ function useProductMutations(): [
     }
   );
 
-  const mutateProductsPost = useMutateApiWithParams<
+  const mutateProductsPost = useMutateApiWithBody<
     ApiTypes["skinProfile"]["post"]
   >(
     routes.skinProfile,

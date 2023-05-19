@@ -78,6 +78,7 @@ export function AnchorButton({
   newTab = false,
   nextLink = true,
   overwriteStyles,
+  iconStyle,
   ...props
 }: ButtonProps<HTMLAnchorElement> & {
   href: string;
@@ -107,7 +108,7 @@ export function AnchorButton({
           leadingIcon={leadingIcon}
           trailingIcon={trailingIcon}
           size={size}
-          iconStyle={props.iconStyle}
+          iconStyle={iconStyle}
         >
           {props.children}
         </IconWrapper>
@@ -126,7 +127,7 @@ export function AnchorButton({
         leadingIcon={leadingIcon}
         trailingIcon={trailingIcon}
         size={size}
-        iconStyle={props.iconStyle}
+        iconStyle={iconStyle}
       >
         {props.children}
       </IconWrapper>

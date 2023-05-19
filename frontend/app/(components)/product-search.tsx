@@ -7,10 +7,11 @@ import {
   RemoteSelectState,
   useRemoteSelectState,
 } from "../(hooks)/remote-select";
+import routes, { ApiTypes } from "../(api)/api-routes";
 
 export function useProductSearchState() {
   return useRemoteSelectState<Product>((searchTerm, selected) =>
-    fetchApi<Product[]>("/products/find", {
+    fetchApi<ApiTypes["getProducts"]>(routes.getProducts, {
       params: {
         name: searchTerm,
       },
@@ -39,7 +40,6 @@ export default function ProductSearch(state: RemoteSelectState<Product>) {
           value={state.searchTerm}
           onValueChange={state.setSearchTerm}
           placeholder="Search for products"
-          onClick={() => console.log("click")}
           className="outline-0"
         />
         {state.searchResults.length > 0 && (

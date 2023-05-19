@@ -23,6 +23,11 @@ export function useResultsPanelState(
         ingredientIds: selectedIngredients.map((i) => i.id),
         productIds: selectedProducts.map((p) => p.id),
       },
+      data: {
+        skinType,
+        ingredientIds: selectedIngredients.map((i) => i.id),
+        productIds: selectedProducts.map((p) => p.id),
+      },
       method: "PUT",
     },
     {

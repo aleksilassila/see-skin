@@ -26,8 +26,8 @@ export function ProductSearchModal({
   const shouldDisplayProducts = inputState.value.length >= 3;
   const shouldFetchProducts = shouldDisplayProducts && inputState.didStopTyping;
 
-  const findQuery = useFetchApi<ApiTypes["findProducts"]>(
-    routes.findProducts,
+  const findQuery = useFetchApi<ApiTypes["getProducts"]>(
+    routes.getProducts,
     {
       params: {
         name: inputState.value,

@@ -1,38 +1,22 @@
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
 import { fetchApi } from "./(api)/api";
-import { UserWithSkinProfile } from "./(api)/api-types";
-import routes from "./(api)/api-routes";
-
-interface User {
-  id: string;
-  name: string;
-  accessLevel: number;
-}
+import { User } from "./(api)/api-types";
+import routes, { ApiTypes } from "./(api)/api-routes";
 
 export type UserContextState = {
-  user: User | null | false;
+  user?: User | false;
   loading: boolean;
-  setUser: (user: User | false) => void;
+  isSignedIn: boolean;
+  reset: Function;
 };
 
 export const UserContext = createContext<UserContextState>({
-  user: null,
+  user: undefined,
   loading: true,
-  setUser: () => {},
+  isSignedIn: false,
+  reset: () => {},
 });
-
-function getCachedUser(): User | null {
-  return JSON.parse(localStorage.getItem("user") || "null") || null;
-}
-
-function cacheUser(user?: User) {
-  if (!user) {
-    localStorage.removeItem("user");
-  } else {
-    localStorage.setItem("user", JSON.stringify(user));
-  }
-}
 
 export function useUser() {
   return useContext(UserContext);
@@ -40,36 +24,28 @@ export function useUser() {
 
 export function useUserContextValue(): UserContextState {
   const [state, setState] = useState<{
-    user: User | null | false;
+    user?: User | false;
     initialized: boolean;
-  }>({
-    user: null,
-    initialized: false,
-  });
+  }>({ initialized: false });
 
   useEffect(() => {
     if (state.initialized) return;
+    setState({ ...state, initialized: true });
 
-    // Validate user
-    setState({ user: getCachedUser(), initialized: true });
-    fetchApi<UserWithSkinProfile>(routes.user)
-      .then((user) => setState({ ...state, user }))
-      .catch((err) => {
-        setState({ ...state, user: false });
-        console.error("Could not fetch user");
-      });
+    fetchApi<ApiTypes["user"]["get"]>(routes.user)
+      .then((user) =>
+        setState({
+          user,
+          initialized: true,
+        })
+      )
+      .catch((err) => setState({ user: false, initialized: true }));
   }, []);
 
   return {
     user: state.user,
-    setUser: (user) => {
-      if (user === null) {
-        window.localStorage.removeItem("user");
-      } else {
-        localStorage.setItem("user", JSON.stringify(user));
-      }
-      setState({ ...state, user });
-    },
-    loading: state.user === null,
+    isSignedIn: !!state.user,
+    loading: state.user === undefined && state.initialized,
+    reset: () => setState({ user: undefined, initialized: false }),
   };
 }

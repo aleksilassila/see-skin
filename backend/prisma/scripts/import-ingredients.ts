@@ -14,7 +14,7 @@ produced 2 * 7 * 3 * 6 * 9 * 14 * 5 * 4 * 4 * 2 * 3 * 4 = 60 963 840 aliases :))
 
 [LACTOBACILLUS/(CIRSIUM JAPONICUM/MORINGA OLEIFERA LEAF) EXTRACT FERMENT & SUCROSE] EXTRACT FILTRATE
 Does not produce correct aliases
- */
+*/
 
 export async function importIngredients() {
   console.log(`Creating ingredient structure...`);
@@ -25,7 +25,7 @@ export async function importIngredients() {
   return new Promise((resolve, reject) => {
     const rows: string[][] = [];
     stream
-      .pipe(parse({ delimiter: ";", from_line: 3 }))
+      .pipe(parse({ from_line: 2 }))
       .on("data", async function (row: string[]) {
         if (row.length !== N_OF_COLUMNS) {
           throw new Error("Invalid number of columns: " + row);
@@ -50,7 +50,7 @@ export async function importIngredients() {
             updatedAtStr,
           ] = row;
           const cosingRef = parseInt(cosingRefStr);
-          const updatedAt = new Date(updatedAtStr || Date.now());
+          const updatedAt = new Date();
           const ingredientClasses =
             ingredientClassesStr === ""
               ? []
@@ -151,6 +151,11 @@ function getAliases(combinedName: string): string[] {
     }
   }
 
+  if (highLevelAliases.length > 5) {
+    console.error("TOO MANY ALIASES, SKIPPING: " + combinedName);
+    return [];
+  }
+
   // Expand top level aliases that contain blocks
 
   const expandedAliases: string[] = [];
@@ -191,6 +196,8 @@ function getAllCombinations(arr: string[][]): string[][] {
 
   // Initialize with first element's index
   for (let i = 0; i < n; i++) indices[i] = 0;
+
+  console.log(n);
 
   while (true) {
     // Print current combination
@@ -239,38 +246,6 @@ function getParenthesesBlocks(string: string): string[] {
   }
 
   return blocks;
-}
-
-async function createIngredient(
-  cosingRef: number,
-  name: string,
-  description: string,
-  fn: string,
-  updatedAt: Date,
-  aliases: string[],
-  ingredientClasses: IngredientClass[]
-) {
-  return prisma.ingredient
-    .create({
-      data: {
-        cosingRef,
-        function: fn,
-        description,
-        updatedAt,
-        name,
-        ingredientClasses,
-
-        aliases: {
-          create: aliases.map((alias) => ({
-            name: alias.trim(),
-          })),
-        },
-      },
-    })
-    .then(() => console.log(`Added ${cosingRef}`))
-    .catch((err) => {
-      console.error(cosingRef, err);
-    });
 }
 
 // importIngredients()

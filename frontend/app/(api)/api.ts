@@ -61,3 +61,19 @@ export function useMutateApiWithParams<T extends ApiType>(
     mutateOptions
   );
 }
+
+export function useMutateApiWithBody<T extends ApiType>(
+  url: string,
+  config: AxiosRequestConfig = {},
+  mutateOptions: UseMutationOptions<T["response"], Error, T["params"]> = {}
+) {
+  const mutateFn = (params: T["params"]) =>
+    fetchApi<T["response"]>(url, {
+      ...config,
+      data: { ...params, ...config.params },
+    });
+  return useMutation<T["response"], Error, T["params"]>(
+    mutateFn,
+    mutateOptions
+  );
+}
