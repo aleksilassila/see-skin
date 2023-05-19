@@ -5,7 +5,8 @@ import { COOKIE_SECRET } from './constants';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import * as passport from 'passport';
 import * as cookieParser from 'cookie-parser';
-import { PrismaService } from './prisma.service';
+import { PrismaService } from './prisma/prisma.service';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -14,6 +15,8 @@ async function bootstrap() {
 
   const prismaService = app.get(PrismaService);
   await prismaService.enableShutdownHooks(app);
+
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
   app.set('trust proxy', 1);
 

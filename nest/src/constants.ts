@@ -1,5 +1,8 @@
-export const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '';
-export const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || '';
+export const GOOGLE_CLIENT_ID =
+  process.env.GOOGLE_CLIENT_ID ||
+  '595821037529-vb803sk7meqhk7o6glku2fckq189adj6.apps.googleusercontent.com';
+export const GOOGLE_CLIENT_SECRET =
+  process.env.GOOGLE_CLIENT_SECRET || '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';
 
 export const COOKIE_SECRET = process.env.COOKIE_SECRET || 'secret';
 export const JWT_SECRET = process.env.JWT_SECRET || 'secret';
