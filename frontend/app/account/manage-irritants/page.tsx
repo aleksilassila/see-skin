@@ -2,6 +2,7 @@
 import {
   getQueryKey,
   useFetchApi,
+  useMutateApiWithBody,
   useMutateApiWithParams,
 } from "../../(api)/api";
 import routes, { ApiTypes } from "../../(api)/api-routes";
@@ -123,7 +124,7 @@ function useProductMutations(): [
   const onSuccess = (data: any) =>
     queryClient.setQueryData(getQueryKey(routes.skinProfile), data);
 
-  const mutateProductsDelete = useMutateApiWithParams<
+  const mutateProductsDelete = useMutateApiWithBody<
     ApiTypes["skinProfile"]["delete"]
   >(
     routes.skinProfile,
@@ -135,7 +136,7 @@ function useProductMutations(): [
     }
   );
 
-  const mutateProductsPost = useMutateApiWithParams<
+  const mutateProductsPost = useMutateApiWithBody<
     ApiTypes["skinProfile"]["post"]
   >(
     routes.skinProfile,

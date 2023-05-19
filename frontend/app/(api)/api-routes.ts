@@ -17,6 +17,11 @@ type ApiTypeOf<R = any, P = object> = {
   params: { take?: number; skip?: number } & P;
 };
 
+type QueryOptions = {
+  take?: number;
+  skip?: number;
+};
+
 type AuthApiTypes = {
   authLogout: ApiTypeOf;
   authVerify: ApiTypeOf;
@@ -67,14 +72,9 @@ type SkinProfileApiTypes = {
 };
 
 type ProductApiTypes = {
-  findProducts: ApiTypeOf<Product[], { name: string }>;
-  productsFeed: ApiTypeOf<
+  getProducts: ApiTypeOf<
     Product[],
-    {
-      name?: string;
-      page: number;
-      filterIrritants?: boolean;
-    }
+    { name?: string; filterIrritants?: boolean } & QueryOptions
   >;
   productId: {
     get: ApiTypeOf<Product>;
@@ -102,8 +102,7 @@ const routes: { [Property in keyof ApiTypes]: string } = {
 
   skinProfile: "/skin-profile",
 
-  findProducts: "/products/find",
-  productsFeed: "/products/feed",
+  getProducts: "/products",
   productId: "/products/:id",
 
   productIssues: "/maange/issues/products",

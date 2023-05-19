@@ -28,6 +28,26 @@ export class SkinProfileController {
     return this.skinProfileService.getSkinProfile(user.id);
   }
 
+  @Put()
+  setSkinProfile(
+    @GetUser() user: User,
+    @Body() setSkinProfileDto: SetSkinProfileDto,
+  ) {
+    return this.skinProfileService.setSkinProfile(
+      (oldData, newData) => ({
+        skinType: newData.skinType || oldData.skinType,
+        filteredIngredients:
+          newData.filteredIngredients || oldData.filteredIngredients,
+        irritatingProducts:
+          newData.irritatingProducts || oldData.irritatingProducts,
+      }),
+      user,
+      setSkinProfileDto.ingredientIds,
+      setSkinProfileDto.productIds,
+      setSkinProfileDto.skinType,
+    );
+  }
+
   @Post()
   updateSkinProfile(
     @GetUser() user: User,
@@ -71,26 +91,6 @@ export class SkinProfileController {
       deleteSkinProfileDto.ingredientIds,
       deleteSkinProfileDto.productIds,
       deleteSkinProfileDto.skinType,
-    );
-  }
-
-  @Put()
-  setSkinProfile(
-    @GetUser() user: User,
-    @Body() setSkinProfileDto: SetSkinProfileDto,
-  ) {
-    return this.skinProfileService.setSkinProfile(
-      (oldData, newData) => ({
-        skinType: newData.skinType || oldData.skinType,
-        filteredIngredients:
-          newData.filteredIngredients || oldData.filteredIngredients,
-        irritatingProducts:
-          newData.irritatingProducts || oldData.irritatingProducts,
-      }),
-      user,
-      setSkinProfileDto.ingredientIds,
-      setSkinProfileDto.productIds,
-      setSkinProfileDto.skinType,
     );
   }
 }

@@ -7,10 +7,11 @@ import {
   RemoteSelectState,
   useRemoteSelectState,
 } from "../(hooks)/remote-select";
+import routes, { ApiTypes } from "../(api)/api-routes";
 
 export function useProductSearchState() {
   return useRemoteSelectState<Product>((searchTerm, selected) =>
-    fetchApi<Product[]>("/products/find", {
+    fetchApi<ApiTypes["getProducts"]>(routes.getProducts, {
       params: {
         name: searchTerm,
       },
