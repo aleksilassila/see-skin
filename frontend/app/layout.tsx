@@ -3,7 +3,7 @@ import "./global.css";
 import { UserContext, useUserContextValue } from "./user";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import React from "react";
+import React, { PropsWithChildren } from "react";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,22 +23,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const userContextValue = useUserContextValue();
-  // const preferencesValue = usePreferencesContextValue();
-
-  // if (userContextValue.loading) {
-  //   return (
-  //     <html>
-  //       <head>
-  //         <title>See Skin</title>
-  //       </head>
-  //       <body className="min-h-screen flex flex-col">
-  //         <UserContext.Provider value={userContextValue}>
-  //           <div className="flex-1">Loading</div>
-  //         </UserContext.Provider>
-  //       </body>
-  //     </html>
-  //   );
-  // }
 
   return (
     <html>
@@ -46,17 +30,24 @@ export default function RootLayout({
         <title>See Skin</title>
       </head>
       <body className="min-h-screen flex flex-col">
-        <QueryClientProvider client={queryClient}>
-          <UserContext.Provider value={userContextValue}>
-            {/*<PreferencesContext.Provider*/}
-            {/*  value={{ ...preferencesValue, loading: false }}*/}
-            {/*>*/}
+        <UserContext.Provider value={userContextValue}>
+          <QueryClientProvider client={queryClient}>
             {children}
-            {/*</PreferencesContext.Provider>*/}
-          </UserContext.Provider>
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
+            <ReactQueryDevtools initialIsOpen={false} />
+          </QueryClientProvider>
+          {userContextValue.isSignedIn}
+        </UserContext.Provider>
       </body>
     </html>
   );
 }
+
+// function UserContextProvider(props: PropsWithChildren) {
+//   const userContextValue = useUserContextValue();
+//
+//   return (
+//     <UserContext.Provider value={userContextValue}>
+//       {props.children}
+//     </UserContext.Provider>
+//   );
+// }

@@ -4,12 +4,14 @@ import { useUser } from "../user";
 import { AnchorButton } from "./ui/button";
 import { GoogleLoginButton } from "../(navigation)/AccountButton";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { usePathname } from "next/navigation";
 
 export function RequireAuthentication(accessLevel = 0) {
   return (Component?: FunctionComponent<any>) =>
     function AuthenticationView(props: PropsWithChildren<{}>) {
       const user = useUser();
-
+      const pathName = usePathname();
+      
       if (user.loading) {
         return (
           <div className="flex items-center justify-center w-screen h-screen">
@@ -37,7 +39,7 @@ export function RequireAuthentication(accessLevel = 0) {
               >
                 To Front Page
               </AnchorButton>
-              <GoogleLoginButton />
+              <GoogleLoginButton source={pathName} />
             </div>
           </div>
         );

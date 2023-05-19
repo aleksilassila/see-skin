@@ -12,11 +12,13 @@ import { Popover } from "@headlessui/react";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import classNames from "classnames";
 
-export function GoogleLoginButton() {
+export function GoogleLoginButton(props: { source?: string }) {
   return (
     <AnchorButton
       intent="secondary"
-      href="/api/auth/google"
+      href={
+        "/api/auth/google" + (props.source ? `?source=${props.source}` : "")
+      }
       leadingIcon={faGoogle}
     >
       Sign in
@@ -29,7 +31,7 @@ export default function AccountButton() {
   const user = useUser();
 
   function logOut() {
-    user.setUser(false);
+    user.reset();
     router.push("/api/auth/logout");
   }
 

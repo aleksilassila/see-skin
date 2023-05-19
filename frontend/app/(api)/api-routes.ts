@@ -105,7 +105,7 @@ const routes: { [Property in keyof ApiTypes]: string } = {
   getProducts: "/products",
   productId: "/products/:id",
 
-  productIssues: "/maange/issues/products",
+  productIssues: "/manage/issues/products",
   ingredientIssues: "/manage/issues/ingredients",
 };
 

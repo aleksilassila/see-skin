@@ -6,7 +6,7 @@ import {
 } from "./skin-profile.service";
 import { IngredientWithAliases } from "../types/prisma";
 
-const skinTypeIrritatingClasses = {
+const skinTypeIrritatingClasses: Record<SkinType, IngredientClass[]> = {
   [SkinType.DRY]: [IngredientClass.DRY_IRRITANT],
   [SkinType.OILY]: [IngredientClass.OILY_IRRITANT],
   [SkinType.COMBINATION]: [
