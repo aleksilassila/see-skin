@@ -19,6 +19,23 @@ export class ProductsService {
     });
   }
 
+  async getProductsWithIngredients(productIds: string[]) {
+    return await this.prisma.product.findMany({
+      where: {
+        id: {
+          in: productIds,
+        },
+      },
+      include: {
+        ingredients: {
+          include: {
+            aliases: true,
+          },
+        },
+      },
+    });
+  }
+
   async getProducts(
     name: string | undefined,
     user: User | undefined,

@@ -1,7 +1,8 @@
 import { SkinType } from '@prisma/client';
 import { IsEnum, IsOptional, IsString } from 'class-validator';
+import { OmitType } from '@nestjs/mapped-types';
 
-export class UpdateSkinProfileDto {
+export class SetSkinProfileDto {
   @IsOptional()
   @IsString({ each: true })
   ingredientIds?: string[];
@@ -14,3 +15,11 @@ export class UpdateSkinProfileDto {
   @IsOptional()
   skinType?: SkinType;
 }
+
+// export class DeleteSkinProfileDto extends OmitType(SetSkinProfileDto, [
+//   'skinType',
+// ] as const) {}
+
+export class DeleteSkinProfileDto extends SetSkinProfileDto {}
+
+export class UpdateSkinProfileDto extends SetSkinProfileDto {}
