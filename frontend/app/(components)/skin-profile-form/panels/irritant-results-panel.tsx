@@ -7,7 +7,7 @@ import { GoogleLoginButton } from "../../../(navigation)/AccountButton";
 import { Tab } from "@headlessui/react";
 import { Ingredient, Product, SkinType } from "../../../(api)/api-types";
 import { useFetchApi } from "../../../(api)/api";
-import routes, { ApiTypes } from "../../../(api)/api-routes";
+import { PutSkinProfile } from "../../../(api)/api-routes";
 
 export function useResultsPanelState(
   skinType: SkinType,
@@ -15,8 +15,8 @@ export function useResultsPanelState(
   selectedIngredients: Ingredient[],
   enabled: boolean
 ) {
-  const resultsQuery = useFetchApi<ApiTypes["skinProfile"]["put"]>(
-    routes.skinProfile,
+  const resultsQuery = useFetchApi<PutSkinProfile>(
+    "/skin-profile",
     {
       params: {
         skinType,

@@ -1,13 +1,7 @@
 import { Ingredient } from "../../(api)/api-types";
-import { ReactNode } from "react";
 import { ListItemContainer, ListItemProps } from "./list-container";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBan,
-  faClone,
-  faCopy,
-  faHandDots,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBan, faCopy, faHandDots } from "@fortawesome/free-solid-svg-icons";
 
 interface Props extends ListItemProps {
   ingredient: Ingredient;

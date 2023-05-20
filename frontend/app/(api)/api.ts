@@ -15,10 +15,12 @@ export function getQueryKey(url: string, params?: object): QueryKey {
 
 export const fetchApi = <
   T = any,
-  Response = T extends ApiType ? T["response"] : T
+  Response = T extends ApiType ? T["response"] : T,
+  Params = T extends ApiType ? T["params"] : object,
+  Body = T extends ApiType ? T["body"] : object
 >(
-  url: string,
-  options: AxiosRequestConfig = {}
+  url: T extends ApiType ? T["route"] : string,
+  options: AxiosRequestConfig & { data?: Body; params?: Params } = {}
 ): Promise<Response> =>
   axios<Response>({
     ...options,
@@ -27,8 +29,11 @@ export const fetchApi = <
   }).then((res) => res.data);
 
 export function useFetchApi<T extends ApiType>(
-  url: string,
-  axiosConfig: AxiosRequestConfig & { params?: T["params"] } = {},
+  url: T extends ApiType ? T["route"] : string,
+  axiosConfig: AxiosRequestConfig & {
+    params?: T["params"];
+    data?: T["body"];
+  } = {},
   queryOptions: UseQueryOptions<
     T["response"],
     Error,
@@ -47,12 +52,12 @@ export function useFetchApi<T extends ApiType>(
 }
 
 export function useMutateApiWithParams<T extends ApiType>(
-  url: string,
+  url: T extends ApiType ? T["route"] : string,
   config: AxiosRequestConfig = {},
   mutateOptions: UseMutationOptions<T["response"], Error, T["params"]> = {}
 ) {
   const mutateFn = (params: T["params"]) =>
-    fetchApi<T["response"]>(url, {
+    fetchApi<T>(url, {
       ...config,
       params: { ...params, ...config.params },
     });
@@ -63,12 +68,12 @@ export function useMutateApiWithParams<T extends ApiType>(
 }
 
 export function useMutateApiWithBody<T extends ApiType>(
-  url: string,
+  url: T extends ApiType ? T["route"] : string,
   config: AxiosRequestConfig = {},
   mutateOptions: UseMutationOptions<T["response"], Error, T["params"]> = {}
 ) {
   const mutateFn = (params: T["params"]) =>
-    fetchApi<T["response"]>(url, {
+    fetchApi<T>(url, {
       ...config,
       data: { ...params, ...config.params },
     });

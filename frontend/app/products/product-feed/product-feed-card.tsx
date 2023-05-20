@@ -7,10 +7,13 @@ import { Button } from "../../(components)/ui/button";
 
 interface Props {
   product: Product;
-  setProductDetails: ProductDetailsState["setProduct"];
+  showProductDetails: ProductDetailsState["show"];
 }
 
-export default function ProductFeedCard({ product, setProductDetails }: Props) {
+export default function ProductFeedCard({
+  product,
+  showProductDetails,
+}: Props) {
   const className = classNames(
     "w-64 h-96",
     "flex flex-col gap-4 space-between",
@@ -41,7 +44,7 @@ export default function ProductFeedCard({ product, setProductDetails }: Props) {
             <div className="text-zinc-600 text-sm">${product.price}</div>
           )}
         </div>
-        <InfoButton onClick={() => setProductDetails(product)} />
+        <InfoButton onClick={() => showProductDetails(product)} />
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Put, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Put, UseGuards } from "@nestjs/common";
 import { UsersService } from "../prisma/users.service";
 import { IsAuthenticatedGuard } from "../auth/guards/is-authenticated.guard";
 import { GetOptionalUser, GetUser } from "../auth/user.decorator";
@@ -21,5 +21,10 @@ export class UsersController {
     @Body() updateUserDto: UpdateUserDto,
   ) {
     return await this.userService.updateUser(user.id, updateUserDto);
+  }
+
+  @Delete()
+  async deleteUser(@GetUser() user: User) {
+    return await this.userService.deleteUser(user.id);
   }
 }

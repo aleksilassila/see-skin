@@ -5,11 +5,7 @@ import fetchIrritantsCalculation, {
 import { useQuery } from "react-query";
 import IrritantItem from "./irritant-item";
 import { Button } from "../(components)/ui/button";
-import {
-  Ingredient,
-  IngredientWithAliases,
-  SkinType,
-} from "../(api)/api-types";
+import { IngredientWithAliases, SkinType } from "../(api)/api-types";
 import ProductSearch, {
   useProductSearchState,
 } from "../(components)/product-search";

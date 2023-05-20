@@ -11,7 +11,7 @@ export function RequireAuthentication(accessLevel = 0) {
     function AuthenticationView(props: PropsWithChildren<{}>) {
       const user = useUser();
       const pathName = usePathname();
-      
+
       if (user.loading) {
         return (
           <div className="flex items-center justify-center w-screen h-screen">

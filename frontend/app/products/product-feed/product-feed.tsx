@@ -58,7 +58,7 @@ export default function ProductFeed({
     <div className={gridClassName}>
       {data?.pages.flat().map((product, key) => (
         <ProductFeedCard
-          setProductDetails={productDetailsState.show}
+          showProductDetails={productDetailsState.show}
           product={product}
           key={key}
         />

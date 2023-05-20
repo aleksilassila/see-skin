@@ -3,7 +3,7 @@ import "./global.css";
 import { UserContext, useUserContextValue } from "./user";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import React, { PropsWithChildren } from "react";
+import React from "react";
 
 const queryClient = new QueryClient({
   defaultOptions: {

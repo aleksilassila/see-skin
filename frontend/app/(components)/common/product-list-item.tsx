@@ -1,7 +1,6 @@
 import { Product } from "../../(api)/api-types";
 import Image from "next/image";
 import { PRODUCT_PLACEHOLDER_URL } from "../../config";
-import { ReactNode } from "react";
 import { ListItemContainer, ListItemProps } from "./list-container";
 
 interface Props extends ListItemProps {
