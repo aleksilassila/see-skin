@@ -4,7 +4,8 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import classNames from "classnames";
 import { RequireAuthentication } from "../(components)/require-authentication";
-import { WithNavigation } from "../(navigation)/Navigation";
+
+import { WithNavigation } from "../(navigation)/with-navigation";
 
 function SideBarSubHeader(props: PropsWithChildren) {
   return (

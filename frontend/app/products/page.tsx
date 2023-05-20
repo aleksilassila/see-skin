@@ -11,7 +11,7 @@ import ProductDetails, {
 } from "./product-details/product-details";
 import { useDrawerState } from "../(components)/ui/drawer";
 
-import { WithNavigation } from "../(navigation)/Navigation";
+import { WithNavigation } from "../(navigation)/with-navigation";
 
 function ProductsPage() {
   const productFilterState = useProductFiltersState();

@@ -1,6 +1,5 @@
 import { SkinType } from "@prisma/client";
 import { IsEnum, IsOptional, IsString } from "class-validator";
-import { OmitType } from "@nestjs/mapped-types";
 
 export class SetSkinProfileDto {
   @IsOptional()

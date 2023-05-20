@@ -1,161 +1,127 @@
 "use client";
-import { AnchorHTMLAttributes, HTMLAttributes, PropsWithChildren } from "react";
 import classNames from "classnames";
 import Image from "next/image";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
-import Link from "next/link";
-import SkinProfileForm from "./(components)/skin-profile-form/skin-profile-form";
-import { WithNavigation } from "./(navigation)/Navigation";
-
-interface CardContainerProps extends HTMLAttributes<HTMLDivElement> {
-  size?: "sm" | "lg";
-}
-
-function CardContainer({
-  size = "lg",
-  ...props
-}: PropsWithChildren<CardContainerProps>) {
-  const className = classNames(
-    props.className,
-    "rounded-xl drop-shadow overflow-hidden",
-    "grid grid-cols-[1.5rem_1fr_1fr_1.5rem] py-6",
-    {
-      "col-span-2": size === "lg",
-    }
-  );
-  return <div className={className}>{props.children}</div>;
-}
-
-function CardLink(props: AnchorHTMLAttributes<any>) {
-  const className = classNames(
-    props.className,
-    "text-sm font-medium",
-    "inline-flex mt-6",
-    "items-center gap-2"
-  );
-  return (
-    <Link href={props.href || ""} className={className}>
-      {props.children}{" "}
-      <FontAwesomeIcon className="inline h-4" icon={faArrowRightLong} />
-    </Link>
-  );
-}
+import SkinTypeSelect from "./(components)/skin-type-select/skin-type-select";
+import { Button } from "./(components)/ui/button";
+import IngredientGraphPicture from "../public/images/ingredient-graph.png";
+import iPhoneDemoPicture from "../public/images/iphone-11-demo.png";
+import { WithNavigation } from "./(navigation)/with-navigation";
 
 function Page() {
-  const cardHeading = classNames("font-medium text-xl mb-2");
-
-  const cardBody = classNames("font-medium text-sm col-start-2 col-span-2");
-
-  const imageIgnorePadding = classNames("col-span-4");
-
   return (
-    <div className="flex flex-col items-center gap-8 mb-8">
-      <div
-        id="landing"
-        className="w-screen py-32 flex items-center justify-center bg-red-50"
-      >
-        <div id="welcome" className="max-w-2xl mx-8 sm:mx-16 xl:mx-24">
-          <h1 id="header" className="text-3xl font-bold mb-2 text-center">
-            Find your personal irritants & skincare all in one place
-          </h1>
-          <p id="description" className="font-medium mb-8 text-center">
-            Insert products into the box below that you suspect cause you
-            irritation, breakouts, or any adverse effect, or those that you
-            didn&apos;t have any benefit from.
-          </p>
-          <SkinProfileForm />
+    <div className="">
+      <Welcome />
+      <IngredientAnalysisAbout />
+      <RetailersAbout />
+    </div>
+  );
+}
+
+const sectionContainerStyle = classNames(
+  "relative flex bg-cover bg-no-repeat bg-center items-center justify-center",
+  "py-16 px-8"
+);
+
+const sectionContainerSmallStyle = classNames(
+  sectionContainerStyle,
+  "min-h-[50vh] gap-8",
+  "flex-col",
+  "md:flex-row"
+);
+
+const headingStyle = "font-medium text-3xl lg:text-5xl";
+
+const paragraphStyle = "leading-1 text-md lg:text-lg";
+
+function Welcome() {
+  return (
+    <div
+      className={classNames(sectionContainerStyle, "min-h-[70vh]")}
+      style={{ backgroundImage: "url(/images/frontpage-gradient.jpg)" }}
+    >
+      <div className="max-w-xl mx-8 sm:mx-16 xl:mx-24 flex flex-col">
+        <h1 className="text-5xl font-semibold mb-2 text-center text-stone-900">
+          Removing the trial & error from skincare
+        </h1>
+        <p className="font-medium mb-8 text-center text-stone-800">
+          {
+            "Personalized skincare recommendations and ingredient analysis from products that didn't work for you."
+          }
+        </p>
+        <SkinTypeSelect />
+      </div>
+    </div>
+  );
+}
+
+function IngredientAnalysisAbout() {
+  return (
+    <div
+      className={sectionContainerSmallStyle}
+      style={{ backgroundImage: "url('/images/radar.jpg')" }}
+    >
+      <div className="flex flex-col gap-4 max-w-sm xl:max-w-lg">
+        <h1 className={classNames(headingStyle, "text-stone-900")}>
+          In-depth ingredient analysis
+        </h1>
+        <p className={classNames(paragraphStyle, "text-stone-700")}>
+          We use a data-driven approach to find irritants & bad ingredients
+          personal to your skin, using your past skincare & cosmetic products.
+        </p>
+        <p className={classNames(paragraphStyle, "text-stone-700")}>
+          With a database consisting of 14 000+ products & 30 000+ ingredients,
+          we can deduce almost any situation with accuracy.
+        </p>
+        <div>
+          <Button intent="special">Get Started</Button>
         </div>
       </div>
-      <div id="cards" className="grid grid-cols-2 gap-4 max-w-xl mx-2">
-        <CardContainer className="bg-[#2B353F] text-white">
-          <div className="col-start-2 col-span-1 flex flex-col justify-center">
-            <h2 className={cardHeading}>Cleaning your buying experience</h2>
-            <p className={cardBody}>
-              We build you a skin profile that filters through tens of thousands
-              of products to a personalized few. Shop with your favorite
-              retailer through our products section
-            </p>
-            <CardLink href="/products">Find your product</CardLink>
+      <Image
+        src={IngredientGraphPicture}
+        alt="Ingredient Graph"
+        className="border border-stone-400 rounded-xl max-w-xs lg:max-w-md"
+      />
+    </div>
+  );
+}
+
+function RetailersAbout() {
+  return (
+    <div className="relative bg-black">
+      <div
+        className="bg-cover bg-no-repeat bg-center absolute inset-0"
+        style={{
+          backgroundImage: "url('/images/scribble.svg')",
+          opacity: 0.3,
+        }}
+      />
+      <div
+        className={classNames(
+          sectionContainerSmallStyle,
+          "flex-col-reverse md:flex-row"
+        )}
+      >
+        <Image
+          src={iPhoneDemoPicture}
+          alt="Ingredient Graph"
+          className="max-w-xs lg:max-h-md"
+        />
+        <div className="flex flex-col gap-4 max-w-sm xl:max-w-lg">
+          <h1 className={classNames(headingStyle, "text-stone-50")}>
+            Better skincare from the best retailers
+          </h1>
+          <p className={classNames(paragraphStyle, "text-stone-300")}>
+            From a pool of thousands of skincare products, we narrow down on
+            ones that fit the best with your skin.
+          </p>
+          <p className={classNames(paragraphStyle, "text-stone-300")}>
+            Identified ingredients are automatically excluded and products are
+            catered to your individual skin profile and concerns.
+          </p>
+          <div>
+            <Button intent="special">Get better products now</Button>
           </div>
-          <Image
-            className={"col-span-2 col-start-3"}
-            src="/images/brand-logos.png"
-            alt=""
-            width={300}
-            height={300}
-          />
-        </CardContainer>
-        <CardContainer size="sm" className="bg-white">
-          <div className="col-start-2 col-span-2">
-            <h2 className={cardHeading}>
-              Find your <span className="text-red-500">adversary</span>{" "}
-              ingredients
-            </h2>
-          </div>
-          <Image
-            className={imageIgnorePadding}
-            src="/images/molecule.jpeg"
-            alt=""
-            width={300}
-            height={300}
-          />
-          <CardLink href="/skin-solver" className="col-start-2 col-span-2">
-            Use Skin Solver
-          </CardLink>
-        </CardContainer>
-        <CardContainer size="sm" className="bg-[#FF6565] text-white">
-          <div className="col-start-2 col-span-2">
-            <h2 className={cardHeading}>
-              Find your <span className="text-lime-400">beneficial</span>{" "}
-              ingredients
-            </h2>
-          </div>
-          <Image
-            className={classNames(imageIgnorePadding, "mt-auto -mb-6")}
-            src="/images/under-construction.png"
-            alt=""
-            width={300}
-            height={300}
-          />
-        </CardContainer>
-        <CardContainer className="bg-[#231F20] text-white">
-          <Image
-            className={"col-span-2"}
-            style={{ transform: "scaleX(-1)" }}
-            src="/images/notebook.png"
-            alt=""
-            width={300}
-            height={300}
-          />
-          <div className="col-start-3 flex flex-col justify-center">
-            <h2 className={cardHeading}>Double-check your products</h2>
-            <p className={cardBody}>
-              Our app makes sure that any skincare or cosmetic product you buy
-              is clear of your individual bad ingredients and is compatible with
-              your skin
-            </p>
-            <CardLink href="/skin-solver">Use the Checker</CardLink>
-          </div>
-        </CardContainer>
-        <CardContainer className="bg-[#9C30F1] text-white">
-          <div className="col-start-2 flex flex-col justify-center">
-            <h2 className={cardHeading}>see-skin for business</h2>
-            <p className={cardBody}>
-              We connect customers to products that they have confidence in.
-              Join our waiting list to get exclusive priority in posting
-              products on our platform.
-            </p>
-            <CardLink href="/">Work with us</CardLink>
-          </div>
-          <Image
-            className={"col-span-2 max-h-40 w-auto justify-self-center flex"}
-            src="/images/suitcase.png"
-            alt=""
-            width={300}
-            height={300}
-          />
-        </CardContainer>
+        </div>
       </div>
     </div>
   );

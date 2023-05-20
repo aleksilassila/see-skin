@@ -1,4 +1,4 @@
-import Logo from "../(navigation)/Logo";
+import Logo from "../(navigation)/logo";
 import { HTMLAttributes } from "react";
 
 const FooterLogo = () => {

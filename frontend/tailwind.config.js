@@ -1,4 +1,4 @@
-/** @type {import('tailwindcss').Config} */
+/** @type {import("tailwindcss").Config} */
 module.exports = {
   mode: "jit",
   purge: ["./app/**/*.{js,jsx,ts,tsx}"],
@@ -15,5 +15,4 @@ module.exports = {
       },
     },
   },
-  plugins: [require("@tailwindcss/line-clamp")],
 };

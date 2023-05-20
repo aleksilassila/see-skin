@@ -1,5 +1,4 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { useUser } from "../user";
 import { AnchorButton, Button } from "../(components)/ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -27,13 +26,7 @@ export function GoogleLoginButton(props: { source?: string }) {
 }
 
 export default function AccountButton() {
-  const router = useRouter();
   const user = useUser();
-
-  function logOut() {
-    user.reset();
-    router.push("/api/auth/logout");
-  }
 
   if (!user?.user) {
     return <GoogleLoginButton />;
@@ -47,7 +40,7 @@ export default function AccountButton() {
   return (
     <div>
       <Popover className="relative">
-        <Popover.Button className="outline-0">
+        <Popover.Button className="outline-none">
           {({ open }) => (
             <div className="flex items-center gap-2 cursor-pointer h-10 rounded">
               <FontAwesomeIcon icon={faUser} className="h-4" />
@@ -79,7 +72,7 @@ export default function AccountButton() {
               <Button
                 overwriteStyles
                 className={menuButtonStyle}
-                onClick={logOut}
+                onClick={user.logOut}
               >
                 Sign out
               </Button>

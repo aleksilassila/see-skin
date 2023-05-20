@@ -10,7 +10,7 @@ export interface ButtonProps<T extends HTMLElement> extends HTMLAttributes<T> {
   disabled?: boolean;
   icon?: string;
   iconStyle?: string;
-  intent?: "none" | "primary" | "secondary" | "warning" | "danger";
+  intent?: "none" | "primary" | "secondary" | "warning" | "danger" | "special";
   size?: "sm" | "md" | "lg";
   leadingIcon?: IconProp;
   trailingIcon?: IconProp;
@@ -168,7 +168,7 @@ function IconWrapper({
 }
 
 export function getButtonSizing(size: ButtonProps<any>["size"] = "md") {
-  return classNames({
+  return classNames("whitespace-nowrap", {
     ...{
       sm: { "text-sm h-8 px-2 md:px-4": true },
       md: { "h-10 px-3 md:px-4": true },
@@ -225,15 +225,26 @@ export function getButtonColoring({
         "active:bg-red-700": active,
         "focus-within:ring": active,
       },
+      special: {
+        "text-white drop-shadow": true,
+        "bg-indigo-600": active,
+        "bg-indigo-500": !active,
+        "active:bg-indigo-600": active,
+        "hover:bg-indigo-500": active,
+        "focus-within:ring ": active,
+      },
     }[intent],
   });
 }
 
-export function XmarkButton(props: { handleClick: () => void }) {
+export function XmarkButton(props: {
+  handleClick: () => void;
+  className?: string;
+}) {
   return (
     <FontAwesomeIcon
       icon={faXmark}
-      className="text-stone-500 hover:text-stone-700 cursor-pointer w-6 h-6"
+      className={`text-stone-500 hover:text-stone-700 cursor-pointer w-6 h-6 ${props.className}`}
       onClick={() => props.handleClick()}
     />
   );

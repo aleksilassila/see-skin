@@ -2,7 +2,7 @@
 import { FunctionComponent, PropsWithChildren } from "react";
 import { useUser } from "../user";
 import { AnchorButton } from "./ui/button";
-import { GoogleLoginButton } from "../(navigation)/AccountButton";
+import { GoogleLoginButton } from "../(navigation)/account-button";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { usePathname } from "next/navigation";
 

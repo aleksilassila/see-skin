@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Put, UseGuards } from "@nestjs/common";
 import { UsersService } from "../prisma/users.service";
 import { IsAuthenticatedGuard } from "../auth/guards/is-authenticated.guard";
-import { GetOptionalUser, GetUser } from "../auth/user.decorator";
+import { GetUser } from "../auth/user.decorator";
 import { User } from "@prisma/client";
 import { UpdateUserDto } from "./dto/update-user.dto";
 
