@@ -1,16 +1,16 @@
 import {
   Ingredient,
   Prisma,
+  PrismaClient,
   ProductCategory,
   ProductEffect,
   ProductProvider,
 } from "@prisma/client";
 import * as fs from "fs";
 import { parse } from "csv-parse";
-import prisma from "../../src/prisma";
 import cuid = require("cuid");
 
-// const prisma = new PrismaClient();
+const prisma = new PrismaClient();
 
 const CSV_FILE = "./prisma/csv/amazon-products.csv";
 const N_OF_COLUMNS = 8;

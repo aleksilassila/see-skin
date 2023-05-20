@@ -1,8 +1,9 @@
-import { IngredientClass, Prisma } from "@prisma/client";
+import { IngredientClass, Prisma, PrismaClient } from "@prisma/client";
 import * as fs from "node:fs/promises";
 import { parse } from "csv-parse";
-import prisma from "../../src/prisma";
 import cuid = require("cuid");
+
+const prisma = new PrismaClient();
 
 const CSV_FILE = "./prisma/csv/ingredients-full.csv";
 const N_OF_COLUMNS = 6;
