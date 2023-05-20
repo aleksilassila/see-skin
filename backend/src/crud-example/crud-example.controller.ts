@@ -1,11 +1,11 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
 } from "@nestjs/common";
 import { CrudExampleService } from "./crud-example.service";
 import { CreateCrudExampleDto } from "./dto/create-crud-example.dto";

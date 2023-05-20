@@ -243,7 +243,6 @@ export function XmarkButton(props: {
 }) {
   return (
     <FontAwesomeIcon
-      {...props}
       icon={faXmark}
       className={`text-stone-500 hover:text-stone-700 cursor-pointer w-6 h-6 ${props.className}`}
       onClick={() => props.handleClick()}

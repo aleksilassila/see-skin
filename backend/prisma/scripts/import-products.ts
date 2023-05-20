@@ -1,9 +1,9 @@
 import {
   Ingredient,
   Prisma,
-  ProductProvider,
-  ProductEffect,
   ProductCategory,
+  ProductEffect,
+  ProductProvider,
 } from "@prisma/client";
 import * as fs from "fs";
 import { parse } from "csv-parse";
@@ -56,13 +56,13 @@ export async function importProducts() {
             rowIndex === rows.length - 1
           ) {
             const productsToCreate = await Promise.all(
-              productsCreateBatch
+              productsCreateBatch,
             ).then((products) =>
               products.filter(
                 (product) =>
                   product.data.ingredientsString.length > 0 &&
-                  !seePackaging(product.data.ingredientsString)
-              )
+                  !seePackaging(product.data.ingredientsString),
+              ),
             );
 
             await prisma.product.createMany({
@@ -90,7 +90,7 @@ export async function importProducts() {
 }
 
 async function getIngredientsToConnect(
-  ingredientsCombined: string
+  ingredientsCombined: string,
 ): Promise<{ connectsTo: Ingredient[]; unknown: string[]; ratio: number }> {
   const ingredientStrings = ingredientsCombined.split(/, |, /g);
 
@@ -105,9 +105,9 @@ async function getIngredientsToConnect(
           .trim()
           .replace(
             /^(organic|[* .]|\d+%|\([^\)]+\))+|([* .]|\d+%|\([^\)]+\))+$/gi,
-            ""
+            "",
           )
-          .replace(/ +/g, " ")
+          .replace(/ +/g, " "),
       ); // Remove leading and trailing asterisks and spaces, percentages, trailing parentheses and organic bs
 
     /*
@@ -149,7 +149,7 @@ async function getIngredientsToConnect(
     ingredientCandidates.sort((a, b) => b.aliases.length - a.aliases.length);
     if (
       ingredientCandidates.filter(
-        (i) => i.aliases.length === ingredientCandidates[0].aliases.length
+        (i) => i.aliases.length === ingredientCandidates[0].aliases.length,
       ).length === 1
     ) {
       ingredientsToConnect.push(ingredientCandidates[0]);
@@ -170,13 +170,13 @@ async function createProduct(product: ParsedProduct): Promise<{
   ingredientIds: string[];
 }> {
   const ingredientsToConnect = await getIngredientsToConnect(
-    product.ingredientsCombined
+    product.ingredientsCombined,
   );
   console.log(
     "Creating product",
     product.name,
     "with ratio",
-    ingredientsToConnect.ratio
+    ingredientsToConnect.ratio,
   );
 
   return {

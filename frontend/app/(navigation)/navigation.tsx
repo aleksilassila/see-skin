@@ -94,6 +94,7 @@ function MobileAccountElements({
   ...props
 }: {
   user?: User;
+  activeHref: string;
   handleClick: () => void;
   handleLogout: () => void;
 }) {
@@ -106,12 +107,16 @@ function MobileAccountElements({
       <h1>
         Logged in as <b>{user.name}</b>
       </h1>
-      <CreateLink href={"/account"} handleClick={props.handleClick}>
+      <Link
+        href={"/account"}
+        className={getLinkStyles(props.activeHref === "/account")}
+        onClick={props.handleClick}
+      >
         Account Settings
-      </CreateLink>
-      <CreateLink href={"/logout"} handleClick={props.handleLogout}>
+      </Link>
+      <div className={getLinkStyles()} onClick={props.handleLogout}>
         Sign out
-      </CreateLink>
+      </div>
     </>
   );
 }
@@ -143,6 +148,7 @@ function MobileLinks(props: {
         />
         <div className="border-t border-stone-400 w-[30%]" />
         <MobileAccountElements
+          activeHref={props.activeHref}
           user={props.userState.user}
           handleClick={props.handleClick}
           handleLogout={props.userState.logOut}
@@ -159,42 +165,23 @@ function Links(props: {
 }) {
   return (
     <>
-      {links.map((link) => {
-        const style = classNames("px-3 py-1 font-medium", {
-          "bg-blue-50 rounded":
-            props.activeHref && link.href === props.activeHref,
-        });
-
-        if (!link.private || (props.user?.accessLevel || 0) > 0) {
-          return (
-            <CreateLink
-              href={link.href}
-              activeHref={props.activeHref}
-              key={link.href}
-              handleClick={props.handleClick}
-            >
-              {link.text}
-            </CreateLink>
-          );
-        } else return null;
-      })}
+      {links.map((link) =>
+        !link.private || (props.user?.accessLevel || 0) > 0 ? (
+          <Link
+            href={link.href}
+            className={getLinkStyles(props.activeHref === link.href)}
+            key={link.href}
+            onClick={props.handleClick}
+          >
+            {link.text}
+          </Link>
+        ) : null
+      )}
     </>
   );
 }
 
-function CreateLink(props: {
-  activeHref?: string;
-  href: string;
-  children: any;
-  handleClick: () => void;
-}) {
-  const style = classNames("px-3 py-1 font-medium", {
-    "bg-blue-50 rounded": props.activeHref && props.href === props.activeHref,
+const getLinkStyles = (isActive: boolean = false) =>
+  classNames("px-3 py-1 font-medium", {
+    "bg-blue-50 rounded": isActive,
   });
-
-  return (
-    <Link href={props.href} className={style} onClick={props.handleClick}>
-      {props.children}
-    </Link>
-  );
-}

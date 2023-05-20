@@ -9,7 +9,6 @@ import {
 } from "@nestjs/common";
 import { GetUser } from "../auth/user.decorator";
 import { User } from "@prisma/client";
-import { UsersService } from "../prisma/users.service";
 import { IsAuthenticatedGuard } from "../auth/guards/is-authenticated.guard";
 import {
   DeleteSkinProfileDto,

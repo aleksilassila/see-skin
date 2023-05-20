@@ -62,11 +62,11 @@ export async function importIngredients() {
 
           if (aliases.length >= 50) {
             console.warn(
-              `${cosingRef}, ${combinedName} has ${aliases.length} aliases`
+              `${cosingRef}, ${combinedName} has ${aliases.length} aliases`,
             );
           } else {
             console.log(
-              `Adding ${cosingRef} with ${aliases.length} aliases...`
+              `Adding ${cosingRef} with ${aliases.length} aliases...`,
             );
           }
 
@@ -111,7 +111,7 @@ async function createIngredientBatch(
   batchCreateData: {
     data: Prisma.IngredientCreateInput;
     aliases: string[];
-  }[]
+  }[],
 ) {
   await prisma.ingredient.createMany({
     data: batchCreateData.map((data) => data.data),
@@ -122,7 +122,7 @@ async function createIngredientBatch(
       data.aliases.map((name) => ({
         ingredientId: data.data.id as string,
         name,
-      }))
+      })),
     ),
   });
 }
