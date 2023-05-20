@@ -1,9 +1,9 @@
 "use client";
 import { RequireAuthentication } from "../(components)/require-authentication";
 
-import { WithNavigation } from "../(navigation)/Navigation";
 import { PropsWithChildren } from "react";
 import AccountSidebar from "./account-sidebar";
+import { WithNavigation } from "../(navigation)/with-navigation";
 
 function AccountLayout(props: PropsWithChildren) {
   return (

@@ -1,11 +1,11 @@
 "use client";
 import classNames from "classnames";
 import Image from "next/image";
-import { WithNavigation } from "./(navigation)/Navigation";
 import SkinTypeSelect from "./(components)/skin-type-select/skin-type-select";
 import { Button } from "./(components)/ui/button";
 import IngredientGraphPicture from "../public/images/ingredient-graph.png";
 import iPhoneDemoPicture from "../public/images/iphone-11-demo.png";
+import { WithNavigation } from "./(navigation)/with-navigation";
 
 function Page() {
   return (

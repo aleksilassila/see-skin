@@ -9,7 +9,8 @@ import { IngredientWithAliases, SkinType } from "../(api)/api-types";
 import ProductSearch, {
   useProductSearchState,
 } from "../(components)/product-search";
-import { WithNavigation } from "../(navigation)/Navigation";
+
+import { WithNavigation } from "../(navigation)/with-navigation";
 
 function ShowIrritants({ irritants }: { irritants: IngredientWithAliases[] }) {
   if (irritants.length === 0) {

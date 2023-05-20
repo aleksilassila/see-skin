@@ -3,7 +3,7 @@ import { IrritantsCalculationResponse } from "../../../(api)/solver/fetch-irrita
 import { UseQueryResult } from "react-query";
 import { useProductSelectPanelState } from "./product-select-panel";
 import { useUser } from "../../../user";
-import { GoogleLoginButton } from "../../../(navigation)/AccountButton";
+import { GoogleLoginButton } from "../../../(navigation)/account-button";
 import { Tab } from "@headlessui/react";
 import { Ingredient, Product, SkinType } from "../../../(api)/api-types";
 import { useFetchApi } from "../../../(api)/api";
@@ -70,7 +70,7 @@ export default function IrritantResultsPanel(
   const { data, isLoading, isError } = state.resultsQuery;
   const user = useUser();
 
-  if (user.user === false) {
+  if (!user.isSignedIn) {
     return <Tab.Panel>Please log in to get the results</Tab.Panel>;
   }
 
