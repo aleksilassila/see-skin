@@ -10,7 +10,7 @@ export interface ButtonProps<T extends HTMLElement> extends HTMLAttributes<T> {
   disabled?: boolean;
   icon?: string;
   iconStyle?: string;
-  intent?: "none" | "primary" | "secondary" | "warning" | "danger";
+  intent?: "none" | "primary" | "secondary" | "warning" | "danger" | "special";
   size?: "sm" | "md" | "lg";
   leadingIcon?: IconProp;
   trailingIcon?: IconProp;
@@ -224,6 +224,14 @@ export function getButtonColoring({
         "hover:bg-red-600": active,
         "active:bg-red-700": active,
         "focus-within:ring": active,
+      },
+      special: {
+        "text-white drop-shadow": true,
+        "bg-indigo-600": active,
+        "bg-indigo-500": !active,
+        "active:bg-indigo-600": active,
+        "hover:bg-indigo-500": active,
+        "focus-within:ring ": active,
       },
     }[intent],
   });

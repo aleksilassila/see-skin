@@ -13,7 +13,7 @@ FROM --platform=linux/amd64 node:18-alpine as production
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-ENV NODE_ENV=production
+ENV NODE_ENV production
 
 COPY . .
 
@@ -25,6 +25,6 @@ CMD [ "yarn", "start" ]
 
 FROM base as development
 
-ENV NODE_ENV=development
+ENV NODE_ENV development
 
 CMD [ "yarn", "dev" ]
