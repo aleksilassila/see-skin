@@ -3,9 +3,12 @@ import {
   getQueryKey,
   useFetchApi,
   useMutateApiWithBody,
-  useMutateApiWithParams,
 } from "../../(api)/api";
-import routes, { ApiTypes } from "../../(api)/api-routes";
+import {
+  DeleteSkinProfile,
+  GetSkinProfile,
+  PostSkinProfile,
+} from "../../(api)/api-routes";
 import { ProductListItem } from "../../(components)/common/product-list-item";
 import { Button } from "../../(components)/ui/button";
 import ListContainer from "../../(components)/common/list-container";
@@ -22,15 +25,14 @@ export default function ManageIrritants() {
   const productSearchModalState = useModalState();
   const productDetailsState = useProductDetailsState();
 
-  const { data: skinProfile, ...skinProfileQuery } = useFetchApi<
-    ApiTypes["skinProfile"]["get"]
-  >(
-    routes.skinProfile,
-    {},
-    {
-      suspense: false,
-    }
-  );
+  const { data: skinProfile, ...skinProfileQuery } =
+    useFetchApi<GetSkinProfile>(
+      "/skin-profile",
+      {},
+      {
+        suspense: false,
+      }
+    );
 
   const [mutateProductsPost, mutateProductsDelete] = useProductMutations();
 
@@ -116,18 +118,16 @@ export default function ManageIrritants() {
 }
 
 function useProductMutations(): [
-  ReturnType<typeof useMutateApiWithParams<ApiTypes["skinProfile"]["delete"]>>,
-  ReturnType<typeof useMutateApiWithParams<ApiTypes["skinProfile"]["post"]>>
+  ReturnType<typeof useMutateApiWithBody<DeleteSkinProfile>>,
+  ReturnType<typeof useMutateApiWithBody<PostSkinProfile>>
 ] {
   const queryClient = useQueryClient();
 
   const onSuccess = (data: any) =>
-    queryClient.setQueryData(getQueryKey(routes.skinProfile), data);
+    queryClient.setQueryData(getQueryKey("/skin-profile"), data);
 
-  const mutateProductsDelete = useMutateApiWithBody<
-    ApiTypes["skinProfile"]["delete"]
-  >(
-    routes.skinProfile,
+  const mutateProductsDelete = useMutateApiWithBody<DeleteSkinProfile>(
+    "/skin-profile",
     {
       method: "DELETE",
     },
@@ -136,10 +136,8 @@ function useProductMutations(): [
     }
   );
 
-  const mutateProductsPost = useMutateApiWithBody<
-    ApiTypes["skinProfile"]["post"]
-  >(
-    routes.skinProfile,
+  const mutateProductsPost = useMutateApiWithBody<PostSkinProfile>(
+    "/skin-profile",
     {
       method: "POST",
     },

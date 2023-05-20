@@ -1,112 +1,84 @@
-import {
-  Ingredient,
-  Product,
-  SkinProfile,
-  SkinType,
-  User,
-  UserWithSkinProfile,
-} from "./api-types";
-
-export type ApiType = {
-  response: any;
-  params?: object;
-};
-
-type ApiTypeOf<R = any, P = object> = {
-  response: R;
-  params: { take?: number; skip?: number } & P;
-};
+import { Product, SkinProfile, SkinType, User } from "./api-types";
 
 type QueryOptions = {
   take?: number;
   skip?: number;
 };
 
-type AuthApiTypes = {
-  authLogout: ApiTypeOf;
-  authVerify: ApiTypeOf;
-  authGoogle: ApiTypeOf;
-  authGoogleCallback: ApiTypeOf;
+export type ApiType = {
+  route: string;
+  response: any;
+  params?: object;
+  body?: object;
 };
 
-type UserApiTypes = {
-  user: {
-    get: ApiTypeOf<UserWithSkinProfile>;
-    put: ApiTypeOf<
-      User,
-      {
-        email: string;
-        name: string;
-      }
-    >;
-  };
+type BuildRoute<
+  Route extends ApiType["route"],
+  Response extends ApiType["response"] = undefined,
+  Params extends ApiType["params"] = {},
+  Body extends ApiType["body"] = {}
+> = {
+  route: Route;
+  response: Response;
+  params: Params;
+  body: Body;
 };
 
-type SkinProfileApiTypes = {
-  skinProfile: {
-    get: ApiTypeOf<SkinProfile>;
-    put: ApiTypeOf<
-      SkinProfile,
-      {
-        skinType?: SkinType;
-        productIds?: string[];
-        ingredientIds?: string[];
-      }
-    >;
-    post: ApiTypeOf<
-      SkinProfile,
-      {
-        skinType?: SkinType;
-        productIds?: string[];
-        ingredientIds?: string[];
-      }
-    >;
-    delete: ApiTypeOf<
-      SkinProfile,
-      {
-        productIds?: string[];
-        ingredientIds?: string[];
-      }
-    >;
-  };
-};
+export type AuthLogout = BuildRoute<"/auth/logout">;
+export type AuthVerify = BuildRoute<"/auth/verify">;
+export type AuthGoogle = BuildRoute<"/auth/google">;
+export type AuthGoogleCallback = BuildRoute<"/auth/google/callback">;
 
-type ProductApiTypes = {
-  getProducts: ApiTypeOf<
-    Product[],
-    { name?: string; filterIrritants?: boolean } & QueryOptions
-  >;
-  productId: {
-    get: ApiTypeOf<Product>;
-  };
-};
+export type GetUser = BuildRoute<"/user", User>;
+export type DeleteUser = BuildRoute<"/user", User>;
+export type PutUser = BuildRoute<
+  "/user",
+  User,
+  {},
+  {
+    name?: string;
+    email?: string;
+  }
+>;
 
-type ManagementApiTypes = {
-  productIssues: ApiTypeOf<Product[]>;
-  ingredientIssues: ApiTypeOf<Ingredient[]>;
-};
+export type GetSkinProfile = BuildRoute<"/skin-profile", SkinProfile>;
+export type PutSkinProfile = BuildRoute<
+  "/skin-profile",
+  SkinProfile,
+  {},
+  {
+    skinType?: SkinType;
+    productIds?: string[];
+    ingredientIds?: string[];
+  }
+>;
+export type PostSkinProfile = BuildRoute<
+  "/skin-profile",
+  SkinProfile,
+  {},
+  {
+    skinType?: SkinType;
+    productIds?: string[];
+    ingredientIds?: string[];
+  }
+>;
+export type DeleteSkinProfile = BuildRoute<
+  "/skin-profile",
+  SkinProfile,
+  {},
+  {
+    skinType?: SkinType;
+    productIds?: string[];
+    ingredientIds?: string[];
+  }
+>;
 
-export type ApiTypes = UserApiTypes &
-  SkinProfileApiTypes &
-  ProductApiTypes &
-  ManagementApiTypes &
-  AuthApiTypes;
-
-const routes: { [Property in keyof ApiTypes]: string } = {
-  authLogout: "/auth/logout",
-  authVerify: "/auth/verify",
-  authGoogle: "/auth/google",
-  authGoogleCallback: "/auth/google/callback",
-
-  user: "/user",
-
-  skinProfile: "/skin-profile",
-
-  getProducts: "/products",
-  productId: "/products/:id",
-
-  productIssues: "/manage/issues/products",
-  ingredientIssues: "/manage/issues/ingredients",
-};
-
-export default routes;
+export type GetProducts = BuildRoute<
+  "/products",
+  Product[],
+  {
+    name?: string;
+    filterIrritants?: boolean;
+  } & QueryOptions
+>;
+export type GetProductId = BuildRoute<"/products/:id", Product>;

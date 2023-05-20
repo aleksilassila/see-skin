@@ -2,7 +2,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { fetchApi } from "./(api)/api";
 import { User } from "./(api)/api-types";
-import routes, { ApiTypes } from "./(api)/api-routes";
+import { GetUser } from "./(api)/api-routes";
 
 export type UserContextState = {
   user?: User | false;
@@ -32,7 +32,7 @@ export function useUserContextValue(): UserContextState {
     if (state.initialized) return;
     setState({ ...state, initialized: true });
 
-    fetchApi<ApiTypes["user"]["get"]>(routes.user)
+    fetchApi<GetUser>("/user")
       .then((user) =>
         setState({
           user,

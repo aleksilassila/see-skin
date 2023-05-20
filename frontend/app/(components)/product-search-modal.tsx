@@ -1,6 +1,6 @@
-import { Modal, ModalHeader, ModalState } from "./ui/modal";
-import { useFetchApi, useMutateApiWithParams } from "../(api)/api";
-import routes, { ApiTypes } from "../(api)/api-routes";
+import { Modal, ModalState } from "./ui/modal";
+import { useFetchApi } from "../(api)/api";
+import { GetProducts } from "../(api)/api-routes";
 import Input, { useInputState } from "./ui/input";
 import { useEffect } from "react";
 import { ProductListItem } from "./common/product-list-item";
@@ -26,8 +26,8 @@ export function ProductSearchModal({
   const shouldDisplayProducts = inputState.value.length >= 3;
   const shouldFetchProducts = shouldDisplayProducts && inputState.didStopTyping;
 
-  const findQuery = useFetchApi<ApiTypes["getProducts"]>(
-    routes.getProducts,
+  const findQuery = useFetchApi<GetProducts>(
+    "/products",
     {
       params: {
         name: inputState.value,

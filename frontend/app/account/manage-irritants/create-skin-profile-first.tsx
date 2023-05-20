@@ -1,4 +1,4 @@
-import { AnchorButton, Button } from "../../(components)/ui/button";
+import { AnchorButton } from "../../(components)/ui/button";
 
 export function CreateSkinProfileFirst() {
   return (

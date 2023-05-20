@@ -1,21 +1,19 @@
 "use client";
 import Link from "next/link";
 import { useFetchApi } from "../../(api)/api";
-import routes, { ApiTypes } from "../../(api)/api-routes";
+import { GetSkinProfile } from "../../(api)/api-routes";
 import ListContainer from "../../(components)/common/list-container";
-import IrritantItem from "../../skin-solver/irritant-item";
 import IrritantListItem from "../../(components)/common/irritant-list-item";
 
 export default function Results() {
-  const { data: skinProfile, ...skinProfileQuery } = useFetchApi<
-    ApiTypes["skinProfile"]["get"]
-  >(
-    routes.skinProfile,
-    {},
-    {
-      suspense: false,
-    }
-  );
+  const { data: skinProfile, ...skinProfileQuery } =
+    useFetchApi<GetSkinProfile>(
+      "/skin-profile",
+      {},
+      {
+        suspense: false,
+      }
+    );
 
   const duplicateIrritants = skinProfile?.duplicateIrritants || [];
   const skinTypeIrritants = skinProfile?.skinTypeClassIrritants || [];
