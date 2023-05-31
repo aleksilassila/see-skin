@@ -6,7 +6,11 @@ import AccountButton, { GoogleLoginButton } from "./account-button";
 import { UserContextState, useUser } from "../user";
 import { User } from "../(api)/api-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBars,
+  faBoxesStacked,
+  faShoppingBag,
+} from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames";
 import { XmarkButton } from "../(components)/ui/button";
 import { usePathname } from "next/navigation";
@@ -89,44 +93,24 @@ function MobileBurger(props: { handleClick: () => void }) {
   );
 }
 
-function MobileAccountElements({
-  user,
-  ...props
-}: {
-  user?: User;
-  activeHref: string;
-  handleClick: () => void;
-  handleLogout: () => void;
-}) {
-  if (!user) {
-    return <GoogleLoginButton />;
-  }
-
-  return (
-    <>
-      <h1>
-        Logged in as <b>{user.name}</b>
-      </h1>
-      <Link
-        href={"/account"}
-        className={getLinkStyles(props.activeHref === "/account")}
-        onClick={props.handleClick}
-      >
-        Account Settings
-      </Link>
-      <div className={getLinkStyles()} onClick={props.handleLogout}>
-        Sign out
-      </div>
-    </>
-  );
-}
-
 function MobileLinks(props: {
   open: boolean;
   handleClick: () => void;
   activeHref: string;
   userState: UserContextState;
 }) {
+  const labelStyle = "font-medium text-lg";
+  const linkStyle = classNames(
+    labelStyle,
+    "text-stone-700 active:text-black hover:text-black"
+  );
+
+  const sectionHeadingStyle = classNames(
+    labelStyle,
+    "bg-stone-200 py-1 px-6 flex gap-4 items-center"
+  );
+  const sectionContainerStyle = "flex flex-col px-6 gap-2";
+
   return (
     <div
       className={classNames("md:hidden fixed inset-0 flex flex-col bg-white", {
@@ -140,19 +124,79 @@ function MobileLinks(props: {
           handleClick={props.handleClick}
         />
       </div>
-      <div className="flex-1 flex flex-col items-center justify-center gap-2">
-        <Links
-          handleClick={props.handleClick}
-          activeHref={props.activeHref}
-          user={props.userState.user}
-        />
-        <div className="border-t border-stone-400 w-[30%]" />
-        <MobileAccountElements
-          activeHref={props.activeHref}
-          user={props.userState.user}
-          handleClick={props.handleClick}
-          handleLogout={props.userState.logOut}
-        />
+      <div className="flex-1 flex flex-col gap-2">
+        <Link className={sectionHeadingStyle} href="/products">
+          <FontAwesomeIcon icon={faShoppingBag} />
+          Products
+        </Link>
+        <div className="grid grid-cols-2">
+          <div className={sectionContainerStyle}>
+            <div className={labelStyle}>Category</div>
+            <Link className={linkStyle} href="/products">
+              Moisturizers
+            </Link>
+            <Link className={linkStyle} href="/products">
+              Cleansers
+            </Link>
+            <Link className={linkStyle} href="/products">
+              Sunscreen
+            </Link>
+            <Link className={linkStyle} href="/products">
+              Toners
+            </Link>
+            <Link className={linkStyle} href="/products">
+              Treatments
+            </Link>
+          </div>
+          <div className={sectionContainerStyle}>
+            <div className={labelStyle}>Concern</div>
+            <Link className={linkStyle} href="/products">
+              Acne
+            </Link>
+            <Link className={linkStyle} href="/products">
+              Anti-Aging
+            </Link>
+            <Link className={linkStyle} href="/products">
+              Damage
+            </Link>
+            <Link className={linkStyle} href="/products">
+              UV
+            </Link>
+            <Link className={linkStyle} href="/products">
+              Dullness
+            </Link>
+          </div>
+        </div>
+        <Link href="/account" className={sectionHeadingStyle}>
+          <FontAwesomeIcon icon={faBoxesStacked} />
+          Skin Solver
+        </Link>
+        {props.userState.isSignedIn ? (
+          <div className={sectionContainerStyle}>
+            <Link className={linkStyle} href="/">
+              Edit your products
+            </Link>
+            <Link className={linkStyle} href="/">
+              Results
+            </Link>
+            <Link className={linkStyle} href="/">
+              Ingredient filtering
+            </Link>
+            <Link className={linkStyle} href="/">
+              Skin Profile
+            </Link>
+            <button
+              onClick={props.userState.logOut}
+              className={classNames(linkStyle, "cursor-pointer text-left")}
+            >
+              Sign out
+            </button>
+          </div>
+        ) : (
+          <div className="flex px-6">
+            <GoogleLoginButton />
+          </div>
+        )}
       </div>
     </div>
   );
