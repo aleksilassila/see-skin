@@ -2,7 +2,7 @@
 import Input from "../../(components)/ui/input";
 import classNames from "classnames";
 import { useState } from "react";
-import { DrawerState } from "../../(components)/ui/drawer";
+import { VisibleState } from "../../(components)/ui/drawer";
 import { Button } from "../../(components)/ui/button";
 
 export type ProductSearchState = ReturnType<typeof useProductSearchState>;
@@ -17,7 +17,7 @@ export function useProductSearchState() {
 }
 
 interface Props {
-  drawerState: DrawerState;
+  drawerState: VisibleState;
 }
 
 export default function ProductSearch({
@@ -28,7 +28,7 @@ export default function ProductSearch({
   return (
     <div className={className}>
       <div className="block sm:hidden">
-        <Button size="sm" onClick={() => state.drawerState.setOpen(true)}>
+        <Button size="sm" onClick={() => state.drawerState.setIsVisible(true)}>
           Filters
         </Button>
       </div>

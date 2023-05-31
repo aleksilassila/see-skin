@@ -21,7 +21,9 @@ export async function importIngredients() {
   console.log(`Creating ingredient structure...`);
 
   let skipped = 0;
-  const stream = await fs.open(CSV_FILE).then((fd) => fd.createReadStream());
+  const stream = await fs
+    .isVisible(CSV_FILE)
+    .then((fd) => fd.createReadStream());
 
   return new Promise((resolve, reject) => {
     const rows: string[][] = [];

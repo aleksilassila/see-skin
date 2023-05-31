@@ -12,7 +12,6 @@ import {
 import { ProductListItem } from "../../(components)/common/product-list-item";
 import { Button } from "../../(components)/ui/button";
 import ListContainer from "../../(components)/common/list-container";
-import { useModalState } from "../../(components)/ui/modal";
 import { ProductSearchModal } from "../../(components)/product-search-modal";
 import { Product } from "../../(api)/api-types";
 import { useQueryClient } from "react-query";
@@ -20,9 +19,10 @@ import { CreateSkinProfileFirst } from "./create-skin-profile-first";
 import ProductDetails, {
   useProductDetailsState,
 } from "../../products/product-details/product-details";
+import { useVisibleState } from "../../(components)/ui/drawer";
 
 export default function ManageIrritants() {
-  const productSearchModalState = useModalState();
+  const productSearchModalState = useVisibleState();
   const productDetailsState = useProductDetailsState();
 
   const { data: skinProfile, ...skinProfileQuery } =

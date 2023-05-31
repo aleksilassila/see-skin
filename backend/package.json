@@ -15,6 +15,7 @@
     "db:format": "docker exec see-skin-dev-backend npx prisma format",
     "db:studio": "docker exec see-skin-dev-backend npx prisma studio",
     "db:dump": "docker exec -t see-skin-dev-db sh -c 'PGPASSWORD=post pg_dump -U post --insert --data-only post' > ./prisma/seed-dump.sql",
+    "db:reset": "docker exec see-skin-dev-backend npx prisma migrate reset --force",
     "backend:sh": "docker exec -it see-skin-dev-backend bash",
     "backend:test": "docker compose exec backend sh -c 'export NODE_ENV=test && npx jest'",
     "backend:test:reset": "docker compose exec backend sh -c 'npx prisma migrate reset --force && export NODE_ENV=test && npx jest'"

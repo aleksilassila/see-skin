@@ -1,29 +1,35 @@
 import { HTMLAttributes, PropsWithChildren, useState } from "react";
 import classNames from "classnames";
 
-export type DrawerState = ReturnType<typeof useDrawerState>;
+export type VisibleState = ReturnType<typeof useVisibleState>;
 
-export function useDrawerState() {
-  const [open, setOpen] = useState(false);
+export function useVisibleState(initialState: boolean = false) {
+  const [isVisible, setIsVisible] = useState(initialState);
 
-  return { open, setOpen, close: () => setOpen(false) };
+  return {
+    isVisible,
+    setIsVisible,
+    close: () => setIsVisible(false),
+    open: () => setIsVisible(true),
+    toggle: () => setIsVisible(!isVisible),
+  };
 }
 
 interface Props {}
 
 export default function Drawer({
   children,
-  open,
+  isVisible,
   close,
   bgStyle = "",
   ...props
-}: DrawerState &
+}: VisibleState &
   PropsWithChildren<
     {
       bgStyle?: HTMLAttributes<any>["className"];
     } & HTMLAttributes<HTMLDivElement>
   >) {
-  if (!open) {
+  if (!isVisible) {
     return null;
   }
 

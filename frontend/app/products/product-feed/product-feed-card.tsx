@@ -61,9 +61,9 @@ function InfoButton({ onClick }: { onClick: () => void }) {
       onClick={onClick}
       intent="secondary"
       size="sm"
-      className="w-full text-zinc-800"
+      className="w-full text-zinc-800 uppercase"
     >
-      SHOW DETAILS
+      Show details
     </Button>
   );
 }

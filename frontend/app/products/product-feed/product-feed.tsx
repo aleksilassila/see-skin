@@ -1,6 +1,5 @@
 "use client";
 import { useInfiniteQuery } from "react-query";
-import fetchProductsFeed from "../../(api)/products/fetch-products-feed";
 import ProductFeedCard from "./product-feed-card";
 import { ProductFiltersState } from "../product-filters/product-filters";
 import { ProductSearchState } from "../product-search/product-search";
@@ -9,7 +8,8 @@ import ProductFeedLoader, { useProductFeedLoader } from "./product-feed-loader";
 import { Product } from "../../(api)/api-types";
 import { useEffect, useState } from "react";
 import { ProductDetailsState } from "../product-details/product-details";
-import { useUser } from "../../user";
+import { fetchApi } from "../../(api)/api";
+import { GetProducts } from "../../(api)/api-routes";
 
 interface Props {
   filterState: ProductFiltersState;
@@ -22,22 +22,27 @@ export default function ProductFeed({
   searchState,
   productDetailsState,
 }: Props) {
-  const user = useUser();
   const infiniteQueryServerFix = useDirtyInfiniteQueryServerFix(); // FIXME remove this when react-query is fixed
   const { data, fetchNextPage, isFetching } = useInfiniteQuery<Product[]>(
     [
       "products",
       {
         searchString: searchState.searchStr,
-        filters: { toggles: filterState.toggles.state },
+        ...filterState.irritantFilterToggle.state,
+        ...filterState.effectSwitch.state,
+        ...filterState.categorySwitch.state,
       },
     ],
     async ({ pageParam = 0, queryKey }) =>
-      fetchProductsFeed(
-        pageParam,
-        searchState.getSearchStr(),
-        filterState.toggles.state["irritantFiltering"]
-      ),
+      fetchApi<GetProducts>("/products", {
+        params: {
+          name: searchState.searchStr,
+          filterIrritants:
+            filterState.irritantFilterToggle.state.irritantFiltering,
+          take: 25,
+          skip: pageParam * 25,
+        },
+      }),
     {
       getNextPageParam: (lastPage, allPages) => {
         return allPages.length;

@@ -1,5 +1,5 @@
 "use client";
-import { HTMLAttributes, useState } from "react";
+import { HTMLAttributes } from "react";
 import Logo from "./logo";
 import Link from "next/link";
 import AccountButton, { GoogleLoginButton } from "./account-button";
@@ -14,6 +14,7 @@ import {
 import classNames from "classnames";
 import { XmarkButton } from "../(components)/ui/button";
 import { usePathname } from "next/navigation";
+import { useVisibleState } from "../(components)/ui/drawer";
 
 const links = [
   { href: "/products", text: "Products" },
@@ -35,7 +36,7 @@ export default function Navigation({
   opaque = false,
   dark = false,
 }: Props & HTMLAttributes<HTMLDivElement>) {
-  const [open, setOpen] = useState(false);
+  const visibleState = useVisibleState();
   const userState = useUser();
   const pathname = usePathname();
 
@@ -47,14 +48,14 @@ export default function Navigation({
         <Logo className="text-black" />
       </Link>
       <DesktopLinks
-        handleClick={() => setOpen(false)}
+        handleClick={visibleState.close}
         activeHref={activeHref}
         userState={userState}
       />
-      <MobileBurger handleClick={() => setOpen(!open)} />
+      <MobileBurger handleClick={visibleState.toggle} />
       <MobileLinks
-        open={open}
-        handleClick={() => setOpen(false)}
+        isVisible={visibleState.isVisible}
+        handleClose={visibleState.close}
         activeHref={activeHref}
         userState={userState}
       />
@@ -94,8 +95,8 @@ function MobileBurger(props: { handleClick: () => void }) {
 }
 
 function MobileLinks(props: {
-  open: boolean;
-  handleClick: () => void;
+  isVisible: boolean;
+  handleClose: () => void;
   activeHref: string;
   userState: UserContextState;
 }) {
@@ -114,14 +115,14 @@ function MobileLinks(props: {
   return (
     <div
       className={classNames("md:hidden fixed inset-0 flex flex-col bg-white", {
-        hidden: !props.open,
+        hidden: !props.isVisible,
       })}
     >
       <div className="flex justify-between items-center h-20 px-8">
         <Logo className="text-black" />
         <XmarkButton
           className="justify-self-end"
-          handleClick={props.handleClick}
+          handleClick={props.handleClose}
         />
       </div>
       <div className="flex-1 flex flex-col gap-2">

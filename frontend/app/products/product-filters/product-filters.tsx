@@ -1,148 +1,202 @@
-import { Fragment, PropsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 import classNames from "classnames";
-import Drawer, { DrawerState } from "../../(components)/ui/drawer";
-import { useToggle } from "../../(hooks)/use-toggle";
+import { useSwitch, useToggle } from "../../(hooks)/use-toggle";
 
 export type ProductFiltersState = ReturnType<typeof useProductFiltersState>;
 
 export function useProductFiltersState() {
-  const toggles = useToggle(
+  const irritantFilterToggle = useToggle(
     {
       irritantFiltering: true,
-
-      // Effect
-      uvProtecting: true,
-      antiAging: true,
-      brightening: true,
-      acneFighting: true,
-      healing: true,
-
-      // Category
-      moisturizers: true,
-      cleansers: true,
-      sunscreens: true,
-      treatments: true,
     },
-    "product-filter-toggles"
+    "irritant-filter-toggle"
+  );
+
+  const categorySwitch = useSwitch(
+    {
+      moisturizers: false,
+      cleansers: false,
+      sunscreens: false,
+      treatments: false,
+      toners: false,
+    },
+    "product-category-switch"
+  );
+
+  const effectSwitch = useSwitch(
+    {
+      uvProtecting: false,
+      antiAging: false,
+      brightening: false,
+      acneFighting: false,
+      healing: false,
+    },
+    "product-effect-switch"
   );
 
   return {
-    toggles,
+    irritantFilterToggle,
+    categorySwitch,
+    effectSwitch,
   };
 }
 
 interface Props {
-  drawerState: DrawerState;
+  isVisible: boolean;
 }
 
 export default function ProductFilters({
-  toggles,
-  ...state
+  irritantFilterToggle,
+  categorySwitch,
+  effectSwitch,
+  ...props
 }: ReturnType<typeof useProductFiltersState> & Props) {
-  const filterSection = classNames("px-4 py-2 flex flex-col gap-2");
-  const sectionTitle = classNames("text-zinc-700 font-medium text-center");
-  const sectionBody = classNames("grid grid-cols-2 gap-2");
+  const sectionStyle = classNames("flex flex-col gap-2");
+  const sectionTitle = classNames(
+    "text-zinc-700 font-medium text-center text-lg"
+  );
+  const togglesContainerStyle = classNames("grid grid-cols-2 gap-2");
 
   return (
-    <FiltersContainer {...state.drawerState}>
-      <div className="flex flex-col">
-        {/*<h2 className="font-medium text-lg mb-2 text-center">Filter results</h2>*/}
-        <div className="flex flex-col divide-y">
-          <div className={filterSection}>
-            <div className={sectionTitle}>Your Skin Type</div>
-            <div className={sectionBody}>
-              <Toggle toggles={toggles} toggleKey="irritantFiltering">
-                Filter Irritants
-              </Toggle>
-            </div>
-          </div>
-          <div className={filterSection}>
-            <div className={sectionTitle}>Category</div>
-            <div className={sectionBody}>
-              <Toggle toggles={toggles} toggleKey={"moisturizers"}>
-                Moisturizers
-              </Toggle>
-              <Toggle toggles={toggles} toggleKey={"cleansers"}>
-                Cleansers
-              </Toggle>
-              <Toggle toggles={toggles} toggleKey={"sunscreens"}>
-                Sunscreens
-              </Toggle>
-              <Toggle toggles={toggles} toggleKey={"treatments"}>
-                Treatments
-              </Toggle>
-            </div>
-          </div>
-          <div className={filterSection}>
-            <div className={sectionTitle}>Brand</div>
-            <div className={sectionBody}></div>
-          </div>
-          <div className={filterSection}>
-            <div className={sectionTitle}>Effect</div>
-            <div className={sectionBody}>
-              <Toggle toggles={toggles} toggleKey="uvProtecting">
-                UV-Protecting
-              </Toggle>
-              <Toggle toggles={toggles} toggleKey="antiAging">
-                Anti-Aging
-              </Toggle>
-              <Toggle toggles={toggles} toggleKey="brightening">
-                Brightening
-              </Toggle>
-              <Toggle toggles={toggles} toggleKey="acneFighting">
-                Acne Fighting
-              </Toggle>
-              <Toggle toggles={toggles} toggleKey="healing">
-                Healing
-              </Toggle>
-            </div>
-          </div>
+    <div className="bg-stone-50 border border-stone-300 rounded-xl max-w-sm flex flex-col p-8 items-center gap-8 sticky top-[8.5rem] self-start">
+      <div className={sectionStyle}>
+        <div className={sectionTitle}>Use your Skin Solver Data</div>
+        <div className="flex gap-2 items-center justify-center">
+          <BigToggle
+            enabled={irritantFilterToggle.state.irritantFiltering}
+            handleClick={() =>
+              irritantFilterToggle.toggle("irritantFiltering")(true)
+            }
+          >
+            On
+          </BigToggle>
+          <BigToggle
+            enabled={!irritantFilterToggle.state.irritantFiltering}
+            handleClick={() =>
+              irritantFilterToggle.toggle("irritantFiltering")(false)
+            }
+          >
+            Off
+          </BigToggle>
+        </div>
+        <div className="text-stone-400 text-sm tracking-wide">
+          {irritantFilterToggle.state.irritantFiltering
+            ? "Your bad ingredients are now removed"
+            : null}
         </div>
       </div>
-    </FiltersContainer>
+      <div className={sectionStyle}>
+        <div className={sectionTitle}>Category</div>
+        <div className={togglesContainerStyle}>
+          <Toggle
+            enabled={categorySwitch.state.moisturizers}
+            handleClick={categorySwitch.toggle("moisturizers")}
+          >
+            Moisturizers
+          </Toggle>
+          <Toggle
+            enabled={categorySwitch.state.cleansers}
+            handleClick={categorySwitch.toggle("cleansers")}
+          >
+            Cleansers
+          </Toggle>
+          <Toggle
+            enabled={categorySwitch.state.sunscreens}
+            handleClick={categorySwitch.toggle("sunscreens")}
+          >
+            Sunscreens
+          </Toggle>
+          <Toggle
+            enabled={categorySwitch.state.treatments}
+            handleClick={categorySwitch.toggle("treatments")}
+          >
+            Treatments
+          </Toggle>
+          <Toggle
+            enabled={categorySwitch.state.toners}
+            handleClick={categorySwitch.toggle("toners")}
+          >
+            Toners
+          </Toggle>
+        </div>
+      </div>
+      {/*<div className={sectionStyle}>*/}
+      {/*  <div className={sectionTitle}>Brand</div>*/}
+      {/*  <div className={togglesContainerStyle}></div>*/}
+      {/*</div>*/}
+      <div className={sectionStyle}>
+        <div className={sectionTitle}>Desired effect</div>
+        <div className={togglesContainerStyle}>
+          <Toggle
+            enabled={effectSwitch.state.uvProtecting}
+            handleClick={effectSwitch.toggle("uvProtecting")}
+          >
+            UV-Protecting
+          </Toggle>
+          <Toggle
+            enabled={effectSwitch.state.antiAging}
+            handleClick={effectSwitch.toggle("antiAging")}
+          >
+            Anti-Aging
+          </Toggle>
+          <Toggle
+            enabled={effectSwitch.state.brightening}
+            handleClick={effectSwitch.toggle("brightening")}
+          >
+            Brightening
+          </Toggle>
+          <Toggle
+            enabled={effectSwitch.state.acneFighting}
+            handleClick={effectSwitch.toggle("acneFighting")}
+          >
+            Acne Fighting
+          </Toggle>
+          <Toggle
+            enabled={effectSwitch.state.healing}
+            handleClick={effectSwitch.toggle("healing")}
+          >
+            Healing
+          </Toggle>
+        </div>
+      </div>
+    </div>
   );
 }
 
-function FiltersContainer({
-  children,
-  ...state
-}: PropsWithChildren<DrawerState>) {
-  return (
-    <Fragment>
-      <div className="hidden sm:block border-r p-2 bg-zinc-100">{children}</div>
-      <Drawer
-        bgStyle="block sm:hidden"
-        {...state}
-        className="block sm:hidden bg-white top-0 bottom-0 left-0"
-      >
-        {children}
-      </Drawer>
-    </Fragment>
-  );
-}
+type ToggleProps = PropsWithChildren<{
+  enabled: boolean;
+  handleClick: () => void;
+}>;
 
-function Toggle<T extends { [key: string]: boolean }>(
-  props: PropsWithChildren<{
-    toggles: ReturnType<typeof useToggle<T>>;
-    toggleKey: keyof T;
-  }>
-) {
-  const enabled = props.toggles.state[props.toggleKey];
-
+function BigToggle(props: ToggleProps) {
   const className = classNames(
-    "border rounded-xl text-sm font-medium",
-    "px-3 py-1 cursor-pointer",
-    enabled ? "text-black" : "text-zinc-700",
+    "border rounded-xl font-medium select-none",
+    "px-8 py-1.5 cursor-pointer text-center",
     {
-      "bg-blue-500": enabled,
+      "text-white bg-blue-500 border-transparent": props.enabled,
+      "text-black bg-white border border-stone-300": !props.enabled,
     }
   );
 
   return (
-    <div
-      className={className}
-      onClick={() => props.toggles.toggle(props.toggleKey)}
-    >
+    <div className={className} onClick={props.handleClick}>
+      {props.children}
+    </div>
+  );
+}
+
+function Toggle(props: ToggleProps) {
+  const className = classNames(
+    "border rounded-xl text-sm font-medium select-none",
+    "px-4 py-1.5 cursor-pointer text-center",
+    {
+      "text-white bg-blue-500 border-transparent": props.enabled,
+      "text-black bg-white border border-stone-300": !props.enabled,
+    }
+  );
+
+  return (
+    <div className={className} onClick={props.handleClick}>
       {props.children}
     </div>
   );
