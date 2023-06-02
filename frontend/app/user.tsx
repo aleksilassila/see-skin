@@ -1,9 +1,18 @@
 "use client";
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  Fragment,
+  FunctionComponent,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { fetchApi } from "./(api)/api";
 import { User } from "./(api)/api-types";
 import { GetUser } from "./(api)/api-routes";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useLocalStorage } from "./utils/localstorage";
 
 export type UserContextState = {
   user?: User;
@@ -57,5 +66,19 @@ export function useUserContextValue(): UserContextState {
       reset();
       router.push("/api/auth/logout");
     },
+  };
+}
+
+export function WithLogin(Component: FunctionComponent) {
+  return function LoginComponent() {
+    const signIn =
+      typeof window !== undefined
+        ? window?.location?.href?.includes("signIn=true")
+        : false;
+    const userContext = useUser();
+
+    if (signIn && !userContext.isSignedIn) userContext.reset();
+
+    return <Component />;
   };
 }

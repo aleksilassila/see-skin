@@ -47,7 +47,7 @@ export default function ProductDetails({
         leaveTo="opacity-0"
       >
         <div
-          className="bg-[#00000022] absolute inset-0"
+          className="bg-[#00000022] absolute inset-0 z-[9]"
           onClick={state.close}
         />
       </Transition.Child>

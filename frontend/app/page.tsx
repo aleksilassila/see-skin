@@ -6,6 +6,7 @@ import { Button } from "./(components)/ui/button";
 import IngredientGraphPicture from "../public/images/ingredient-graph.png";
 import iPhoneDemoPicture from "../public/images/iphone-11-demo.png";
 import { WithNavigation } from "./(navigation)/with-navigation";
+import { WithLogin } from "./user";
 
 function Page() {
   return (

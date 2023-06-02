@@ -22,7 +22,7 @@ export default function ProductFeed({
   searchState,
   productDetailsState,
 }: Props) {
-  const infiniteQueryServerFix = useDirtyInfiniteQueryServerFix(); // FIXME remove this when react-query is fixed
+  const isQueryEnabled = useDirtyInfiniteQueryServerFix(); // FIXME remove this when react-query is fixed
   const { data, fetchNextPage, isFetching } = useInfiniteQuery<Product[]>(
     [
       "products",
@@ -47,7 +47,7 @@ export default function ProductFeed({
       getNextPageParam: (lastPage, allPages) => {
         return allPages.length;
       },
-      enabled: infiniteQueryServerFix,
+      enabled: isQueryEnabled,
     }
   );
 
@@ -55,8 +55,8 @@ export default function ProductFeed({
 
   const gridClassName = classNames(
     "flex flex-wrap justify-center",
-    "max-w-screen-2xl mx-auto",
-    "gap-6 p-6"
+    "max-w-screen-2xl mx-auto p-1",
+    "gap-6"
   );
 
   return (

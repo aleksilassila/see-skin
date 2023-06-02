@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import {
   useMutation,
   UseMutationOptions,
@@ -26,7 +26,9 @@ export const fetchApi = <
     ...options,
     baseURL: "/api",
     url,
-  }).then((res) => res.data);
+  })
+    .then((res) => res.data)
+    .catch((err) => err.response);
 
 export function useFetchApi<T extends ApiType>(
   url: T extends ApiType ? T["route"] : string,

@@ -1,6 +1,8 @@
 import { PropsWithChildren } from "react";
 import classNames from "classnames";
 import { useSwitch, useToggle } from "../../(hooks)/use-toggle";
+import { XmarkButton } from "../../(components)/ui/button";
+import { VisibleState } from "../../(components)/ui/drawer";
 
 export type ProductFiltersState = ReturnType<typeof useProductFiltersState>;
 
@@ -41,16 +43,36 @@ export function useProductFiltersState() {
   };
 }
 
-interface Props {
-  isVisible: boolean;
+interface MobileProps extends ProductFiltersState {
+  visibleState: VisibleState;
 }
 
-export default function ProductFilters({
+export function ProductFilters(props: ProductFiltersState) {
+  return (
+    <div className="hidden md:flex bg-stone-50 border border-stone-300 rounded-xl max-w-sm flex-col p-8 items-center gap-8 sticky top-28 self-start">
+      <ProductFiltersContent {...props} />
+    </div>
+  );
+}
+
+export function ProductFiltersMobile(props: MobileProps) {
+  if (!props.visibleState.isVisible) return null;
+
+  return (
+    <div className="fixed md:hidden bg-white inset-0 z-50 p-4">
+      <div className="flex justify-end mb-4">
+        <XmarkButton handleClick={props.visibleState.close} />
+      </div>
+      <ProductFiltersContent {...props} />
+    </div>
+  );
+}
+
+function ProductFiltersContent({
   irritantFilterToggle,
   categorySwitch,
   effectSwitch,
-  ...props
-}: ReturnType<typeof useProductFiltersState> & Props) {
+}: ProductFiltersState) {
   const sectionStyle = classNames("flex flex-col gap-2");
   const sectionTitle = classNames(
     "text-zinc-700 font-medium text-center text-lg"
@@ -58,7 +80,7 @@ export default function ProductFilters({
   const togglesContainerStyle = classNames("grid grid-cols-2 gap-2");
 
   return (
-    <div className="bg-stone-50 border border-stone-300 rounded-xl max-w-sm flex flex-col p-8 items-center gap-8 sticky top-[8.5rem] self-start">
+    <>
       <div className={sectionStyle}>
         <div className={sectionTitle}>Use your Skin Solver Data</div>
         <div className="flex gap-2 items-center justify-center">
@@ -79,7 +101,7 @@ export default function ProductFilters({
             Off
           </BigToggle>
         </div>
-        <div className="text-stone-400 text-sm tracking-wide">
+        <div className="text-stone-400 text-sm tracking-wide text-center">
           {irritantFilterToggle.state.irritantFiltering
             ? "Your bad ingredients are now removed"
             : null}
@@ -159,7 +181,7 @@ export default function ProductFilters({
           </Toggle>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

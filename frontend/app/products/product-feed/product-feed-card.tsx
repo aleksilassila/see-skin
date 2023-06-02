@@ -15,7 +15,7 @@ export default function ProductFeedCard({
   showProductDetails,
 }: Props) {
   const className = classNames(
-    "w-64 h-96",
+    "w-full sm:w-64 h-96",
     "flex flex-col gap-4 space-between",
     "shadow rounded-md p-2 bg-white"
   );
