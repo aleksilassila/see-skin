@@ -15,61 +15,86 @@ import { WithNavigation } from "../(navigation)/with-navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowDownWideShort,
-  faChevronDown,
+  faArrowTrendUp,
+  faArrowUpWideShort,
   faFilter,
+  faFire,
   faShoppingBag,
-  faSortDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../(components)/ui/button";
+import Dropdown, {
+  DropdownItems,
+  useDropdownState,
+} from "../(components)/ui/dropdown";
+
+const sortOptions = [
+  {
+    value: "popular",
+    display: "Popular",
+    leadingIcon: faFire,
+  },
+  {
+    value: "featured",
+    display: "Featured",
+    leadingIcon: faArrowTrendUp,
+  },
+
+  {
+    value: "price-low-to-high",
+    display: "Price (Low to High)",
+    leadingIcon: faArrowDownWideShort,
+  },
+  {
+    value: "price-high-to-low",
+    display: "Price (High to Low)",
+    leadingIcon: faArrowUpWideShort,
+  },
+] satisfies DropdownItems;
 
 function ProductsPage() {
-  const productFilterState = useProductFiltersState();
+  const filtersState = useProductFiltersState();
   const productSearchState = useProductSearchState();
   const productDetailsState = useProductDetailsState();
+
   const filtersVisibleState = useVisibleState(false);
+  const sortDropdownState = useDropdownState(sortOptions);
 
   return (
     <div className="flex-1 grid grid-cols-[max-content_1fr] px-8 md:px-12 lg:px-16 gap-y-8 gap-x-2 relative">
       <div className="flex-col sm:flex-row col-span-2 border-b gap-2 py-6 mt-4 flex sm:items-center justify-between bg-white sticky top-0 z-[1]">
-        <div className="text-xl sm:text-3xl lg:text-4xl font-medium text-stone-500 flex gap-4">
+        <div className="text-xl md:text-3xl lg:text-4xl font-medium text-stone-500 flex gap-4">
           <FontAwesomeIcon icon={faShoppingBag} />
           Personalized Skin Care
         </div>
-        <div className="hidden sm:flex">
-          <Button
-            leadingIcon={faArrowDownWideShort}
-            trailingIcon={faChevronDown}
-          >
-            Popular
-          </Button>
+        <div className="hidden md:flex">
+          <Dropdown {...sortDropdownState} />
         </div>
-        <div className="sm:hidden flex gap-2">
+        <div className="md:hidden flex gap-2">
           <Button
             leadingIcon={faFilter}
             size={"sm"}
             onClick={filtersVisibleState.open}
+            intent={filtersState.filtersActive ? "primary" : "none"}
           >
-            Filters
+            Filters{" "}
+            {filtersState.filtersActive !== 0
+              ? `(${filtersState.filtersActive})`
+              : ""}
           </Button>
-          <Button
-            leadingIcon={faArrowDownWideShort}
-            trailingIcon={faChevronDown}
-            size="sm"
-          >
-            Popular
-          </Button>
+
+          <Dropdown size="sm" {...sortDropdownState} />
         </div>
       </div>
-      <ProductFilters {...productFilterState} />
+      <ProductFilters {...filtersState} />
       <div className="overflow-y-scroll col-span-2 md:col-span-1">
         <ProductFeed
-          filterState={productFilterState}
+          filterState={filtersState}
           searchState={productSearchState}
           productDetailsState={productDetailsState}
         />
       </div>
       <ProductFiltersMobile
-        {...productFilterState}
+        {...filtersState}
         visibleState={filtersVisibleState}
       />
       <ProductDetails {...productDetailsState} />

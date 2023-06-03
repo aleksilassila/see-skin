@@ -11,16 +11,19 @@ function getStorageValue<T>(key: string, defaultValue: T) {
   }
 }
 
-export function useLocalStorage<T>(
-  defaultValue: T | null = null,
-  key?: string
-) {
-  const [value, setValue] = useState<T>(() =>
-    key ? getStorageValue(key, defaultValue) : defaultValue
-  );
+export function useLocalStorage<T>(defaultValue: T, key?: string) {
+  const [value, setValue] = useState<T>(() => defaultValue);
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    if (key) localStorage.setItem(key, JSON.stringify(value));
+    if (!initialized) setInitialized(true);
+    if (key) {
+      setValue(getStorageValue(key, defaultValue));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (key && initialized) localStorage.setItem(key, JSON.stringify(value));
   }, [value]);
 
   return [value, setValue] as const;

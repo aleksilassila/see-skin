@@ -150,7 +150,7 @@ function IconWrapper({
   const style = classNames(
     {
       sm: "h-3",
-      md: "h-3",
+      md: "h-3.5",
       lg: "h-4",
     }[size]
   );
@@ -168,13 +168,14 @@ function IconWrapper({
 }
 
 export function getButtonSizing(size: ButtonProps<any>["size"] = "md") {
-  return classNames("whitespace-nowrap", {
-    ...{
+  return classNames(
+    "whitespace-nowrap",
+    {
       sm: { "text-sm h-8 px-2 md:px-4": true },
       md: { "h-10 px-3 md:px-4": true },
       lg: { "h-12 px-2 md:px-8": true },
-    }[size],
-  });
+    }[size]
+  );
 }
 
 export function getButtonColoring({
@@ -186,55 +187,58 @@ export function getButtonColoring({
   round?: ButtonProps<any>["round"];
   intent?: ButtonProps<any>["intent"];
 }) {
-  return classNames("font-medium rounded-md text-center drop-shadow-sm", {
-    "cursor-pointer": active,
-    ...{
-      none: {
-        "border bg-white": true,
-        "text-black": active,
-        "text-stone-500": !active,
-        "hover:bg-stone-100": active,
-        "active:bg-stone-200": active,
-        "focus-within:ring": active,
-      },
-      primary: {
-        "text-white drop-shadow": true,
-        "bg-blue-500": active,
-        "bg-blue-400": !active,
-        "hover:bg-blue-400": active,
-        "active:bg-blue-500": active,
-        "focus-within:ring ": active,
-      },
-      secondary: {
-        "border bg-white": true,
-        "text-black": active,
-        "text-stone-500": !active,
-        "hover:bg-stone-100": active,
-        "active:bg-stone-200": active,
-        "focus-within:ring": active,
-      },
-      warning: {
-        "bg-orange-400": true,
-        "hover:bg-orange-200": active,
-        "active:bg-orange-300": active,
-        "focus-within:ring": active,
-      },
-      danger: {
-        "bg-red-500 border": true,
-        "hover:bg-red-600": active,
-        "active:bg-red-700": active,
-        "focus-within:ring": active,
-      },
-      special: {
-        "text-white drop-shadow": true,
-        "bg-indigo-600": active,
-        "bg-indigo-500": !active,
-        "active:bg-indigo-600": active,
-        "hover:bg-indigo-500": active,
-        "focus-within:ring ": active,
-      },
-    }[intent],
-  });
+  return classNames(
+    "font-medium rounded-md text-center drop-shadow-sm select-none",
+    {
+      "cursor-pointer": active,
+      ...{
+        none: {
+          "border bg-white": true,
+          "text-black": active,
+          "text-stone-500": !active,
+          "hover:bg-stone-100": active,
+          "active:bg-stone-200": active,
+          "focus-within:ring": active,
+        },
+        primary: {
+          "text-white drop-shadow": true,
+          "bg-blue-500": active,
+          "bg-blue-400": !active,
+          "hover:bg-blue-400": active,
+          "active:bg-blue-500": active,
+          "focus-within:ring ": active,
+        },
+        secondary: {
+          "border bg-white": true,
+          "text-black": active,
+          "text-stone-500": !active,
+          "hover:bg-stone-100": active,
+          "active:bg-stone-200": active,
+          "focus-within:ring": active,
+        },
+        warning: {
+          "bg-orange-400": true,
+          "hover:bg-orange-200": active,
+          "active:bg-orange-300": active,
+          "focus-within:ring": active,
+        },
+        danger: {
+          "bg-red-500 border": true,
+          "hover:bg-red-600": active,
+          "active:bg-red-700": active,
+          "focus-within:ring": active,
+        },
+        special: {
+          "text-white drop-shadow": true,
+          "bg-indigo-600": active,
+          "bg-indigo-500": !active,
+          "active:bg-indigo-600": active,
+          "hover:bg-indigo-500": active,
+          "focus-within:ring ": active,
+        },
+      }[intent],
+    }
+  );
 }
 
 export function XmarkButton(props: {

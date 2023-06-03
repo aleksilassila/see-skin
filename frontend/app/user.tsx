@@ -1,9 +1,7 @@
 "use client";
 import {
   createContext,
-  Fragment,
   FunctionComponent,
-  PropsWithChildren,
   useContext,
   useEffect,
   useState,
@@ -11,8 +9,7 @@ import {
 import { fetchApi } from "./(api)/api";
 import { User } from "./(api)/api-types";
 import { GetUser } from "./(api)/api-routes";
-import { usePathname, useRouter } from "next/navigation";
-import { useLocalStorage } from "./utils/localstorage";
+import { useRouter } from "next/navigation";
 
 export type UserContextState = {
   user?: User;

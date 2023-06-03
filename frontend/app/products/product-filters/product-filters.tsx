@@ -36,10 +36,17 @@ export function useProductFiltersState() {
     "product-effect-switch"
   );
 
+  const filtersActive: number = Object.values({
+    ...categorySwitch.state,
+    ...effectSwitch.state,
+    ...irritantFilterToggle.state,
+  }).filter((value) => value).length;
+
   return {
     irritantFilterToggle,
     categorySwitch,
     effectSwitch,
+    filtersActive,
   };
 }
 
@@ -59,8 +66,8 @@ export function ProductFiltersMobile(props: MobileProps) {
   if (!props.visibleState.isVisible) return null;
 
   return (
-    <div className="fixed md:hidden bg-white inset-0 z-50 p-4">
-      <div className="flex justify-end mb-4">
+    <div className="fixed md:hidden bg-white inset-0 z-50 p-4 gap-4 flex flex-col">
+      <div className="flex justify-end">
         <XmarkButton handleClick={props.visibleState.close} />
       </div>
       <ProductFiltersContent {...props} />
