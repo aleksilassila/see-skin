@@ -1,4 +1,11 @@
-import { Product, SkinProfile, SkinType, User } from "./api-types";
+import {
+  Product,
+  ProductCategory,
+  ProductEffect,
+  SkinProfile,
+  SkinType,
+  User,
+} from "./api-types";
 
 type QueryOptions = {
   take?: number;
@@ -79,6 +86,8 @@ export type GetProducts = BuildRoute<
   {
     name?: string;
     filterIrritants?: boolean;
+    category?: ProductCategory;
+    effect?: ProductEffect;
   } & QueryOptions
 >;
 export type GetProductId = BuildRoute<"/products/:id", Product>;

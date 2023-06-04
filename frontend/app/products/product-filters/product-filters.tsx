@@ -3,6 +3,7 @@ import classNames from "classnames";
 import { useSwitch, useToggle } from "../../(hooks)/use-toggle";
 import { XmarkButton } from "../../(components)/ui/button";
 import { VisibleState } from "../../(components)/ui/drawer";
+import { ProductCategory, ProductEffect } from "../../(api)/api-types";
 
 export type ProductFiltersState = ReturnType<typeof useProductFiltersState>;
 
@@ -14,24 +15,33 @@ export function useProductFiltersState() {
     "irritant-filter-toggle"
   );
 
-  const categorySwitch = useSwitch(
+  const categorySwitch = useSwitch<ProductCategory>(
     {
-      moisturizers: false,
-      cleansers: false,
-      sunscreens: false,
-      treatments: false,
-      toners: false,
+      MOISTURIZERS: false,
+      SUNSCREENS: false,
+      TREATMENTS: false,
+      CLEANSERS: false,
+      EYE_CREAMS: false,
+      FACE_WASHES: false,
+      EXFOLIATORS: false,
+      TONERS: false,
+      FACE_MISTS: false,
+      FACE_OILS: false,
+      SERUMS: false,
+      FACE_MASKS: false,
+      MAKEUP_REMOVERS: false,
+      LIP_CARES: false,
     },
     "product-category-switch"
   );
 
-  const effectSwitch = useSwitch(
+  const effectSwitch = useSwitch<ProductEffect>(
     {
-      uvProtecting: false,
-      antiAging: false,
-      brightening: false,
-      acneFighting: false,
-      healing: false,
+      UV_PROTECTING: false,
+      ANTI_AGING: false,
+      BRIGHTENING: false,
+      ACNE_FIGHTING: false,
+      HEALING: false,
     },
     "product-effect-switch"
   );
@@ -118,32 +128,32 @@ function ProductFiltersContent({
         <div className={sectionTitle}>Category</div>
         <div className={togglesContainerStyle}>
           <Toggle
-            enabled={categorySwitch.state.moisturizers}
-            handleClick={categorySwitch.toggle("moisturizers")}
+            enabled={categorySwitch.state.MOISTURIZERS}
+            handleClick={categorySwitch.toggle(ProductCategory.MOISTURIZERS)}
           >
             Moisturizers
           </Toggle>
           <Toggle
-            enabled={categorySwitch.state.cleansers}
-            handleClick={categorySwitch.toggle("cleansers")}
+            enabled={categorySwitch.state.CLEANSERS}
+            handleClick={categorySwitch.toggle(ProductCategory.CLEANSERS)}
           >
             Cleansers
           </Toggle>
           <Toggle
-            enabled={categorySwitch.state.sunscreens}
-            handleClick={categorySwitch.toggle("sunscreens")}
+            enabled={categorySwitch.state.SUNSCREENS}
+            handleClick={categorySwitch.toggle(ProductCategory.SUNSCREENS)}
           >
             Sunscreens
           </Toggle>
           <Toggle
-            enabled={categorySwitch.state.treatments}
-            handleClick={categorySwitch.toggle("treatments")}
+            enabled={categorySwitch.state.TREATMENTS}
+            handleClick={categorySwitch.toggle(ProductCategory.TREATMENTS)}
           >
             Treatments
           </Toggle>
           <Toggle
-            enabled={categorySwitch.state.toners}
-            handleClick={categorySwitch.toggle("toners")}
+            enabled={categorySwitch.state.TONERS}
+            handleClick={categorySwitch.toggle(ProductCategory.TONERS)}
           >
             Toners
           </Toggle>
@@ -157,32 +167,32 @@ function ProductFiltersContent({
         <div className={sectionTitle}>Desired effect</div>
         <div className={togglesContainerStyle}>
           <Toggle
-            enabled={effectSwitch.state.uvProtecting}
-            handleClick={effectSwitch.toggle("uvProtecting")}
+            enabled={effectSwitch.state.UV_PROTECTING}
+            handleClick={effectSwitch.toggle(ProductEffect.UV_PROTECTING)}
           >
             UV-Protecting
           </Toggle>
           <Toggle
-            enabled={effectSwitch.state.antiAging}
-            handleClick={effectSwitch.toggle("antiAging")}
+            enabled={effectSwitch.state.ANTI_AGING}
+            handleClick={effectSwitch.toggle(ProductEffect.ANTI_AGING)}
           >
             Anti-Aging
           </Toggle>
           <Toggle
-            enabled={effectSwitch.state.brightening}
-            handleClick={effectSwitch.toggle("brightening")}
+            enabled={effectSwitch.state.BRIGHTENING}
+            handleClick={effectSwitch.toggle(ProductEffect.BRIGHTENING)}
           >
             Brightening
           </Toggle>
           <Toggle
-            enabled={effectSwitch.state.acneFighting}
-            handleClick={effectSwitch.toggle("acneFighting")}
+            enabled={effectSwitch.state.ACNE_FIGHTING}
+            handleClick={effectSwitch.toggle(ProductEffect.ACNE_FIGHTING)}
           >
             Acne Fighting
           </Toggle>
           <Toggle
-            enabled={effectSwitch.state.healing}
-            handleClick={effectSwitch.toggle("healing")}
+            enabled={effectSwitch.state.HEALING}
+            handleClick={effectSwitch.toggle(ProductEffect.HEALING)}
           >
             Healing
           </Toggle>

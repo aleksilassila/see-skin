@@ -60,8 +60,8 @@ function ProductsPage() {
   const sortDropdownState = useDropdownState(sortOptions);
 
   return (
-    <div className="flex-1 grid grid-cols-[max-content_1fr] px-8 md:px-12 lg:px-16 gap-y-8 gap-x-2 relative">
-      <div className="flex-col sm:flex-row col-span-2 border-b gap-2 py-6 mt-4 flex sm:items-center justify-between bg-white sticky top-0 z-[1]">
+    <div className="flex-1 grid grid-cols-[max-content_1fr] grid-rows-[min-content_1fr] px-8 md:px-12 lg:px-16 gap-y-8 gap-x-2 relative py-4">
+      <div className="flex-col sm:flex-row col-span-2 border-b gap-2 py-6 flex sm:items-center justify-between bg-white sticky top-0 z-[1]">
         <div className="text-xl md:text-3xl lg:text-4xl font-medium text-stone-500 flex gap-4">
           <FontAwesomeIcon icon={faShoppingBag} />
           Personalized Skin Care

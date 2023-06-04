@@ -1,7 +1,7 @@
 import { PrismaService } from "./prisma.service";
 import { Injectable } from "@nestjs/common";
 import { QueryOptions } from "./query-options.decorator";
-import { User } from "@prisma/client";
+import { ProductCategory, ProductEffect, User } from "@prisma/client";
 import { UsersService } from "./users.service";
 
 @Injectable()
@@ -37,8 +37,10 @@ export class ProductsService {
   }
 
   async getProducts(
-    name: string | undefined,
     user: User | undefined,
+    name: string | undefined,
+    category: string | undefined,
+    effect: string | undefined,
     filterIrritants: boolean | undefined,
     queryOptions: QueryOptions,
   ) {
@@ -52,12 +54,28 @@ export class ProductsService {
       );
     }
 
+    const categoryEnum = Object.values(ProductCategory).find(
+      (k) => ProductCategory[k] === category,
+    );
+
+    const effectEnum = Object.values(ProductEffect).find(
+      (k) => ProductEffect[k] === effect,
+    );
+
+    console.log(category, categoryEnum, effect, effectEnum);
+
     return this.prisma.product.findMany({
       where: {
         name: {
           contains: name,
           mode: "insensitive",
         },
+        category: categoryEnum,
+        ...(effectEnum && {
+          effects: {
+            has: effectEnum,
+          },
+        }),
         ...(filterIrritants === true && {
           ingredients: {
             every: {

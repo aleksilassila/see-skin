@@ -13,11 +13,15 @@ export class ProductsController {
     @GetOptionalUser() user: User | undefined,
     @Query("name") name: string | undefined,
     @Query("filterIrritants") filterIrritants: boolean,
+    @Query("category") category: string | undefined,
+    @Query("effect") effect: string | undefined,
     @QueryOptions() queryOptions: QueryOptions,
   ) {
     return this.productsService.getProducts(
-      name,
       user,
+      name,
+      category,
+      effect,
       filterIrritants,
       queryOptions,
     );
