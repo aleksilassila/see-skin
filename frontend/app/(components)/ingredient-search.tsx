@@ -7,19 +7,20 @@ import {
 import Input from "./ui/input";
 import { Ingredient } from "../(api)/api-types";
 import { fetchApi } from "../(api)/api";
+import { GetProducts } from "../(api)/api-routes";
 
 export function useIngredientSearchState() {
-  return useRemoteSelectState<Ingredient>((searchTerm, selected) =>
-    fetchApi<Ingredient[]>("/ingredients/find", {
-      params: {
-        name: searchTerm,
-      },
-    }).then((data) =>
-      data.filter(
-        (ingredient) => !selected.flatMap((s) => s.id).includes(ingredient.id)
-      )
-    )
-  );
+  return useRemoteSelectState<Ingredient>(
+    (searchTerm, selected) => undefined as any
+  ); //fetchApi<GetProducts>("/ingredients/find", {
+  //   params: {
+  //     name: searchTerm,
+  //   },
+  // }).then((data) =>
+  //   data.filter(
+  //     (ingredient) => !selected.flatMap((s) => s.id).includes(ingredient.id)
+  //   )
+  // )
 }
 
 export default function IngredientSearch(state: RemoteSelectState<Ingredient>) {

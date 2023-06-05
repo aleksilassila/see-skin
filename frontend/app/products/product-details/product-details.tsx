@@ -21,13 +21,8 @@ export function useProductDetailsState() {
   };
 }
 
-interface Props {}
-
-export default function ProductDetails({
-  children,
-  product,
-  ...state
-}: ProductDetailsState & PropsWithChildren<Props>) {
+export default function ProductDetails(state: ProductDetailsState) {
+  const { product } = state;
   const containerStyle = classNames(
     "w-full max-w-md",
     "absolute right-0 top-0 bottom-0 z-10",

@@ -228,5 +228,5 @@ function Links(props: {
 
 const getLinkStyles = (isActive: boolean = false) =>
   classNames("px-3 py-1 font-medium", {
-    "bg-blue-50 rounded": isActive,
+    "text-indigo-900": isActive,
   });

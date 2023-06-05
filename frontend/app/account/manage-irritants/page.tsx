@@ -11,7 +11,9 @@ import {
 } from "../../(api)/api-routes";
 import { ProductListItem } from "../../(components)/common/product-list-item";
 import { Button } from "../../(components)/ui/button";
-import ListContainer from "../../(components)/common/list-container";
+import ListContainer, {
+  RemovableProductList,
+} from "../../(components)/common/list-container";
 import { ProductSearchModal } from "../../(components)/product-search-modal";
 import { Product } from "../../(api)/api-types";
 import { useQueryClient } from "react-query";
@@ -83,30 +85,13 @@ export default function ManageIrritants() {
         </div>
       </div>
       <div className="flex flex-col gap-4">
-        <ListContainer
-          heading="Products"
-          empty="Your irritative products will appear here."
-          isLoading={skinProfileQuery.isLoading}
-        >
-          {explicitlyAddedProducts.length &&
-            explicitlyAddedProducts.map((product, key) => (
-              <ProductListItem
-                handleClick={() => productDetailsState.show(product)}
-                product={product}
-                key={key}
-                actionElement={
-                  <Button
-                    intent="secondary"
-                    size="sm"
-                    onClick={() => removeProduct(product)}
-                    loading={buttonsLoading}
-                  >
-                    Remove
-                  </Button>
-                }
-              />
-            ))}
-        </ListContainer>
+        <RemovableProductList
+          products={explicitlyAddedProducts}
+          handleRemove={removeProduct}
+          handleClick={productDetailsState.show}
+          buttonsLoading={buttonsLoading}
+          loading={skinProfileQuery.isLoading}
+        />
         <ListContainer
           heading="Products From Ingredinets"
           empty="Your custom products will appear here."

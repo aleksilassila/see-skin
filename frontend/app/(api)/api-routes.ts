@@ -19,12 +19,7 @@ export type ApiType = {
   body?: object;
 };
 
-type BuildRoute<
-  Route extends ApiType["route"],
-  Response extends ApiType["response"] = undefined,
-  Params extends ApiType["params"] = {},
-  Body extends ApiType["body"] = {}
-> = {
+export type BuildRoute<Route, Response = undefined, Params = {}, Body = {}> = {
   route: Route;
   response: Response;
   params: Params;

@@ -1,11 +1,11 @@
 "use client";
 import classNames from "classnames";
 import Image from "next/image";
-import SkinTypeSelect from "./(components)/skin-type-select/skin-type-select";
 import { Button } from "./(components)/ui/button";
 import IngredientGraphPicture from "../public/images/ingredient-graph.png";
 import iPhoneDemoPicture from "../public/images/iphone-11-demo.png";
 import { WithNavigation } from "./(navigation)/with-navigation";
+import SkinTypeSelectStandalone from "./(components)/create-skin-profile-modal/skin-type-select-standalone";
 
 function Page() {
   return (
@@ -48,7 +48,7 @@ function Welcome() {
             "Personalized skincare recommendations and ingredient analysis from products that didn't work for you."
           }
         </p>
-        <SkinTypeSelect />
+        <SkinTypeSelectStandalone />
       </div>
     </div>
   );

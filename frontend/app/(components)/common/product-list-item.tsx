@@ -2,6 +2,7 @@ import { Product } from "../../(api)/api-types";
 import Image from "next/image";
 import { PRODUCT_PLACEHOLDER_URL } from "../../config";
 import { ListItemContainer, ListItemProps } from "./list-container";
+import { Button } from "../ui/button";
 
 interface Props extends ListItemProps {
   product: Product;
@@ -35,5 +36,29 @@ export function ProductListItem({
         <div className="font-light text-stone-600">{product.brand}</div>
       </div>
     </ListItemContainer>
+  );
+}
+
+interface RemovableProps extends Props {
+  handleRemove: () => void;
+  loading?: boolean;
+}
+
+export function RemovableProductListItem(props: RemovableProps) {
+  return (
+    <ProductListItem
+      handleClick={props.handleClick}
+      product={props.product}
+      actionElement={
+        <Button
+          intent="secondary"
+          size="sm"
+          onClick={props.handleRemove}
+          loading={props.loading}
+        >
+          Remove
+        </Button>
+      }
+    />
   );
 }

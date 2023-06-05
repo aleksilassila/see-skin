@@ -7,7 +7,7 @@ import { useVisibleState } from "./drawer";
 export type ModalState = ReturnType<typeof useVisibleState>;
 
 interface Props {
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "fullscreen" | "none";
   top?: number;
 }
 
@@ -16,9 +16,13 @@ export function Modal({
   top,
   ...props
 }: ModalState & PropsWithChildren<Props>) {
-  const panelStyle = classNames("bg-white rounded-xl p-8 py-6 shadow-lg", {
+  const noBackground = size === "none" || size === "fullscreen";
+
+  const panelStyle = classNames({
     "flex-grow w-full h-full": size === "lg",
     "max-w-2xl flex-grow": size === "md",
+    "bg-white rounded-xl shadow-lg p-8 py-6": !noBackground,
+    "flex-1 flex flex-col": noBackground,
   });
 
   return (
@@ -43,10 +47,10 @@ export function Modal({
           leave="ease-in duration-200"
           leaveFrom="opacity-100 scale-100"
           leaveTo="opacity-0 scale-95"
-          className="fixed inset-0 p-8 flex justify-center z-[51]"
+          className="fixed inset-0 p-2 sm:p-4 md:p-8 flex justify-center z-[51]"
           style={{
             marginTop: top ? `${top}vh` : undefined,
-            alignItems: !top ? "center" : "flex-start",
+            alignItems: !top && !noBackground ? "center" : "flex-start",
           }}
         >
           <Dialog.Panel className={panelStyle}>{props.children}</Dialog.Panel>
@@ -56,11 +60,25 @@ export function Modal({
   );
 }
 
-export function ModalHeader(props: PropsWithChildren<ModalState>) {
+interface ModalHeaderProps
+  extends PropsWithChildren<Pick<ModalState, "close">> {
+  background?: boolean;
+}
+
+export function ModalHeader(props: ModalHeaderProps) {
   return (
-    <div className="flex justify-between items-center mb-2">
+    <div className="flex justify-between items-center mb-2 w-full">
       <div className="text-xl font-medium">{props.children}</div>
-      <XmarkButton handleClick={props.close} />
+      <CloseModal {...props} />
     </div>
+  );
+}
+
+function CloseModal({ background = false, ...props }: ModalHeaderProps) {
+  return (
+    <XmarkButton
+      className={background ? "bg-[#ffffffbb] rounded-full p-2" : ""}
+      handleClick={props.close}
+    />
   );
 }

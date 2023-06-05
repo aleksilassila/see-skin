@@ -43,11 +43,11 @@ export default async function fetchIrritantsCalculation(
   products: Product[],
   ingredients: Ingredient[]
 ): Promise<IrritantsCalculationResponse> {
-  return fetchApi<IrritantsCalculationResponse>("/user/create-skin-profile", {
-    params: {
-      productIds: products.map((product) => product.id),
-      ingredientIds: ingredients.map((ingredient) => ingredient.id),
-      skinType,
-    },
-  });
+  return undefined as any; // fetchApi<IrritantsCalculationResponse>("/user/create-skin-profile", {
+  //   params: {
+  //     productIds: products.map((product) => product.id),
+  //     ingredientIds: ingredients.map((ingredient) => ingredient.id),
+  //     skinType,
+  //   },
+  // });
 }

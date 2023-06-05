@@ -1,6 +1,8 @@
-import { PropsWithChildren, ReactNode } from "react";
+import React, { PropsWithChildren, ReactNode } from "react";
 import Spinner from "../spinner";
 import classNames from "classnames";
+import { Product } from "../../(api)/api-types";
+import { RemovableProductListItem } from "./product-list-item";
 
 export interface ListItemProps {
   actionElement?: ReactNode;
@@ -34,16 +36,13 @@ export function ListItemContainer({
   );
 }
 
-interface Props {
+interface Props extends PropsWithChildren {
   heading: ReactNode;
   empty: ReactNode;
   isLoading?: boolean;
 }
 
-export default function ListContainer({
-  isLoading = false,
-  ...props
-}: PropsWithChildren<Props>) {
+export default function ListContainer({ isLoading = false, ...props }: Props) {
   return (
     <div className="flex flex-col border border-stone-200 rounded overflow-hidden">
       <div className="bg-stone-100 p-4 py-1 font-medium text-stone-700">
@@ -57,5 +56,34 @@ export default function ListContainer({
         )}
       </div>
     </div>
+  );
+}
+
+interface RemovableProductListProps {
+  products: Product[];
+  handleRemove: (product: Product) => void;
+  handleClick?: (product: Product) => void;
+  loading?: boolean;
+  buttonsLoading?: boolean;
+}
+
+export function RemovableProductList(props: RemovableProductListProps) {
+  return (
+    <ListContainer
+      heading="Products"
+      empty="Your irritative products will appear here."
+      isLoading={props.loading}
+    >
+      {props.products.length &&
+        props.products.map((product, key) => (
+          <RemovableProductListItem
+            key={key}
+            product={product}
+            handleRemove={() => props.handleRemove(product)}
+            handleClick={() => props.handleClick && props.handleClick(product)}
+            loading={props.buttonsLoading}
+          />
+        ))}
+    </ListContainer>
   );
 }

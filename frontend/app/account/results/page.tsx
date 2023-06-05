@@ -2,8 +2,7 @@
 import Link from "next/link";
 import { useFetchApi } from "../../(api)/api";
 import { GetSkinProfile } from "../../(api)/api-routes";
-import ListContainer from "../../(components)/common/list-container";
-import IrritantListItem from "../../(components)/common/irritant-list-item";
+import { ResultItems } from "../../(components)/create-skin-profile-modal/result-items";
 
 export default function Results() {
   const { data: skinProfile, ...skinProfileQuery } =
@@ -15,41 +14,8 @@ export default function Results() {
       }
     );
 
-  const duplicateIrritants = skinProfile?.duplicateIrritants || [];
-  const skinTypeIrritants = skinProfile?.skinTypeClassIrritants || [];
-  const explicitIrritants = skinProfile?.explicitlyAddedIrritants || [];
-
-  const allIrritants = [
-    ...duplicateIrritants,
-    ...skinTypeIrritants,
-    ...explicitIrritants,
-  ];
-
-  const duplicateComponents = duplicateIrritants.map((ingredient, key) => (
-    <IrritantListItem
-      key={key * 3}
-      ingredient={ingredient}
-      reason="duplicate"
-    />
-  ));
-  const skinTypeComponents = skinTypeIrritants.map((ingredient, key) => (
-    <IrritantListItem
-      key={key * 3 + 1}
-      ingredient={ingredient}
-      reason="skinType"
-    />
-  ));
-
-  const explicitComponents = explicitIrritants.map((ingredient, key) => (
-    <IrritantListItem
-      key={key * 3 + 2}
-      ingredient={ingredient}
-      reason="explicit"
-    />
-  ));
-
   return (
-    <>
+    <div>
       <div className="mb-8">
         <h1 className="font-bold text-xl mb-1">Irritant Analyze Results</h1>
         <p className="text-stone-600">
@@ -66,16 +32,11 @@ export default function Results() {
         </p>
       </div>
       <div>
-        <ListContainer
-          heading="Irritating Ingredients"
-          empty="Your irritants will appear here."
-          isLoading={skinProfileQuery.isLoading}
-        >
-          {duplicateComponents}
-          {skinTypeComponents}
-          {explicitComponents}
-        </ListContainer>
+        <ResultItems
+          skinProfile={skinProfile}
+          loading={skinProfileQuery.isLoading}
+        />
       </div>
-    </>
+    </div>
   );
 }
