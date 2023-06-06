@@ -3,6 +3,7 @@ import { Strategy, VerifyCallback } from "passport-google-oauth20";
 import { ENDPOINT, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from "../constants";
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
+import { Request } from "express";
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
@@ -35,5 +36,10 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
       })
       .then((user) => done(null, user || false))
       .catch((err) => done(err));
+  }
+
+  authenticate(req: Request, options?: any) {
+    options.state = req.query.returnUrl;
+    super.authenticate(req, options);
   }
 }

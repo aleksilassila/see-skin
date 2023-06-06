@@ -1,23 +1,26 @@
+"use client";
 import { RemovableProductList } from "../../common/list-container";
-import { Product } from "../../../(api)/api-types";
+import { Product, SkinType } from "../../../(api)/api-types";
 import { ProductSearchModal } from "../../product-search-modal";
 import { useVisibleState } from "../../ui/drawer";
 import ProductDetails, {
   useProductDetailsState,
 } from "../../../products/product-details/product-details";
 import { Button } from "../../ui/button";
-import {
-  faArrowLeft,
-  faArrowRight,
-  faChevronRight,
-} from "@fortawesome/free-solid-svg-icons";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { useUser } from "../../../user";
+import { GoogleLoginButton } from "../../../(navigation)/account-button";
 
 export default function ProductSelect(props: {
   products: Product[];
   setProducts: (products: Product[]) => void;
   advance: () => void;
+  skinType?: SkinType;
+  handleLogin: () => void;
 }) {
   const { products, setProducts } = props;
+
+  const user = useUser();
 
   const productSearchState = useVisibleState();
   const productDetailsState = useProductDetailsState();
@@ -49,13 +52,17 @@ export default function ProductSelect(props: {
         handleRemove={removeProduct}
         handleClick={(p) => productDetailsState.show(p)}
       />
-      <Button
-        disabled={products.length === 0}
-        trailingIcon={faChevronRight}
-        onClick={props.advance}
-      >
-        Create SkinProfile
-      </Button>
+      {user.isSignedIn ? (
+        <Button
+          disabled={products.length === 0}
+          trailingIcon={faChevronRight}
+          onClick={props.advance}
+        >
+          Create SkinProfile
+        </Button>
+      ) : (
+        <GoogleLoginButton handleClick={props.handleLogin} />
+      )}
     </div>
   );
 }

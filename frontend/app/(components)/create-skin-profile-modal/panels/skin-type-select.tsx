@@ -4,17 +4,27 @@ import { useSwitch } from "../../../(hooks)/use-toggle";
 import { SkinType } from "../../../(api)/api-types";
 
 export type SkinTypeSelectState = ReturnType<typeof useSkinTypeSelectState>;
+export type SkinTypeSwitchState =
+  keyof SkinTypeSelectState["skinTypeSwitch"]["state"];
+export type SensitiveSwitchState =
+  keyof SkinTypeSelectState["sensitiveSwitch"]["state"];
 
 export function useSkinTypeSelectState() {
-  const skinTypeSwitch = useSwitch({
-    [SkinType.NORMAL]: false,
-    [SkinType.OILY]: false,
-    [SkinType.DRY]: false,
-    [SkinType.COMBINATION]: false,
-  });
-  const sensitiveSwitch = useSwitch({
-    SENSITIVE: false,
-  });
+  const skinTypeSwitch = useSwitch(
+    {
+      [SkinType.NORMAL]: false,
+      [SkinType.OILY]: false,
+      [SkinType.DRY]: false,
+      [SkinType.COMBINATION]: false,
+    },
+    "skin-type-switch"
+  );
+  const sensitiveSwitch = useSwitch(
+    {
+      SENSITIVE: false,
+    },
+    "sensitive-switch"
+  );
 
   function getSkinType(): SkinType | undefined {
     const skinType = Object.entries(skinTypeSwitch.state).find(
@@ -23,9 +33,18 @@ export function useSkinTypeSelectState() {
     return skinType as SkinType;
   }
 
+  function setSkinType(skinType: SkinType) {
+    if (skinType.includes("SENSITIVE")) {
+      sensitiveSwitch.toggle("SENSITIVE")(true);
+    }
+
+    skinTypeSwitch.toggle(skinType.replace("SENSITIVE", "") as any)(true);
+  }
+
   return {
     skinTypeSwitch,
     sensitiveSwitch,
+    setSkinType,
     getSkinType,
   };
 }

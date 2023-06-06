@@ -10,15 +10,29 @@ import {
 import { Popover } from "@headlessui/react";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import classNames from "classnames";
+import { usePathname } from "next/navigation";
+import { urlEncodeParams } from "../utils/utils";
 
-export function GoogleLoginButton(props: { source?: string }) {
+export function GoogleLoginButton(props: {
+  source?: string;
+  state?: object;
+  handleClick?: () => void;
+}) {
+  const pathname = usePathname();
+
+  const returnUrl = props.source || pathname;
+
+  const params = {
+    ...(returnUrl ? { returnUrl } : {}),
+    ...(props.state ? { state: JSON.stringify(props.state) } : {}),
+  };
+
   return (
     <AnchorButton
       intent="secondary"
-      href={
-        "/api/auth/google" + (props.source ? `?source=${props.source}` : "")
-      }
+      href={"/api/auth/google" + urlEncodeParams(params)}
       leadingIcon={faGoogle}
+      onClick={props.handleClick}
     >
       Sign in
     </AnchorButton>

@@ -62,8 +62,6 @@ export class ProductsService {
       (k) => ProductEffect[k] === effect,
     );
 
-    console.log(category, categoryEnum, effect, effectEnum);
-
     return this.prisma.product.findMany({
       where: {
         name: {

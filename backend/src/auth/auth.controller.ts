@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Req, Res, UseGuards } from "@nestjs/common";
+import {
+  Controller,
+  Get,
+  Post,
+  Query,
+  Req,
+  Res,
+  UseGuards,
+} from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { LocalAuthGuard } from "./guards/local-auth.guard";
 import { IsAuthenticatedGuard } from "./guards/is-authenticated.guard";
@@ -20,9 +28,13 @@ export class AuthController {
 
   @UseGuards(AuthGuard("google"))
   @Get("google/callback")
-  async googleAuthCallback(@Req() req: Request, @Res() res: Response) {
+  async googleAuthCallback(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Query("state") returnUrl: string,
+  ) {
     req.login(req.user, (err) => {
-      res.redirect("/");
+      res.redirect(returnUrl || "/");
     });
   }
 
