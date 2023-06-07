@@ -20,10 +20,8 @@ Does not produce correct aliases
 export async function importIngredients() {
   console.log(`Creating ingredient structure...`);
 
-  let skipped = 0;
-  const stream = await fs
-    .isVisible(CSV_FILE)
-    .then((fd) => fd.createReadStream());
+  // let skipped = 0;
+  const stream = await fs.open(CSV_FILE).then((fd) => fd.createReadStream());
 
   return new Promise((resolve, reject) => {
     const rows: string[][] = [];
@@ -44,7 +42,7 @@ export async function importIngredients() {
         let batchCreateData: Parameters<typeof createIngredientBatch>[0] = [];
         for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
           const row = rows[rowIndex];
-          let [
+          const [
             cosingRefStr,
             combinedName,
             description,
@@ -131,10 +129,10 @@ async function createIngredientBatch(
 }
 
 function getAliases(combinedName: string): string[] {
-  let string = combinedName;
-  let highLevelAliases: string[] = [""];
+  const string = combinedName;
+  const highLevelAliases: string[] = [""];
 
-  let parenthesesString: string = "";
+  // let parenthesesString: string = "";
 
   // Get top level aliases
 
@@ -189,13 +187,13 @@ function getAliases(combinedName: string): string[] {
 }
 
 function getAllCombinations(arr: string[][]): string[][] {
-  let out: string[][] = [[]];
+  const out: string[][] = [[]];
   // Number of arrays
-  let n = arr.length;
+  const n = arr.length;
 
   // To keep track of next element in
   // each of the n arrays
-  let indices = new Array(n);
+  const indices = new Array(n);
 
   // Initialize with first element's index
   for (let i = 0; i < n; i++) indices[i] = 0;
@@ -232,7 +230,7 @@ function getAllCombinations(arr: string[][]): string[][] {
 function getParenthesesBlocks(string: string): string[] {
   const blocks: string[] = [""];
   let parenthesesDepth = 0;
-  let parenthesesString = "";
+  // let parenthesesString = "";
 
   for (const char of string) {
     if (char === "(") {
