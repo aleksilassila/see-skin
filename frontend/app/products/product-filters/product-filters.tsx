@@ -11,6 +11,7 @@ import { useSession } from "../../user";
 export type ProductFiltersState = ReturnType<typeof useProductFiltersState>;
 
 export function useProductFiltersState() {
+  const session = useSession();
   const irritantFilterToggle = useToggle(
     {
       irritantFiltering: true,
@@ -49,11 +50,14 @@ export function useProductFiltersState() {
     "product-effect-switch"
   );
 
-  const filtersActive: number = Object.values({
-    ...categorySwitch.state,
-    ...effectSwitch.state,
-    ...irritantFilterToggle.state,
-  }).filter((value) => value).length;
+  const filtersActive: number =
+    Object.values({
+      ...categorySwitch.state,
+      ...effectSwitch.state,
+    }).filter((value) => value).length +
+    (irritantFilterToggle.state.irritantFiltering && !!session.skinProfile
+      ? 1
+      : 0);
 
   return {
     irritantFilterToggle,

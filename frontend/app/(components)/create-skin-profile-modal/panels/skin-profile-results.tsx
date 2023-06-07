@@ -1,7 +1,8 @@
-import { useMutate } from "../../../(api)/api";
+import { getQueryKey, useMutate } from "../../../(api)/api";
 import { PutSkinProfile } from "../../../(api)/api-routes";
 import { useEffect, useState } from "react";
 import { ResultItems } from "../result-items";
+import { useQueryClient } from "react-query";
 
 export type SkinProfileResultsState = ReturnType<
   typeof useSkinProfileResultsState
@@ -14,7 +15,13 @@ export function useSkinProfileResultsState() {
     ingredientIds: [],
   });
 
-  const createProfileQuery = useMutate<PutSkinProfile>("/skin-profile");
+  const queryClient = useQueryClient();
+
+  const createProfileQuery = useMutate<PutSkinProfile>("/skin-profile", {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: getQueryKey("/skin-profile") });
+    },
+  });
 
   useEffect(() => {
     if (data.skinType !== undefined && !!data.productIds?.length) {

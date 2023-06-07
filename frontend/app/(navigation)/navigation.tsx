@@ -1,5 +1,5 @@
 "use client";
-import { HTMLAttributes } from "react";
+import { HTMLAttributes, PropsWithChildren } from "react";
 import Logo from "./logo";
 import Link from "next/link";
 import AccountButton, { GoogleLoginButton } from "./account-button";
@@ -174,18 +174,27 @@ function MobileLinks(props: {
         </Link>
         {props.userState.isSignedIn ? (
           <div className={sectionContainerStyle}>
-            <Link className={linkStyle} href="/">
+            <MobileLink
+              handleClick={props.handleClose}
+              href="/account/manage-irritants"
+            >
               Edit your products
-            </Link>
-            <Link className={linkStyle} href="/">
+            </MobileLink>
+            <MobileLink handleClick={props.handleClose} href="/account/results">
               Results
-            </Link>
-            <Link className={linkStyle} href="/">
+            </MobileLink>
+            <MobileLink
+              handleClick={props.handleClose}
+              href="/account/ingredient-filters"
+            >
               Ingredient filtering
-            </Link>
-            <Link className={linkStyle} href="/">
+            </MobileLink>
+            <MobileLink
+              handleClick={props.handleClose}
+              href="/account/edit-skin-profile"
+            >
               Skin Profile
-            </Link>
+            </MobileLink>
             <button
               onClick={props.userState.logOut}
               className={classNames(linkStyle, "cursor-pointer text-left")}
@@ -223,6 +232,30 @@ function Links(props: {
         ) : null
       )}
     </>
+  );
+}
+
+function MobileLink(
+  props: PropsWithChildren<{
+    handleClick: () => void;
+    href: string;
+    currentHref?: string;
+  }>
+) {
+  const isActive = props.href === usePathname();
+  const linkStyle = classNames(
+    "font-medium text-lg",
+    "active:text-blue-900 hover:text-black",
+    {
+      "text-indigo-800": isActive,
+      "text-stone-700": !isActive,
+    }
+  );
+
+  return (
+    <Link onClick={props.handleClick} className={linkStyle} href={props.href}>
+      {props.children}
+    </Link>
   );
 }
 

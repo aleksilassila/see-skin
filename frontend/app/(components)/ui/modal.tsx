@@ -18,10 +18,10 @@ export function Modal({
 }: ModalState & PropsWithChildren<Props>) {
   const noBackground = size === "none" || size === "fullscreen";
 
-  const panelStyle = classNames({
+  const panelStyle = classNames("min-w-0", {
     "flex-grow w-full h-full": size === "lg",
     "max-w-2xl flex-grow": size === "md",
-    "bg-white rounded-xl shadow-lg p-8 py-6": !noBackground,
+    "bg-white rounded-xl shadow-lg p-2 sm:p-4 md:p-8 md:py-6": !noBackground,
     "flex-1 flex flex-col": noBackground,
   });
 
@@ -47,7 +47,7 @@ export function Modal({
           leave="ease-in duration-200"
           leaveFrom="opacity-100 scale-100"
           leaveTo="opacity-0 scale-95"
-          className="fixed inset-0 p-2 sm:p-4 md:p-8 flex justify-center z-[51]"
+          className="fixed inset-0 p-2 sm:p-4 md:p-8 flex justify-center z-[51] overflow-y-scroll"
           style={{
             marginTop: top ? `${top}vh` : undefined,
             alignItems: !top && !noBackground ? "center" : "flex-start",

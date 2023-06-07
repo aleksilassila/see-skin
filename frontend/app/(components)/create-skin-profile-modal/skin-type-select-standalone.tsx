@@ -28,6 +28,7 @@ export default function SkinTypeSelectStandalone() {
         >
           View Products
         </AnchorButton>
+        <CreateSkinProfileModal {...createSkinProfileState} />
       </div>
     );
   }
