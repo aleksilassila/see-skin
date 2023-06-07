@@ -3,7 +3,7 @@ import { HTMLAttributes } from "react";
 import Logo from "./logo";
 import Link from "next/link";
 import AccountButton, { GoogleLoginButton } from "./account-button";
-import { UserContextState, useUser } from "../user";
+import { SessionContextState, useUser } from "../user";
 import { User } from "../(api)/api-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -66,7 +66,7 @@ export default function Navigation({
 function DesktopLinks(props: {
   handleClick: () => void;
   activeHref: string;
-  userState: UserContextState;
+  userState: SessionContextState;
 }) {
   return (
     <div className="hidden md:flex items-center flex-1 justify-between">
@@ -98,7 +98,7 @@ function MobileLinks(props: {
   isVisible: boolean;
   handleClose: () => void;
   activeHref: string;
-  userState: UserContextState;
+  userState: SessionContextState;
 }) {
   const labelStyle = "font-medium text-lg";
   const linkStyle = classNames(

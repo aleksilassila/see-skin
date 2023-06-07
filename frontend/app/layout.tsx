@@ -3,7 +3,8 @@ import "./global.css";
 import { UserContext, useUserContextValue } from "./user";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import React from "react";
+import React, { PropsWithChildren } from "react";
+import { useSearchParams } from "next/navigation";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,23 +24,36 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const userContextValue = useUserContextValue();
-
   return (
     <html>
       <head>
         <title>See Skin</title>
       </head>
       <body className="min-h-screen flex flex-col">
-        <UserContext.Provider value={userContextValue}>
-          <QueryClientProvider client={queryClient}>
+        <QueryClientProvider client={queryClient}>
+          <SessionProvider>
             {children}
             <ReactQueryDevtools initialIsOpen={false} />
-          </QueryClientProvider>
-          {userContextValue.isSignedIn}
-        </UserContext.Provider>
+          </SessionProvider>
+        </QueryClientProvider>
       </body>
     </html>
+  );
+}
+
+function SessionProvider(props: PropsWithChildren) {
+  const userContextValue = useUserContextValue();
+  //
+  // const searchParams = useSearchParams();
+  //
+  // const signIn = searchParams.get("signIn") === "true";
+
+  // if (signIn && !userContextValue.isSignedIn) userContextValue.reset();
+
+  return (
+    <UserContext.Provider value={userContextValue}>
+      {props.children}
+    </UserContext.Provider>
   );
 }
 

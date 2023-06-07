@@ -95,15 +95,13 @@ function ProductFiltersContent({
   categorySwitch,
   effectSwitch,
 }: ProductFiltersState) {
-  const { data: skinProfile } = useFetchApi<GetSkinProfile>("/skin-profile");
-
   const sectionStyle = classNames("flex flex-col gap-2");
   const sectionTitle = classNames(
     "text-zinc-700 font-medium text-center text-lg"
   );
   const togglesContainerStyle = classNames("grid grid-cols-2 gap-2");
 
-  const user = useUser();
+  const session = useUser();
 
   return (
     <>
@@ -115,7 +113,7 @@ function ProductFiltersContent({
             handleClick={() =>
               irritantFilterToggle.toggle("irritantFiltering")(true)
             }
-            disabled={!skinProfile}
+            disabled={!session.skinProfile}
           >
             On
           </BigToggle>
@@ -124,19 +122,21 @@ function ProductFiltersContent({
             handleClick={() =>
               irritantFilterToggle.toggle("irritantFiltering")(false)
             }
-            disabled={!skinProfile}
+            disabled={!session.skinProfile}
           >
             Off
           </BigToggle>
         </div>
         <div className="text-stone-400 text-sm tracking-wide text-center">
-          {irritantFilterToggle.state.irritantFiltering && !!skinProfile
+          {irritantFilterToggle.state.irritantFiltering && !!session.skinProfile
             ? "Your bad ingredients are now removed"
             : null}
-          {!user.isSignedIn
+          {!session.isSignedIn
             ? "Sign in to filter products based on your skin type"
             : null}
-          {irritantFilterToggle.state.irritantFiltering && !skinProfile
+          {irritantFilterToggle.state.irritantFiltering &&
+          session.isSignedIn &&
+          !session.skinProfile
             ? "Create a SkinProfile to filter your irritants"
             : null}
         </div>

@@ -4,30 +4,20 @@ import CreateSkinProfileModal, {
   useCreateSkinProfileModalState,
 } from "./create-skin-profile-modal";
 import { SkinTypeSelect } from "./panels/skin-type-select";
-import { useFetchApi } from "../../(api)/api";
-import { GetSkinProfile } from "../../(api)/api-routes";
 import { useUser } from "../../user";
 
 export default function SkinTypeSelectStandalone() {
   const createSkinProfileState = useCreateSkinProfileModalState();
   const { skinTypeSelectState } = createSkinProfileState;
 
-  const user = useUser();
-
-  const { data: skinProfile } = useFetchApi<GetSkinProfile>(
-    "/skin-profile",
-    {},
-    {
-      enabled: user.isSignedIn,
-    }
-  );
+  const session = useUser();
 
   function openModal() {
     createSkinProfileState.stepsState.open(1);
     createSkinProfileState.modalState.open();
   }
 
-  if (skinProfile) {
+  if (session.skinProfile) {
     return (
       <div className="flex justify-center">
         <AnchorButton

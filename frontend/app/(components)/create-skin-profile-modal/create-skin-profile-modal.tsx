@@ -6,26 +6,21 @@ import {
   useSkinTypeSelectState,
 } from "./panels/skin-type-select";
 import ProductSelect from "./panels/product-select";
-import { Product, SkinType } from "../../(api)/api-types";
-import { useEffect, useState } from "react";
+import { Product } from "../../(api)/api-types";
+import { useEffect } from "react";
 import SkinProfileResults, {
   useSkinProfileResultsState,
 } from "./panels/skin-profile-results";
 import { useLocalStorage } from "../../utils/localstorage";
-import { fetchApi } from "../../(api)/api";
-import { GetProductId } from "../../(api)/api-routes";
+import { useUser } from "../../user";
 
 export type CreateSkinProfileModalState = ReturnType<
   typeof useCreateSkinProfileModalState
 >;
 
-interface CacheState {
-  productIds: string[];
-  skinType?: SkinType;
-  restored: boolean;
-}
-
 export function useCreateSkinProfileModalState(defaultIndex: number = 0) {
+  const session = useUser();
+
   const modalState = useVisibleState();
   const stepsState = useStepsState(defaultIndex);
 
@@ -35,73 +30,21 @@ export function useCreateSkinProfileModalState(defaultIndex: number = 0) {
     "cached-products"
   );
   const resultsState = useSkinProfileResultsState();
-  const [returnFromLogin, setReturnFromLogin] = useLocalStorage(
-    false,
-    "return-from-login"
-  );
 
   useEffect(() => {
     if (
-      returnFromLogin &&
+      session.openSkinProfileCreation &&
       skinTypeSelectState.getSkinType() &&
       selectedProducts.length &&
       !modalState.isVisible &&
       stepsState.currentIndex === 0
     ) {
-      setReturnFromLogin(false);
+      session.setOpenSkinProfileCreation(false);
 
       stepsState.open(1);
       modalState.open();
     }
-  }, [returnFromLogin]);
-
-  // const [cachedState, setCachedState] = useLocalStorage<CacheState>(
-  //   {
-  //     productIds: [],
-  //     restored: true,
-  //   },
-  //   "create-skin-profile-cached"
-  // );
-
-  // useEffect(() => setCachedState({ ...cachedState, restored: false }), []);
-  //
-  // // Restore state
-  // useEffect(() => {
-  //   async function restoreState() {
-  //     const products = await Promise.all(
-  //       cachedState.productIds.map((id) =>
-  //         fetchApi<GetProductId>(("/products/" + id) as any)
-  //       )
-  //     );
-  //     setSelectedProducts(products);
-  //     if (cachedState.skinType)
-  //       skinTypeSelectState.setSkinType(cachedState.skinType);
-  //   }
-  //
-  //   if (!cachedState.restored) {
-  //     console.log("Restoring state...");
-  //     setCachedState({ ...cachedState, restored: true });
-  //
-  //     restoreState().catch(console.error);
-  //   }
-  // }, [cachedState]);
-  //
-  // // Store state
-  // const skinType = skinTypeSelectState.getSkinType();
-  // useEffect(() => {
-  //   const store =
-  //     (skinTypeSelectState.getSkinType() || selectedProducts) &&
-  //     cachedState.restored;
-  //
-  //   if (store) {
-  //     console.log("Storing state...");
-  //     setCachedState({
-  //       productIds: selectedProducts.map((product) => product.id),
-  //       skinType: skinTypeSelectState.getSkinType(),
-  //       restored: true,
-  //     });
-  //   }
-  // }, [selectedProducts, skinType]);
+  }, [session]);
 
   return {
     modalState,
@@ -109,9 +52,8 @@ export function useCreateSkinProfileModalState(defaultIndex: number = 0) {
     skinTypeSelectState,
     selectedProducts,
     setSelectedProducts,
-    returnFromLogin,
-    setReturnFromLogin,
     resultsState,
+    handleFormInterruption: () => session.setOpenSkinProfileCreation(true),
   };
 }
 
@@ -141,7 +83,7 @@ export default function CreateSkinProfileModal(
             setProducts={state.setSelectedProducts}
             advance={createSkinProfile}
             skinType={state.skinTypeSelectState.getSkinType()}
-            handleLogin={() => state.setReturnFromLogin(true)}
+            handleLogin={state.handleFormInterruption}
           />
         </Step>
         <Step index={2} heading="View Results" {...state.stepsState}>
