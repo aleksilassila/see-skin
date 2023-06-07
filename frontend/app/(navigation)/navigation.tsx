@@ -3,7 +3,7 @@ import { HTMLAttributes } from "react";
 import Logo from "./logo";
 import Link from "next/link";
 import AccountButton, { GoogleLoginButton } from "./account-button";
-import { SessionContextState, useUser } from "../user";
+import { SessionContextState, useSession } from "../user";
 import { User } from "../(api)/api-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -37,7 +37,7 @@ export default function Navigation({
   dark = false,
 }: Props & HTMLAttributes<HTMLDivElement>) {
   const visibleState = useVisibleState();
-  const userState = useUser();
+  const session = useSession();
   const pathname = usePathname();
 
   const activeHref = href || pathname;
@@ -50,14 +50,14 @@ export default function Navigation({
       <DesktopLinks
         handleClick={visibleState.close}
         activeHref={activeHref}
-        userState={userState}
+        session={session}
       />
       <MobileBurger handleClick={visibleState.toggle} />
       <MobileLinks
         isVisible={visibleState.isVisible}
         handleClose={visibleState.close}
         activeHref={activeHref}
-        userState={userState}
+        userState={session}
       />
     </div>
   );
@@ -66,7 +66,7 @@ export default function Navigation({
 function DesktopLinks(props: {
   handleClick: () => void;
   activeHref: string;
-  userState: SessionContextState;
+  session: SessionContextState;
 }) {
   return (
     <div className="hidden md:flex items-center flex-1 justify-between">
@@ -74,7 +74,7 @@ function DesktopLinks(props: {
         <Links
           handleClick={props.handleClick}
           activeHref={props.activeHref}
-          user={props.userState.user}
+          user={props.session.user}
         />
       </div>
       <AccountButton />

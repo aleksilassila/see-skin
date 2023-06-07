@@ -8,7 +8,7 @@ import ProductDetails, {
 } from "../../../products/product-details/product-details";
 import { Button } from "../../ui/button";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
-import { useUser } from "../../../user";
+import { useSession } from "../../../user";
 import { GoogleLoginButton } from "../../../(navigation)/account-button";
 
 export default function ProductSelect(props: {
@@ -20,7 +20,7 @@ export default function ProductSelect(props: {
 }) {
   const { products, setProducts } = props;
 
-  const user = useUser();
+  const session = useSession();
 
   const productSearchState = useVisibleState();
   const productDetailsState = useProductDetailsState();
@@ -52,7 +52,7 @@ export default function ProductSelect(props: {
         handleRemove={removeProduct}
         handleClick={(p) => productDetailsState.show(p)}
       />
-      {user.isSignedIn ? (
+      {session.isSignedIn ? (
         <Button
           disabled={products.length === 0}
           trailingIcon={faChevronRight}

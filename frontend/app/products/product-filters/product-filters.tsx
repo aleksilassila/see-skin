@@ -6,9 +6,7 @@ import { useSwitch, useToggle } from "../../(hooks)/use-toggle";
 import { XmarkButton } from "../../(components)/ui/button";
 import { VisibleState } from "../../(components)/ui/drawer";
 import { ProductCategory, ProductEffect } from "../../(api)/api-types";
-import { useUser } from "../../user";
-import { useFetchApi } from "../../(api)/api";
-import { GetSkinProfile } from "../../(api)/api-routes";
+import { useSession } from "../../user";
 
 export type ProductFiltersState = ReturnType<typeof useProductFiltersState>;
 
@@ -101,7 +99,7 @@ function ProductFiltersContent({
   );
   const togglesContainerStyle = classNames("grid grid-cols-2 gap-2");
 
-  const session = useUser();
+  const session = useSession();
 
   return (
     <>

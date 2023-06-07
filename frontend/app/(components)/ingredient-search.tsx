@@ -6,8 +6,6 @@ import {
 } from "../(hooks)/remote-select";
 import Input from "./ui/input";
 import { Ingredient } from "../(api)/api-types";
-import { fetchApi } from "../(api)/api";
-import { GetProducts } from "../(api)/api-routes";
 
 export function useIngredientSearchState() {
   return useRemoteSelectState<Ingredient>(

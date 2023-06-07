@@ -1,33 +1,32 @@
 "use client";
-import { createContext, FunctionComponent, useContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { useFetchApi } from "./(api)/api";
 import { SkinProfile, User } from "./(api)/api-types";
 import { GetSkinProfile, GetUser } from "./(api)/api-routes";
-import { useSearchParams } from "next/navigation";
 import { useLocalStorage } from "./utils/localstorage";
 
-export type SessionContextState = ReturnType<typeof useUserContextValue>;
+export type SessionContextState = ReturnType<typeof useSessionContextValue>;
 
-type StoredState = {
+type UserState = {
   user?: User | false;
   skinProfile?: SkinProfile | false;
 };
 
-type SavedState = {
+type SessionState = {
   openSkinProfileCreation: boolean;
 };
 
-const defaultState = {
+const defaultUserState = {
   user: undefined,
   skinProfile: undefined,
-} satisfies StoredState;
-const defaultSavedState = {
+} satisfies UserState;
+const defaultSessionState = {
   openSkinProfileCreation: false,
-} satisfies SavedState;
+} satisfies SessionState;
 
-export const UserContext = createContext<SessionContextState>({
-  ...defaultState,
-  ...defaultSavedState,
+export const SessionContext = createContext<SessionContextState>({
+  ...defaultUserState,
+  ...defaultSessionState,
   isSignedIn: false,
   reset: () => {},
   logOut: () => {},
@@ -35,18 +34,13 @@ export const UserContext = createContext<SessionContextState>({
   setOpenSkinProfileCreation: () => {},
 });
 
-export function useUser() {
-  return useContext(UserContext);
+export function useSession() {
+  return useContext(SessionContext);
 }
 
-export function useUserContextValue() {
-  const [sessionId, setSessionId] = useState(Math.random());
-  const resetSession = () => setSessionId(Math.random());
-
-  const [savedState, setSavedState, didLoad] = useLocalStorage<SavedState>(
-    defaultSavedState,
-    "session"
-  );
+export function useSessionContextValue() {
+  const [sessionState, setSessionState, didLoad] =
+    useLocalStorage<SessionState>(defaultSessionState, "session");
   const onError = () => false as false;
   const {
     data: user,
@@ -74,49 +68,8 @@ export function useUserContextValue() {
     }
   );
 
-  // const router = useRouter();
-
-  // useEffect(() => {
-  //   if (!didLoad) return;
-  //
-  //   function refresh(
-  //     user: StoredState["user"],
-  //     skinProfile: StoredState["skinProfile"]
-  //   ) {
-  //     setState({
-  //       ...state,
-  //       user,
-  //       skinProfile,
-  //       didRefresh: true,
-  //     });
-  //   }
-  //
-  //   const fetchUser = () =>
-  //     fetchApi<GetUser>("/user").catch(() => false as false);
-  //   const fetchSkinProfile = () =>
-  //     fetchApi<GetSkinProfile>("/skin-profile").catch(() => false as false);
-  //
-  //   async function updateBoth() {
-  //     const [user, skinProfile] = await Promise.all([
-  //       fetchUser(),
-  //       fetchSkinProfile(),
-  //     ]);
-  //
-  //     refresh(user, skinProfile);
-  //   }
-  //
-  //   if (!state.didRefresh) {
-  //     updateBoth();
-  //   } else if (state.skinProfile === undefined) {
-  //     fetchSkinProfile().then((skinProfile) =>
-  //       refresh(state.user, skinProfile)
-  //     );
-  //   }
-  // }, [state]);
-
   const reset = () => {
-    setSavedState(defaultSavedState);
-    resetSession();
+    setSessionState(defaultSessionState);
   };
 
   function logOut() {
@@ -126,29 +79,16 @@ export function useUserContextValue() {
   }
 
   const setOpenSkinProfileCreation = (open: boolean) =>
-    setSavedState({ ...savedState, openSkinProfileCreation: open });
+    setSessionState({ ...sessionState, openSkinProfileCreation: open });
 
   return {
-    user: userError ? false : user || undefined,
-    skinProfile: skinProfileError ? false : skinProfile || undefined,
+    user: userError ? undefined : user,
+    skinProfile: skinProfileError ? undefined : skinProfile,
     isSignedIn: !!user && !userError,
     loading: userQuery.isLoading || skinProfileQuery.isLoading,
     reset,
     logOut,
-    openSkinProfileCreation: savedState.openSkinProfileCreation,
+    openSkinProfileCreation: sessionState.openSkinProfileCreation,
     setOpenSkinProfileCreation,
   };
 }
-
-export const WithLogin = (Component: FunctionComponent) =>
-  function LoginComponent() {
-    const searchParams = useSearchParams();
-
-    const signIn = searchParams.get("signIn") === "true";
-
-    const session = useUser();
-
-    if (signIn && !session.isSignedIn) session.reset();
-
-    return <Component />;
-  };

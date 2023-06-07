@@ -1,12 +1,11 @@
 import axios, { AxiosRequestConfig } from "axios";
 import {
-  QueryOptions,
   useMutation,
   UseMutationOptions,
   useQuery,
   UseQueryOptions,
 } from "react-query";
-import { ApiType, BuildRoute } from "./api-routes";
+import { ApiType } from "./api-routes";
 
 type QueryKey = [string, object | undefined];
 

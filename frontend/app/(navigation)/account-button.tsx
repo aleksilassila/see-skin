@@ -1,5 +1,5 @@
 "use client";
-import { useUser } from "../user";
+import { useSession } from "../user";
 import { AnchorButton, Button } from "../(components)/ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -40,9 +40,9 @@ export function GoogleLoginButton(props: {
 }
 
 export default function AccountButton() {
-  const user = useUser();
+  const session = useSession();
 
-  if (!user?.user) {
+  if (!session.user) {
     return <GoogleLoginButton />;
   }
 
@@ -70,7 +70,9 @@ export default function AccountButton() {
           <div className="divide-y">
             <div className="px-3 py-2">
               <div>Signed in as</div>
-              <div className="font-medium text-zinc-900">{user.user.name}</div>
+              <div className="font-medium text-zinc-900">
+                {session.user.name}
+              </div>
             </div>
             <div>
               <AnchorButton
@@ -86,7 +88,7 @@ export default function AccountButton() {
               <Button
                 overwriteStyles
                 className={menuButtonStyle}
-                onClick={user.logOut}
+                onClick={session.logOut}
               >
                 Sign out
               </Button>

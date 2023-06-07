@@ -5,7 +5,7 @@ import { ProductFiltersState } from "../product-filters/product-filters";
 import { ProductSearchState } from "../product-search/product-search";
 import classNames from "classnames";
 import ProductFeedLoader, { useProductFeedLoader } from "./product-feed-loader";
-import { Product, ProductCategory } from "../../(api)/api-types";
+import { Product } from "../../(api)/api-types";
 import { useEffect, useState } from "react";
 import { ProductDetailsState } from "../product-details/product-details";
 import { fetchApi } from "../../(api)/api";

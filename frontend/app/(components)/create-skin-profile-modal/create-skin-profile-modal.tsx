@@ -12,14 +12,14 @@ import SkinProfileResults, {
   useSkinProfileResultsState,
 } from "./panels/skin-profile-results";
 import { useLocalStorage } from "../../utils/localstorage";
-import { useUser } from "../../user";
+import { useSession } from "../../user";
 
 export type CreateSkinProfileModalState = ReturnType<
   typeof useCreateSkinProfileModalState
 >;
 
 export function useCreateSkinProfileModalState(defaultIndex: number = 0) {
-  const session = useUser();
+  const session = useSession();
 
   const modalState = useVisibleState();
   const stepsState = useStepsState(defaultIndex);

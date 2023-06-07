@@ -1,8 +1,4 @@
 "use client";
-import { Ingredient } from "./ingredient";
-import IssuesContainer from "../issues-container";
-import { useQuery } from "react-query";
-import { fetchIngredients } from "../../(api)/manage/ingredients";
 
 export default function IngredientsPage() {
   // const { data: ingredients } = useQuery(

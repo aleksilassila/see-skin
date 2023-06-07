@@ -4,13 +4,13 @@ import CreateSkinProfileModal, {
   useCreateSkinProfileModalState,
 } from "./create-skin-profile-modal";
 import { SkinTypeSelect } from "./panels/skin-type-select";
-import { useUser } from "../../user";
+import { useSession } from "../../user";
 
 export default function SkinTypeSelectStandalone() {
   const createSkinProfileState = useCreateSkinProfileModalState();
   const { skinTypeSelectState } = createSkinProfileState;
 
-  const session = useUser();
+  const session = useSession();
 
   function openModal() {
     createSkinProfileState.stepsState.open(1);

@@ -1,4 +1,4 @@
-import { useFetchApi, useMutate } from "../../../(api)/api";
+import { useMutate } from "../../../(api)/api";
 import { PutSkinProfile } from "../../../(api)/api-routes";
 import { useEffect, useState } from "react";
 import { ResultItems } from "../result-items";

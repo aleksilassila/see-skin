@@ -1,6 +1,6 @@
 "use client";
 import { FunctionComponent, PropsWithChildren } from "react";
-import { useUser } from "../user";
+import { useSession } from "../user";
 import { AnchorButton } from "./ui/button";
 import { GoogleLoginButton } from "../(navigation)/account-button";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
@@ -9,10 +9,10 @@ import { usePathname } from "next/navigation";
 export function RequireAuthentication(accessLevel = 0) {
   return (Component?: FunctionComponent<any>) =>
     function AuthenticationView(props: PropsWithChildren<{}>) {
-      const user = useUser();
+      const session = useSession();
       const pathName = usePathname();
 
-      if (user.loading) {
+      if (session.loading) {
         return (
           <div className="flex items-center justify-center w-screen h-screen">
             Loading...
@@ -21,13 +21,13 @@ export function RequireAuthentication(accessLevel = 0) {
       }
 
       const hasAccess =
-        (user?.user ? user.user.accessLevel : -1) >= accessLevel;
+        (session?.user ? session.user?.accessLevel : -1) >= accessLevel;
 
       if (!hasAccess) {
         return (
           <div className="h-screen w-screen flex flex-col items-center justify-center">
             <h2 className="text-xl mb-2">
-              {user.user
+              {session.user
                 ? "Sorry, you don't have rights to view this page"
                 : "You need to be logged in to view this page."}
             </h2>

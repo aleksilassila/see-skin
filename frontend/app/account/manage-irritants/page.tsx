@@ -9,7 +9,6 @@ import {
   GetSkinProfile,
   PostSkinProfile,
 } from "../../(api)/api-routes";
-import { ProductListItem } from "../../(components)/common/product-list-item";
 import { Button } from "../../(components)/ui/button";
 import ListContainer, {
   RemovableProductList,

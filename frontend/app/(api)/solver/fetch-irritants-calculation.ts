@@ -5,7 +5,6 @@ import {
   Product,
   SkinType,
 } from "../api-types";
-import { fetchApi } from "../api";
 
 export type IrritantsCalculationResponse = Irritant[];
 

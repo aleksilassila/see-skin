@@ -1,10 +1,9 @@
 "use client";
 import "./global.css";
-import { UserContext, useUserContextValue } from "./user";
+import { SessionContext, useSessionContextValue } from "./user";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import React, { PropsWithChildren } from "react";
-import { useSearchParams } from "next/navigation";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -42,7 +41,7 @@ export default function RootLayout({
 }
 
 function SessionProvider(props: PropsWithChildren) {
-  const userContextValue = useUserContextValue();
+  const userContextValue = useSessionContextValue();
   //
   // const searchParams = useSearchParams();
   //
@@ -51,9 +50,9 @@ function SessionProvider(props: PropsWithChildren) {
   // if (signIn && !userContextValue.isSignedIn) userContextValue.reset();
 
   return (
-    <UserContext.Provider value={userContextValue}>
+    <SessionContext.Provider value={userContextValue}>
       {props.children}
-    </UserContext.Provider>
+    </SessionContext.Provider>
   );
 }
 

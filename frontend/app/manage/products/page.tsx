@@ -1,8 +1,4 @@
 "use client";
-import { Product } from "./product";
-import IssuesContainer from "../issues-container";
-import { useQuery } from "react-query";
-import { fetchProducts } from "../../(api)/manage/products";
 
 export default function ProductsPage() {
   // const { data: products, isError } = useQuery(

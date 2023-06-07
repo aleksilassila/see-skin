@@ -1,4 +1,4 @@
-import { PropsWithChildren, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { Product } from "../../(api)/api-types";
 import classNames from "classnames";

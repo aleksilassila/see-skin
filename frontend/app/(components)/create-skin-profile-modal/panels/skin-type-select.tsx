@@ -1,5 +1,4 @@
-import Toggle, { ToggleData, useToggleState } from "../../ui/toggle";
-import { useCreateSkinProfileModalState } from "../create-skin-profile-modal";
+import Toggle from "../../ui/toggle";
 import { useSwitch } from "../../../(hooks)/use-toggle";
 import { SkinType } from "../../../(api)/api-types";
 
