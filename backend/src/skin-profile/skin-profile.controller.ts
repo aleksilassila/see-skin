@@ -7,7 +7,7 @@ import {
   Put,
   UseGuards,
 } from "@nestjs/common";
-import { GetUser } from "../auth/user.decorator";
+import { GetOptionalUser, GetUser } from "../auth/user.decorator";
 import { User } from "@prisma/client";
 import { IsAuthenticatedGuard } from "../auth/guards/is-authenticated.guard";
 import {
@@ -18,16 +18,23 @@ import {
 import { SkinProfileService } from "./skin-profile.service";
 
 @Controller("skin-profile")
-@UseGuards(IsAuthenticatedGuard)
 export class SkinProfileController {
   constructor(private skinProfileService: SkinProfileService) {}
 
   @Get()
-  getSkinProfile(@GetUser() user: User) {
-    return this.skinProfileService.getSkinProfile(user.id);
+  getSkinProfile(
+    @GetOptionalUser() user: User | undefined,
+    @Body() skinProfileDto: SetSkinProfileDto,
+  ) {
+    if (user) {
+      return this.skinProfileService.getSkinProfile(user.id);
+    } else {
+      return;
+    }
   }
 
   @Put()
+  @UseGuards(IsAuthenticatedGuard)
   setSkinProfile(
     @GetUser() user: User,
     @Body() setSkinProfileDto: SetSkinProfileDto,
@@ -48,6 +55,7 @@ export class SkinProfileController {
   }
 
   @Post()
+  @UseGuards(IsAuthenticatedGuard)
   updateSkinProfile(
     @GetUser() user: User,
     @Body() updateSkinProfileDto: UpdateSkinProfileDto,
@@ -72,6 +80,7 @@ export class SkinProfileController {
   }
 
   @Delete()
+  @UseGuards(IsAuthenticatedGuard)
   deleteSkinProfile(
     @GetUser() user: User,
     @Body() deleteSkinProfileDto: DeleteSkinProfileDto,
