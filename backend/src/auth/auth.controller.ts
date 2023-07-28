@@ -8,9 +8,8 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import { LocalAuthGuard } from "./guards/local-auth.guard";
-import { IsAuthenticatedGuard } from "./guards/is-authenticated.guard";
 import { Request, Response } from "express";
+import { LocalAuthGuard } from "./guards/local-auth.guard";
 
 @Controller("auth")
 export class AuthController {
@@ -42,11 +41,5 @@ export class AuthController {
   async logout(@Req() req: Request, @Res() res: Response) {
     req.logout((err) => {});
     res.redirect("/");
-  }
-
-  @UseGuards(IsAuthenticatedGuard)
-  @Get("test")
-  async test() {
-    return "test";
   }
 }
